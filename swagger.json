@@ -1,0 +1,441 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"WireguardClient": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"enabled": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					},
+					"publicKey": {
+						"type": "string"
+					},
+					"privateKey": {
+						"type": "string"
+					},
+					"preSharedKey": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"allowedIPs": {
+						"type": "string"
+					},
+					"latestHandshakeAt": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"transferRx": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"transferTx": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"persistentKeepalive": {
+						"type": "string",
+						"nullable": true
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"enabled",
+					"name",
+					"publicKey",
+					"address",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {
+			"api_key": {
+				"type": "apiKey",
+				"name": "access_token",
+				"in": "query"
+			}
+		}
+	},
+	"info": {
+		"title": "wireguard-server",
+		"version": "1.0.0",
+		"description": "Wireguard API",
+		"license": {
+			"name": "MIT"
+		},
+		"contact": {
+			"name": "Epifanov Andrei",
+			"email": "epifanovmd@gmail.com"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/api/wireguard/clients": {
+			"get": {
+				"operationId": "GetClients",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/WireguardClient"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wireguard"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/wireguard/client": {
+			"get": {
+				"operationId": "GetClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/WireguardClient"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wireguard"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/WireguardClient"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wireguard"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"name": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"name"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/wireguard/client/qrcode": {
+			"get": {
+				"operationId": "GetClientQRCodeSVG",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wireguard"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wireguard/client/configuration": {
+			"get": {
+				"operationId": "GetClientConfiguration",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wireguard"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wireguard/client/{clientId}": {
+			"delete": {
+				"operationId": "DeleteClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wireguard"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "clientId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "UpdateClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wireguard"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "clientId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"address": {
+										"type": "string"
+									},
+									"name": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"address",
+									"name"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/wireguard/client/enable": {
+			"post": {
+				"operationId": "EnableClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wireguard"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"clientId": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"clientId"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/wireguard/client/disable": {
+			"post": {
+				"operationId": "DisableClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wireguard"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"clientId": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"clientId"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "http://localhost:8181/"
+		}
+	]
+}
