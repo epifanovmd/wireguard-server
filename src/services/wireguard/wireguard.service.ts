@@ -22,15 +22,6 @@ const {
   WG_POST_DOWN,
 } = config;
 
-let HOST: string = WG_HOST || "";
-
-Util.exec("hostname -I | grep -E -o '^\\S*'").then(host => {
-  console.log("host", host);
-  if (host && HOST !== host) {
-    HOST = host;
-  }
-});
-
 export class WireguardService {
   downVpn = () =>
     Util.exec("wg-quick down wg0")
@@ -40,7 +31,7 @@ export class WireguardService {
   upVpn = () => this.getConfig();
 
   getConfig = async () => {
-    if (!HOST) {
+    if (!WG_HOST) {
       throw new Error("WG_HOST Environment Variable Not Set!");
     }
 
@@ -212,7 +203,7 @@ PublicKey = ${config.server.publicKey}
 PresharedKey = ${client.preSharedKey}
 AllowedIPs = ${WG_ALLOWED_IPS}
 PersistentKeepalive = ${WG_PERSISTENT_KEEPALIVE}
-Endpoint = ${HOST}:${WG_PORT}`;
+Endpoint = ${WG_HOST}:${WG_PORT}`;
   };
 
   getClientQRCodeSVG = async ({ clientId }: { clientId: string }) => {
