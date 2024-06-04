@@ -57,12 +57,12 @@ export class Util {
 
   static exec(
     cmd,
-    { log }: { log: string | boolean } = { log: true },
+    opts: { log?: string | boolean } = { log: true },
   ): Promise<string> {
-    if (typeof log === "string") {
+    if (typeof opts.log === "string") {
       // eslint-disable-next-line no-console
-      console.log(`$ ${log}`);
-    } else if (log === true) {
+      console.log(`$ ${opts.log}`);
+    } else {
       // eslint-disable-next-line no-console
       console.log(`$ ${cmd}`);
     }

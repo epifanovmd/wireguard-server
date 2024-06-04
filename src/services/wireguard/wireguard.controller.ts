@@ -13,11 +13,12 @@ import {
 import { ApiError } from "../../common";
 import { KoaRequest } from "../../types/koa";
 import { WireguardService } from "./wireguard.service";
-import { WireguardClient, WireguardConfig } from "./wireguard.types";
+import { WireguardClient } from "./wireguard.types";
 
 const {
-  downVpn,
-  upVpn,
+  stop,
+  start,
+  getStatus,
   deleteClient,
   disableClient,
   enableClient,
@@ -29,26 +30,32 @@ const {
   updateClient,
 } = new WireguardService();
 
-// Up vpn service when started server
-upVpn().then();
-
 @Tags("Wireguard")
 @Route("api/wireguard")
 export class WireguardController extends Controller {
   @Get("/start")
   // @Security("jwt")
-  startVpn(): Promise<WireguardConfig> {
+  startVpn(): Promise<boolean> {
     try {
-      return upVpn();
+      return start();
     } catch (e) {
       return Promise.reject(new ApiError(e.message, 500));
     }
   }
 
   @Get("/stop")
-  stopVpn(): Promise<string | null> {
+  stopVpn(): Promise<boolean> {
     try {
-      return downVpn();
+      return stop();
+    } catch (e) {
+      return Promise.reject(new ApiError(e.message, 500));
+    }
+  }
+
+  @Get("/status")
+  checkStatus(): Promise<string | null> {
+    try {
+      return getStatus();
     } catch (e) {
       return Promise.reject(new ApiError(e.message, 500));
     }
