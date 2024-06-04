@@ -1,7 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
 import QRCode from "qrcode";
-import { debug } from "util";
 import { v4 } from "uuid";
 import { config } from "../../../config";
 import { ApiError } from "../../common";
@@ -32,22 +31,25 @@ Util.exec("hostname -I | grep -E -o '^\\S*'").then(host => {
   }
 });
 
-console.log("HOST", HOST);
-
 export class WireguardService {
+  downVpn = () =>
+    Util.exec("wg-quick down wg0")
+      .then(() => "success")
+      .catch(() => null);
+
+  upVpn = () => this.getConfig();
+
   getConfig = async () => {
     if (!HOST) {
       throw new Error("WG_HOST Environment Variable Not Set!");
     }
 
-    debug("Loading configuration...");
     let config: WireguardConfig;
 
     try {
       config = JSON.parse(
         await fs.readFile(path.join(WG_PATH, "wg0.json"), "utf8"),
       );
-      debug("Configuration loaded.");
     } catch (err) {
       const privateKey = await Util.exec("wg genkey");
       const publicKey = await Util.exec(`echo ${privateKey} | wg pubkey`, {
@@ -63,7 +65,6 @@ export class WireguardService {
         },
         clients: {},
       };
-      debug("Configuration generated.");
     }
 
     await this.__saveConfig(config);
@@ -83,10 +84,6 @@ export class WireguardService {
 
       throw err;
     });
-    // await Util.exec(`iptables -t nat -A POSTROUTING -s ${WG_DEFAULT_ADDRESS.replace('x', '0')}/24 -o ' + WG_DEVICE + ' -j MASQUERADE`);
-    // await Util.exec('iptables -A INPUT -p udp -m udp --dport 51820 -j ACCEPT');
-    // await Util.exec('iptables -A FORWARD -i wg0 -j ACCEPT');
-    // await Util.exec('iptables -A FORWARD -o wg0 -j ACCEPT');
     await this.__syncConfig();
 
     return config;
@@ -356,7 +353,6 @@ PresharedKey = ${client.preSharedKey}
 AllowedIPs = ${client.address}/32`;
     }
 
-    debug("Config saving...");
     await fs.writeFile(
       path.join(WG_PATH, "wg0.json"),
       JSON.stringify(config, null, 2),
@@ -367,12 +363,9 @@ AllowedIPs = ${client.address}/32`;
     await fs.writeFile(path.join(WG_PATH, "wg0.conf"), result, {
       mode: 0o600,
     });
-    debug("Config saved.");
   };
 
   private __syncConfig = async () => {
-    debug("Config syncing...");
     await Util.exec("wg syncconf wg0 <(wg-quick strip wg0)");
-    debug("Config synced.");
   };
 }
