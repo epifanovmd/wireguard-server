@@ -127,25 +127,29 @@ export class WireguardController extends Controller {
   @Delete("/client/{clientId}")
   deleteClient(clientId: string): Promise<string> {
     try {
-      return deleteClient({ clientId }).then(() => clientId);
+      return deleteClient({ clientId });
     } catch (e) {
       return Promise.reject(new ApiError(e.message, 500));
     }
   }
 
   @Post("/client/enable")
-  enableClient(@Body() { clientId }: { clientId: string }): Promise<string> {
+  enableClient(
+    @Body() { clientId }: { clientId: string },
+  ): Promise<WireguardClient> {
     try {
-      return enableClient({ clientId }).then(() => clientId);
+      return enableClient({ clientId });
     } catch (e) {
       return Promise.reject(new ApiError(e.message, 500));
     }
   }
 
   @Post("/client/disable")
-  disableClient(@Body() { clientId }: { clientId: string }): Promise<string> {
+  disableClient(
+    @Body() { clientId }: { clientId: string },
+  ): Promise<WireguardClient> {
     try {
-      return disableClient({ clientId }).then(() => clientId);
+      return disableClient({ clientId });
     } catch (e) {
       return Promise.reject(new ApiError(e.message, 500));
     }
@@ -155,15 +159,13 @@ export class WireguardController extends Controller {
   updateClient(
     clientId: string,
     @Body() { name, address }: { name: string; address: string },
-  ): Promise<boolean> {
+  ): Promise<WireguardClient> {
     try {
       return updateClient({
         clientId,
         name,
         address,
-      })
-        .then(() => true)
-        .catch(() => false);
+      });
     } catch (e) {
       return Promise.reject(new ApiError(e.message, 500));
     }

@@ -79,9 +79,7 @@ export class WireguardService {
     return config;
   };
 
-  saveConfig = async () => {
-    const config = await this.getConfig();
-
+  saveConfig = async (config: WireguardConfig) => {
     await this._saveConfig(config);
     await this._syncConfig();
   };
@@ -262,36 +260,55 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
 
     config.clients[id] = client;
 
-    await this.saveConfig();
+    await this.saveConfig(config);
 
     return client;
   };
 
   deleteClient = async ({ clientId }: { clientId: string }) => {
     const config = await this.getConfig();
+    const client = config.clients[clientId];
 
-    if (config.clients[clientId]) {
-      delete config.clients[clientId];
-      await this.saveConfig();
+    if (!client) {
+      throw new ApiError(`Client Not Found: ${clientId}`, 404);
     }
+
+    delete config.clients[clientId];
+    await this.saveConfig(config);
+
+    return clientId;
   };
 
   enableClient = async ({ clientId }) => {
-    const client = await this.getClient({ clientId });
+    const config = await this.getConfig();
+    const client = config.clients[clientId];
+
+    if (!client) {
+      throw new ApiError(`Client Not Found: ${clientId}`, 404);
+    }
 
     client.enabled = true;
     client.updatedAt = new Date();
 
-    await this.saveConfig();
+    await this.saveConfig(config);
+
+    return client;
   };
 
   disableClient = async ({ clientId }) => {
-    const client = await this.getClient({ clientId });
+    const config = await this.getConfig();
+    const client = config.clients[clientId];
+
+    if (!client) {
+      throw new ApiError(`Client Not Found: ${clientId}`, 404);
+    }
 
     client.enabled = false;
     client.updatedAt = new Date();
 
-    await this.saveConfig();
+    await this.saveConfig(config);
+
+    return client;
   };
 
   updateClient = async ({
@@ -303,14 +320,21 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
     name: string;
     address: string;
   }) => {
-    const client = await this.getClient({ clientId });
+    const config = await this.getConfig();
+    const client = config.clients[clientId];
+
+    if (!client) {
+      throw new ApiError(`Client Not Found: ${clientId}`, 404);
+    }
 
     client.name = name ?? client.name;
     client.address = address ?? client.address;
 
     client.updatedAt = new Date();
 
-    await this.saveConfig();
+    await this.saveConfig(config);
+
+    return client;
   };
 
   private _initConfig = async () => {
