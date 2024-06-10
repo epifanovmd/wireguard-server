@@ -3,12 +3,12 @@ import KoaRouter from "koa-router";
 import { errorHandler, notFoundHandler } from "./common";
 import { appMiddleware, RegisterSwagger } from "./middleware";
 import { RegisterRoutes } from "./routes";
-import { ioSocket } from "./webSockets";
+import { SocketServiceInstance } from "./services/socket";
 
 const PORT = 8181;
 const app = new Koa();
 
-ioSocket(app);
+SocketServiceInstance.initialization(app);
 
 // middleware
 appMiddleware(app);

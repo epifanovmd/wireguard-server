@@ -8,6 +8,7 @@ import {
   Query,
   Request,
   Route,
+  Security,
   Tags,
 } from "tsoa";
 import { ApiError } from "../../common";
@@ -16,6 +17,7 @@ import { WireguardService } from "./wireguard.service";
 import { WireguardClient } from "./wireguard.types";
 
 const {
+  getConfig,
   stop,
   start,
   getStatus,
@@ -30,11 +32,13 @@ const {
   updateClient,
 } = new WireguardService();
 
+getConfig().then(() => start());
+
 @Tags("Wireguard")
 @Route("api/wireguard")
 export class WireguardController extends Controller {
   @Get("/start")
-  // @Security("jwt")
+  @Security("jwt")
   startVpn(): Promise<boolean> {
     try {
       return start();
@@ -44,6 +48,7 @@ export class WireguardController extends Controller {
   }
 
   @Get("/stop")
+  @Security("jwt")
   stopVpn(): Promise<boolean> {
     try {
       return stop();
@@ -53,6 +58,7 @@ export class WireguardController extends Controller {
   }
 
   @Get("/status")
+  @Security("jwt")
   checkStatus(): Promise<string | null> {
     try {
       return getStatus();
@@ -62,7 +68,7 @@ export class WireguardController extends Controller {
   }
 
   @Get("/clients")
-  // @Security("jwt")
+  @Security("jwt")
   getClients(): Promise<WireguardClient[]> {
     try {
       return getClients();
@@ -72,6 +78,7 @@ export class WireguardController extends Controller {
   }
 
   @Get("/client")
+  @Security("jwt")
   getClient(@Query("clientId") clientId: string): Promise<WireguardClient> {
     try {
       return getClient({ clientId });
@@ -81,6 +88,7 @@ export class WireguardController extends Controller {
   }
 
   @Get("/client/qrcode")
+  @Security("jwt")
   getClientQRCodeSVG(@Query("clientId") clientId: string): Promise<string> {
     try {
       return getClientQRCodeSVG({ clientId });
@@ -90,6 +98,7 @@ export class WireguardController extends Controller {
   }
 
   @Get("/client/configuration")
+  @Security("jwt")
   async getClientConfiguration(
     @Request() req: KoaRequest,
     @Query("clientId") clientId: string,
@@ -116,6 +125,7 @@ export class WireguardController extends Controller {
   }
 
   @Post("/client")
+  @Security("jwt")
   createClient(@Body() body: { name: string }): Promise<WireguardClient> {
     try {
       return createClient(body);
@@ -125,6 +135,7 @@ export class WireguardController extends Controller {
   }
 
   @Delete("/client/{clientId}")
+  @Security("jwt")
   deleteClient(clientId: string): Promise<string> {
     try {
       return deleteClient({ clientId });
@@ -134,6 +145,7 @@ export class WireguardController extends Controller {
   }
 
   @Post("/client/enable")
+  @Security("jwt")
   enableClient(
     @Body() { clientId }: { clientId: string },
   ): Promise<WireguardClient> {
@@ -145,6 +157,7 @@ export class WireguardController extends Controller {
   }
 
   @Post("/client/disable")
+  @Security("jwt")
   disableClient(
     @Body() { clientId }: { clientId: string },
   ): Promise<WireguardClient> {
@@ -156,6 +169,7 @@ export class WireguardController extends Controller {
   }
 
   @Put("/client/{clientId}")
+  @Security("jwt")
   updateClient(
     clientId: string,
     @Body() { name, address }: { name: string; address: string },

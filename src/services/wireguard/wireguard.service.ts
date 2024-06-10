@@ -23,10 +23,6 @@ const {
 } = config;
 
 export class WireguardService {
-  constructor() {
-    this._initConfig().then(() => this.start());
-  }
-
   stop = () => Util.exec("wg-quick down wg0").then(() => true);
 
   start = async () => {
@@ -66,17 +62,13 @@ export class WireguardService {
       throw new ApiError("WG_HOST Environment Variable Not Set!", 500);
     }
 
-    let config: WireguardConfig;
-
     try {
-      config = JSON.parse(
+      return JSON.parse(
         await fs.readFile(path.join(WG_PATH, "wg0.json"), "utf8"),
-      );
-    } catch (err) {
-      config = await this._initConfig();
+      ) as WireguardConfig;
+    } catch (e) {
+      return this._initConfig();
     }
-
-    return config;
   };
 
   saveConfig = async (config: WireguardConfig) => {
@@ -338,26 +330,20 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
   };
 
   private _initConfig = async () => {
-    let config = await this.getConfig();
+    const privateKey = await Util.exec("wg genkey");
+    const publicKey = await Util.exec(`echo ${privateKey} | wg pubkey`);
+    const address = WG_DEFAULT_ADDRESS.replace("x", "1");
 
-    if (!config) {
-      const privateKey = await Util.exec("wg genkey");
-      const publicKey = await Util.exec(`echo ${privateKey} | wg pubkey`, {
-        log: "echo ***hidden*** | wg pubkey",
-      });
-      const address = WG_DEFAULT_ADDRESS.replace("x", "1");
+    const config = {
+      server: {
+        privateKey,
+        publicKey,
+        address,
+      },
+      clients: {},
+    };
 
-      config = {
-        server: {
-          privateKey,
-          publicKey,
-          address,
-        },
-        clients: {},
-      };
-
-      await this._saveConfig(config);
-    }
+    await this._saveConfig(config);
 
     return config;
   };
@@ -390,6 +376,10 @@ PostDown = ${WG_POST_DOWN}
 PublicKey = ${client.publicKey}
 PresharedKey = ${client.preSharedKey}
 AllowedIPs = ${client.address}/32`;
+    }
+
+    if (!(await fs.readdir(WG_PATH).catch(() => null))) {
+      await fs.mkdir(WG_PATH);
     }
 
     await fs.writeFile(

@@ -6,6 +6,65 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"AuthClient": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"login": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"login",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AuthResponse": {
+				"$ref": "#/components/schemas/AuthClient"
+			},
+			"RegistrationRequest": {
+				"properties": {
+					"login": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"login",
+					"password",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AuthRequest": {
+				"properties": {
+					"login": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"login",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"WireguardClient": {
 				"properties": {
 					"id": {
@@ -95,6 +154,149 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/api/auth/registration": {
+			"post": {
+				"operationId": "Registration",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authorization"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RegistrationRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/auth/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authorization"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AuthRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/wireguard/start": {
+			"get": {
+				"operationId": "StartVpn",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wireguard"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/wireguard/stop": {
+			"get": {
+				"operationId": "StopVpn",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wireguard"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/wireguard/status": {
+			"get": {
+				"operationId": "CheckStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string",
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wireguard"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/api/wireguard/clients": {
 			"get": {
 				"operationId": "GetClients",
@@ -116,27 +318,12 @@
 				"tags": [
 					"Wireguard"
 				],
-				"security": [],
-				"parameters": [
+				"security": [
 					{
-						"in": "query",
-						"name": "page",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					},
-					{
-						"in": "query",
-						"name": "limit",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
+						"jwt": []
 					}
-				]
+				],
+				"parameters": []
 			}
 		},
 		"/api/wireguard/client": {
@@ -157,7 +344,11 @@
 				"tags": [
 					"Wireguard"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "query",
@@ -186,7 +377,11 @@
 				"tags": [
 					"Wireguard"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": [],
 				"requestBody": {
 					"required": true,
@@ -226,7 +421,11 @@
 				"tags": [
 					"Wireguard"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "query",
@@ -257,7 +456,11 @@
 				"tags": [
 					"Wireguard"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "query",
@@ -288,7 +491,11 @@
 				"tags": [
 					"Wireguard"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -308,7 +515,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "boolean"
+									"$ref": "#/components/schemas/WireguardClient"
 								}
 							}
 						}
@@ -317,7 +524,11 @@
 				"tags": [
 					"Wireguard"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -361,7 +572,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "string"
+									"$ref": "#/components/schemas/WireguardClient"
 								}
 							}
 						}
@@ -370,7 +581,11 @@
 				"tags": [
 					"Wireguard"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": [],
 				"requestBody": {
 					"required": true,
@@ -401,7 +616,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "string"
+									"$ref": "#/components/schemas/WireguardClient"
 								}
 							}
 						}
@@ -410,7 +625,11 @@
 				"tags": [
 					"Wireguard"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": [],
 				"requestBody": {
 					"required": true,

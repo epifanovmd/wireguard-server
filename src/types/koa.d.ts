@@ -1,15 +1,12 @@
 import Koa from "koa";
+import { AuthClient } from "../services/authentication";
 
-interface IUser {
+interface RequestClient {
   ctx: {
     request: {
-      user:
-        | {
-            id: string;
-          }
-        | undefined;
+      user: AuthClient | undefined;
     };
   };
 }
 
-export type KoaRequest = Koa.Request & IUser;
+export type KoaRequest = Koa.Request & RequestClient;
