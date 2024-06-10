@@ -35,7 +35,7 @@ export class SocketService {
     this._server = createServer(app.callback());
     this._socket = new Server(this._server, {
       cors: {
-        origin: ["http://localhost:8181"],
+        origin: ["http://localhost:3000"],
         methods: ["GET", "POST"],
         credentials: true,
       },
