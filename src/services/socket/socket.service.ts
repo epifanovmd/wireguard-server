@@ -3,8 +3,8 @@ import { createServer } from "http";
 import { injectable as Injectable } from "inversify";
 import jwt from "jsonwebtoken";
 import { Server } from "socket.io";
+import { app } from "../../app";
 import { jwtSecretKey } from "../../common";
-import { app } from "../../server";
 import { AuthClient } from "../auth";
 import { Socket, SocketEmitEvents, SocketEvents } from "./socket.types";
 

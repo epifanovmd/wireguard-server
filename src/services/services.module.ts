@@ -2,7 +2,7 @@ import { Container } from "inversify";
 import { Module } from "../modules";
 import { AuthModule } from "./auth";
 import { RedisModule } from "./redis";
-import { SocketModule } from "./socket";
+import { SocketModule } from "./socket/socket.module";
 import { UtilsModule } from "./utils";
 import { WireguardModule } from "./wireguard";
 

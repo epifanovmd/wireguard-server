@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "esnext",
     "target": "es6",
     "types": ["reflect-metadata"],
     "lib": ["es6"],
@@ -11,6 +11,7 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
+    "moduleResolution": "node",
     "strictNullChecks": true,
     "emitDecoratorMetadata": true
   },

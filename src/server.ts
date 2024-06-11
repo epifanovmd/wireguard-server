@@ -1,5 +1,5 @@
-import Koa from "koa";
 import KoaRouter from "koa-router";
+import { app, router } from "./app";
 
 import { errorHandler, notFoundHandler } from "./common";
 import { RegisterAppMiddlewares, RegisterSwagger } from "./middleware";
@@ -11,14 +11,10 @@ import { WireguardService } from "./services/wireguard";
 const PORT = Number(process.env.SERVER_PORT ?? 8181);
 const HOST = process.env.SERVER_HOST ?? "0.0.0.0";
 
-export const app = new Koa();
-
 const wireguardService = iocContainer.get(WireguardService);
 const socketGateway = iocContainer.get(SocketGateway);
 
 const bootstrap = () => {
-  const router = new KoaRouter();
-
   socketGateway.start();
   wireguardService.initialize();
 
