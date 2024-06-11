@@ -1,5 +1,5 @@
 import Koa from "koa";
-import { AuthClient } from "../services/authentication";
+import { AuthClient } from "../services/auth";
 
 interface RequestClient {
   ctx: {
