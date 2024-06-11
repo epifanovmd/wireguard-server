@@ -1,37 +1,46 @@
 import Koa from "koa";
 import KoaRouter from "koa-router";
+
 import { errorHandler, notFoundHandler } from "./common";
-import { appMiddleware, RegisterSwagger } from "./middleware";
+import { RegisterAppMiddlewares, RegisterSwagger } from "./middleware";
+import { iocContainer } from "./modules";
 import { RegisterRoutes } from "./routes";
-import { SocketServiceInstance } from "./services/socket";
+import { SocketGateway } from "./services/socket/socket.gateway";
+import { WireguardService } from "./services/wireguard";
 
-const PORT = 8181;
-const app = new Koa();
+const PORT = Number(process.env.SERVER_PORT ?? 8181);
+const HOST = process.env.SERVER_HOST ?? "0.0.0.0";
 
-SocketServiceInstance.initialization(app);
+export const app = new Koa();
 
-// middleware
-appMiddleware(app);
+const wireguardService = iocContainer.get(WireguardService);
+const socketGateway = iocContainer.get(SocketGateway);
 
-// Services routes
-const router = new KoaRouter();
+const bootstrap = () => {
+  const router = new KoaRouter();
 
-router.get("/ping", context => {
-  context.status = 200;
-  context.body = {
-    serverTime: new Date().toISOString(),
-  };
-});
+  socketGateway.start();
+  wireguardService.initialize();
 
-RegisterSwagger(router, "/api-docs");
-RegisterRoutes(router);
+  router.get("/ping", context => {
+    context.status = 200;
+    context.body = {
+      serverTime: new Date().toISOString(),
+    };
+  });
 
-app
-  .use(errorHandler)
-  .use(router.routes())
-  .use(router.allowedMethods())
-  .use(notFoundHandler);
+  RegisterAppMiddlewares(app);
+  RegisterSwagger(router, "/api-docs");
+  RegisterRoutes(router);
 
-export const server = app.listen(PORT, "0.0.0.0", () => {
-  console.info(`REST API Server running on : http://localhost:${PORT}`);
-});
+  app
+    .use(errorHandler)
+    .use(router.routes())
+    .use(router.allowedMethods())
+    .use(notFoundHandler)
+    .listen(PORT, HOST, () => {
+      console.info(`REST API Server running on : http://localhost:${PORT}`);
+    });
+};
+
+bootstrap();

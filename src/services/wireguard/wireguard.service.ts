@@ -1,10 +1,11 @@
 import fs from "fs/promises";
+import { inject, injectable } from "inversify";
 import path from "path";
 import QRCode from "qrcode";
 import { v4 } from "uuid";
 import { config } from "../../../config";
 import { ApiError } from "../../common";
-import { Util } from "../util";
+import { UtilsService } from "../utils";
 import { WireguardClient, WireguardConfig } from "./wireguard.types";
 
 const {
@@ -22,14 +23,25 @@ const {
   WG_POST_DOWN,
 } = config;
 
+@injectable()
 export class WireguardService {
-  stop = () => Util.exec("wg-quick down wg0").then(() => true);
+  constructor(@inject(UtilsService) private _utilsService: UtilsService) {}
+
+  initialize = () => {
+    this.getConfig()
+      .then(() => this.start())
+      .catch(err => {
+        console.error(`Failure up wireguard with error - ${err.message}`);
+      });
+  };
+
+  stop = () => this._utilsService.exec("wg-quick down wg0").then(() => true);
 
   start = async () => {
     const config = await this.getConfig();
 
     if (config) {
-      await Util.exec("wg-quick up wg0").catch(err => {
+      await this._utilsService.exec("wg-quick up wg0").catch(err => {
         if (
           err &&
           err.message &&
@@ -53,7 +65,8 @@ export class WireguardService {
   };
 
   getStatus = () =>
-    Util.exec("wg show interfaces")
+    this._utilsService
+      .exec("wg show interfaces")
       .then(res => res || null)
       .catch(() => null);
 
@@ -97,9 +110,7 @@ export class WireguardService {
     }));
 
     // Loop WireGuard status
-    const dump = await Util.exec("wg show wg0 dump", {
-      log: false,
-    });
+    const dump = await this._utilsService.exec("wg show wg0 dump");
 
     dump
       .trim()
@@ -143,11 +154,8 @@ export class WireguardService {
       throw new ApiError(`Client Not Found: ${clientId}`, 404);
     }
 
-    const clientStatus = await Util.exec(
+    const clientStatus = await this._utilsService.exec(
       `wg show wg0 dump | grep ${client.publicKey}`,
-      {
-        log: false,
-      },
     );
 
     if (!clientStatus) {
@@ -211,9 +219,11 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
 
     const config = await this.getConfig();
 
-    const privateKey = await Util.exec("wg genkey");
-    const publicKey = await Util.exec(`echo ${privateKey} | wg pubkey`);
-    const preSharedKey = await Util.exec("wg genpsk");
+    const privateKey = await this._utilsService.exec("wg genkey");
+    const publicKey = await this._utilsService.exec(
+      `echo ${privateKey} | wg pubkey`,
+    );
+    const preSharedKey = await this._utilsService.exec("wg genpsk");
 
     // Calculate next IP
     let address: string | undefined = undefined;
@@ -330,8 +340,10 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
   };
 
   private _initConfig = async () => {
-    const privateKey = await Util.exec("wg genkey");
-    const publicKey = await Util.exec(`echo ${privateKey} | wg pubkey`);
+    const privateKey = await this._utilsService.exec("wg genkey");
+    const publicKey = await this._utilsService.exec(
+      `echo ${privateKey} | wg pubkey`,
+    );
     const address = WG_DEFAULT_ADDRESS.replace("x", "1");
 
     const config = {
@@ -396,7 +408,7 @@ AllowedIPs = ${client.address}/32`;
 
   private _syncConfig = async () => {
     if (await this.getStatus()) {
-      await Util.exec("wg syncconf wg0 <(wg-quick strip wg0)");
+      await this._utilsService.exec("wg syncconf wg0 <(wg-quick strip wg0)");
     }
   };
 }

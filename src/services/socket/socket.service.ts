@@ -1,58 +1,51 @@
 import { parse } from "cookie";
 import { createServer } from "http";
+import { injectable as Injectable } from "inversify";
 import jwt from "jsonwebtoken";
-import Koa from "koa";
-import { Server, Socket as SocketIO } from "socket.io";
+import { Server } from "socket.io";
 import { jwtSecretKey } from "../../common";
-import { AuthClient } from "../authentication";
-import { WireguardClient, WireguardService } from "../wireguard";
+import { app } from "../../server";
+import { AuthClient } from "../auth";
+import { Socket, SocketEmitEvents, SocketEvents } from "./socket.types";
 
-export interface SocketEvents {
-  subscribeToAll: () => void;
-  unsubscribeFromAll: () => void;
-  subscribeToClient: (...args: [clientId: string]) => void;
-  unsubscribeFromClient: (...args: [clientId: string]) => void;
-}
-
-export interface SocketEmitEvents {
-  all: (...args: [data: WireguardClient[]]) => void;
-  client: (...args: [data: WireguardClient]) => void;
-}
-
-export type Socket = SocketIO<SocketEvents, SocketEmitEvents>;
-
-const { getClient, getClients } = new WireguardService();
-
+@Injectable()
 export class SocketService {
   public clients = new Map<string, { clientSocket: Socket }>();
+  private _socket: Server<SocketEvents, SocketEmitEvents, SocketEmitEvents>;
 
-  private subscribes = new Map<string, NodeJS.Timeout>();
+  constructor() {
+    console.log("SocketService constructor ");
+    const server = createServer(app.callback());
 
-  private _server?: ReturnType<typeof createServer>;
-  private _socket?: Server<SocketEvents, SocketEmitEvents, SocketEmitEvents>;
-
-  initialization = (app: Koa<Koa.DefaultState, Koa.DefaultContext>) => {
-    this._server = createServer(app.callback());
-    this._socket = new Server(this._server, {
+    this._socket = new Server(server, {
       cors: {
-        origin: ["http://localhost:3000"],
+        origin: [
+          "http://localhost:3000",
+          "https://socket-test-client.netlify.app",
+        ],
         methods: ["GET", "POST"],
         credentials: true,
       },
     });
 
-    this._onConnection();
+    this.onConnection((client, clientSocket) => {
+      this.clients.set(client.id, { clientSocket });
+    });
 
     console.log("Socket listen on PORT: ", 3232);
-    this._server.listen("3232");
-  };
+    server.listen("3232");
+  }
 
   get socket() {
+    if (!this._socket) {
+      throw Error("Socket is not initialized");
+    }
+
     return this._socket;
   }
 
-  private _onConnection = () => {
-    this._socket?.on("connection", clientSocket => {
+  onConnection = (listener: (client: AuthClient, socket: Socket) => void) => {
+    this.socket?.on("connection", clientSocket => {
       const { headers } = clientSocket.request;
       const cookie = parse(headers.cookie || "");
       const token = cookie?.token ?? clientSocket.handshake.query.token;
@@ -64,19 +57,13 @@ export class SocketService {
 
             return;
           }
-          const profileId = (decoded as AuthClient).id;
 
-          console.log("connect", profileId);
+          const client = decoded as AuthClient;
 
-          this.clients.set(profileId, { clientSocket });
-
-          this._onSubscribeAllClients(clientSocket);
-          this._onSubscribeToClient(clientSocket);
+          listener?.(client, clientSocket);
 
           clientSocket.on("disconnect", () => {
-            const id = profileId;
-
-            console.log("disconnect", profileId);
+            const id = client.id;
 
             if (this.clients.has(id)) {
               this.clients.delete(id);
@@ -89,64 +76,4 @@ export class SocketService {
       }
     });
   };
-
-  private _unsubscribe = (id: string) => {
-    const _id = this.subscribes.get(id);
-
-    if (_id) {
-      clearInterval(_id);
-    }
-  };
-
-  private _onSubscribeAllClients = (clientSocket: Socket) => {
-    clientSocket.on("subscribeToAll", () => {
-      const subscribeId = clientSocket.id;
-
-      this._unsubscribe(subscribeId);
-
-      const intervalId = setInterval(async () => {
-        const clients = await getClients();
-
-        clientSocket.emit("all", clients);
-      }, 1000);
-
-      this.subscribes.set(subscribeId, intervalId);
-
-      clientSocket.on("disconnect", () => {
-        this._unsubscribe(subscribeId);
-      });
-
-      clientSocket.on("unsubscribeFromAll", () => {
-        this._unsubscribe(subscribeId);
-      });
-    });
-  };
-
-  private _onSubscribeToClient = (clientSocket: Socket) => {
-    clientSocket.on("subscribeToClient", clientId => {
-      const subscribeId = `${clientSocket.id}-${clientId}`;
-
-      this._unsubscribe(subscribeId);
-
-      const intervalId = setInterval(async () => {
-        const client = await getClient({ clientId }).catch(() => null);
-
-        if (client) {
-          clientSocket.emit("client", client);
-        }
-      }, 1000);
-
-      this.subscribes.set(subscribeId, intervalId);
-
-      clientSocket.on("disconnect", () => {
-        this._unsubscribe(subscribeId);
-      });
-
-      clientSocket.on("unsubscribeFromClient", clientId => {
-        this._unsubscribe(subscribeId);
-      });
-    });
-  };
 }
-
-export const SocketServiceInstance = new SocketService();

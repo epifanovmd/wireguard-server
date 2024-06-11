@@ -18,10 +18,11 @@
     "specVersion": 3
   },
   "routes": {
-    "authenticationModule": "./src/middleware/authentication.middleware.ts",
+    "authenticationModule": "./src/middleware/jwt.middleware.ts",
     "entryFile": "./src/controllers.ts",
     "routesDir": "./src",
     "basePath": "/",
-    "middleware": "koa"
+    "middleware": "koa",
+    "iocModule": "./src/modules.ts"
   }
 }

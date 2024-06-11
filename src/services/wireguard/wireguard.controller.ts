@@ -1,3 +1,4 @@
+import { inject as Inject, injectable as Injectable } from "inversify";
 import {
   Body,
   Controller,
@@ -16,32 +17,21 @@ import { KoaRequest } from "../../types/koa";
 import { WireguardService } from "./wireguard.service";
 import { WireguardClient } from "./wireguard.types";
 
-const {
-  getConfig,
-  stop,
-  start,
-  getStatus,
-  deleteClient,
-  disableClient,
-  enableClient,
-  getClientConfiguration,
-  getClientQRCodeSVG,
-  createClient,
-  getClient,
-  getClients,
-  updateClient,
-} = new WireguardService();
-
-getConfig().then(() => start());
-
+@Injectable()
 @Tags("Wireguard")
 @Route("api/wireguard")
 export class WireguardController extends Controller {
+  constructor(
+    @Inject(WireguardService) private _wireguardService: WireguardService,
+  ) {
+    super();
+  }
+
   @Get("/start")
   @Security("jwt")
   startVpn(): Promise<boolean> {
     try {
-      return start();
+      return this._wireguardService.start();
     } catch (e) {
       return Promise.reject(new ApiError(e.message, 500));
     }
@@ -51,7 +41,7 @@ export class WireguardController extends Controller {
   @Security("jwt")
   stopVpn(): Promise<boolean> {
     try {
-      return stop();
+      return this._wireguardService.stop();
     } catch (e) {
       return Promise.reject(new ApiError(e.message, 500));
     }
@@ -61,7 +51,7 @@ export class WireguardController extends Controller {
   @Security("jwt")
   checkStatus(): Promise<string | null> {
     try {
-      return getStatus();
+      return this._wireguardService.getStatus();
     } catch (e) {
       return Promise.reject(new ApiError(e.message, 500));
     }
@@ -71,7 +61,7 @@ export class WireguardController extends Controller {
   @Security("jwt")
   getClients(): Promise<WireguardClient[]> {
     try {
-      return getClients();
+      return this._wireguardService.getClients();
     } catch (e) {
       return Promise.reject(new ApiError(e.message, 500));
     }
@@ -81,7 +71,7 @@ export class WireguardController extends Controller {
   @Security("jwt")
   getClient(@Query("clientId") clientId: string): Promise<WireguardClient> {
     try {
-      return getClient({ clientId });
+      return this._wireguardService.getClient({ clientId });
     } catch (e) {
       return Promise.reject(new ApiError(e.message, 500));
     }
@@ -91,7 +81,7 @@ export class WireguardController extends Controller {
   @Security("jwt")
   getClientQRCodeSVG(@Query("clientId") clientId: string): Promise<string> {
     try {
-      return getClientQRCodeSVG({ clientId });
+      return this._wireguardService.getClientQRCodeSVG({ clientId });
     } catch (e) {
       return Promise.reject(new ApiError(e.message, 500));
     }
@@ -104,8 +94,10 @@ export class WireguardController extends Controller {
     @Query("clientId") clientId: string,
   ): Promise<string> {
     try {
-      const client = await getClient({ clientId });
-      const config = await getClientConfiguration({ clientId });
+      const client = await this._wireguardService.getClient({ clientId });
+      const config = await this._wireguardService.getClientConfiguration({
+        clientId,
+      });
       const configName = client.name
         .replace(/[^a-zA-Z0-9_=+.-]/g, "-")
         .replace(/(-{2,}|-$)/g, "-")
@@ -128,7 +120,7 @@ export class WireguardController extends Controller {
   @Security("jwt")
   createClient(@Body() body: { name: string }): Promise<WireguardClient> {
     try {
-      return createClient(body);
+      return this._wireguardService.createClient(body);
     } catch (e) {
       return Promise.reject(new ApiError(e.message, 500));
     }
@@ -138,7 +130,7 @@ export class WireguardController extends Controller {
   @Security("jwt")
   deleteClient(clientId: string): Promise<string> {
     try {
-      return deleteClient({ clientId });
+      return this._wireguardService.deleteClient({ clientId });
     } catch (e) {
       return Promise.reject(new ApiError(e.message, 500));
     }
@@ -150,7 +142,7 @@ export class WireguardController extends Controller {
     @Body() { clientId }: { clientId: string },
   ): Promise<WireguardClient> {
     try {
-      return enableClient({ clientId });
+      return this._wireguardService.enableClient({ clientId });
     } catch (e) {
       return Promise.reject(new ApiError(e.message, 500));
     }
@@ -162,7 +154,7 @@ export class WireguardController extends Controller {
     @Body() { clientId }: { clientId: string },
   ): Promise<WireguardClient> {
     try {
-      return disableClient({ clientId });
+      return this._wireguardService.disableClient({ clientId });
     } catch (e) {
       return Promise.reject(new ApiError(e.message, 500));
     }
@@ -175,7 +167,7 @@ export class WireguardController extends Controller {
     @Body() { name, address }: { name: string; address: string },
   ): Promise<WireguardClient> {
     try {
-      return updateClient({
+      return this._wireguardService.updateClient({
         clientId,
         name,
         address,

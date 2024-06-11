@@ -2,11 +2,11 @@ import jwt, { VerifyErrors } from "jsonwebtoken";
 import { Request } from "koa";
 import { ApiError, jwtSecretKey } from "../common";
 
-export function koaAuthentication(
+export const koaAuthentication = (
   request: Request,
   securityName: string,
   scopes?: string[],
-): Promise<any> {
+): Promise<any> => {
   const token = request.ctx.cookies.get("token");
 
   if (securityName === "jwt") {
@@ -34,4 +34,4 @@ export function koaAuthentication(
   }
 
   return Promise.resolve({});
-}
+};

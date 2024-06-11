@@ -1,6 +1,7 @@
+import { injectable as Injectable } from "inversify";
 import { createClient } from "redis";
 import { ApiError } from "../../common";
-import { RedisClient } from "../authentication";
+import { RedisClient } from "../auth";
 
 const rediscl = createClient({
   url: "redis://redis:6379",
@@ -11,9 +12,10 @@ rediscl.connect().catch(err => {
 });
 
 rediscl.on("connect", () => {
-  console.log("Redis plugged in.");
+  console.log("Redis connected.");
 });
 
+@Injectable()
 export class RedisService {
   getClient = async (login: string): Promise<RedisClient | null> => {
     const client = await rediscl.get(login);

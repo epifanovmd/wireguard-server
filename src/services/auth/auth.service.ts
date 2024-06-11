@@ -2,18 +2,16 @@ import { sign } from "jsonwebtoken";
 import sha256 from "sha256";
 import { v4 } from "uuid";
 import { ApiError, jwtSecretKey } from "../../common";
+import { inject as Inject, injectable as Injectable } from "inversify";
 import { RedisService } from "../redis";
-import {
-  AuthRequest,
-  RedisClient,
-  RegistrationRequest,
-} from "./authentication.types";
+import { AuthRequest, RedisClient, RegistrationRequest } from "./auth.types";
 
-const { setClient, getClient } = new RedisService();
-
+@Injectable()
 export class AuthService {
+  constructor(@Inject(RedisService) private _redisService: RedisService) {}
+
   async registration(body: RegistrationRequest): Promise<RedisClient> {
-    const client = await getClient(body.login);
+    const client = await this._redisService.getClient(body.login);
 
     if (client) {
       throw new ApiError(
@@ -23,7 +21,7 @@ export class AuthService {
     } else {
       const salt = v4();
 
-      return setClient(body.login, {
+      return this._redisService.setClient(body.login, {
         id: v4(),
         login: body.login,
         name: body.name,
@@ -34,7 +32,7 @@ export class AuthService {
   }
 
   async login(body: AuthRequest): Promise<RedisClient & { token: string }> {
-    const client = await getClient(body.login);
+    const client = await this._redisService.getClient(body.login);
 
     if (client) {
       const { password, salt, login, name, id } = client;

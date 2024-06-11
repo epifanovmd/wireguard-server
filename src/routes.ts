@@ -3,12 +3,14 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
   import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse, fetchMiddlewares } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { AuthController } from './services/authentication/authentication.controller';
+import { AuthController } from './services/auth/auth.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { WireguardController } from './services/wireguard/wireguard.controller';
-import { koaAuthentication } from './middleware/authentication.middleware';
+import { koaAuthentication } from './middleware/jwt.middleware';
 // @ts-ignore - no great way to install types from subpackage
 const promiseAny = require('promise.any');
+import { iocContainer } from './modules';
+import { IocContainer, IocContainerFactory } from '@tsoa/runtime';
 import type { Middleware } from 'koa';
 import * as KoaRouter from '@koa/router';
 
@@ -98,7 +100,12 @@ export function RegisterRoutes(router: KoaRouter) {
               context.throw(error.status, JSON.stringify({ fields: error.fields }));
             }
 
-            const controller = new AuthController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<AuthController>(AuthController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
             const promise = controller.registration.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
@@ -122,7 +129,12 @@ export function RegisterRoutes(router: KoaRouter) {
               context.throw(error.status, JSON.stringify({ fields: error.fields }));
             }
 
-            const controller = new AuthController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<AuthController>(AuthController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
             const promise = controller.login.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
@@ -146,7 +158,12 @@ export function RegisterRoutes(router: KoaRouter) {
               context.throw(error.status, JSON.stringify({ fields: error.fields }));
             }
 
-            const controller = new WireguardController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WireguardController>(WireguardController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
             const promise = controller.startVpn.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
@@ -170,7 +187,12 @@ export function RegisterRoutes(router: KoaRouter) {
               context.throw(error.status, JSON.stringify({ fields: error.fields }));
             }
 
-            const controller = new WireguardController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WireguardController>(WireguardController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
             const promise = controller.stopVpn.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
@@ -194,7 +216,12 @@ export function RegisterRoutes(router: KoaRouter) {
               context.throw(error.status, JSON.stringify({ fields: error.fields }));
             }
 
-            const controller = new WireguardController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WireguardController>(WireguardController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
             const promise = controller.checkStatus.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
@@ -218,7 +245,12 @@ export function RegisterRoutes(router: KoaRouter) {
               context.throw(error.status, JSON.stringify({ fields: error.fields }));
             }
 
-            const controller = new WireguardController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WireguardController>(WireguardController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
             const promise = controller.getClients.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
@@ -243,7 +275,12 @@ export function RegisterRoutes(router: KoaRouter) {
               context.throw(error.status, JSON.stringify({ fields: error.fields }));
             }
 
-            const controller = new WireguardController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WireguardController>(WireguardController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
             const promise = controller.getClient.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
@@ -268,7 +305,12 @@ export function RegisterRoutes(router: KoaRouter) {
               context.throw(error.status, JSON.stringify({ fields: error.fields }));
             }
 
-            const controller = new WireguardController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WireguardController>(WireguardController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
             const promise = controller.getClientQRCodeSVG.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
@@ -294,7 +336,12 @@ export function RegisterRoutes(router: KoaRouter) {
               context.throw(error.status, JSON.stringify({ fields: error.fields }));
             }
 
-            const controller = new WireguardController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WireguardController>(WireguardController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
             const promise = controller.getClientConfiguration.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
@@ -319,7 +366,12 @@ export function RegisterRoutes(router: KoaRouter) {
               context.throw(error.status, JSON.stringify({ fields: error.fields }));
             }
 
-            const controller = new WireguardController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WireguardController>(WireguardController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
             const promise = controller.createClient.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
@@ -344,7 +396,12 @@ export function RegisterRoutes(router: KoaRouter) {
               context.throw(error.status, JSON.stringify({ fields: error.fields }));
             }
 
-            const controller = new WireguardController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WireguardController>(WireguardController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
             const promise = controller.deleteClient.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
@@ -369,7 +426,12 @@ export function RegisterRoutes(router: KoaRouter) {
               context.throw(error.status, JSON.stringify({ fields: error.fields }));
             }
 
-            const controller = new WireguardController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WireguardController>(WireguardController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
             const promise = controller.enableClient.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
@@ -394,7 +456,12 @@ export function RegisterRoutes(router: KoaRouter) {
               context.throw(error.status, JSON.stringify({ fields: error.fields }));
             }
 
-            const controller = new WireguardController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WireguardController>(WireguardController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
             const promise = controller.disableClient.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
@@ -420,7 +487,12 @@ export function RegisterRoutes(router: KoaRouter) {
               context.throw(error.status, JSON.stringify({ fields: error.fields }));
             }
 
-            const controller = new WireguardController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WireguardController>(WireguardController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
             const promise = controller.updateClient.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);

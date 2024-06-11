@@ -4,7 +4,7 @@ import helmet from "koa-helmet";
 import cors from "koa2-cors";
 import { RateLimit } from "koa2-ratelimit";
 
-export const appMiddleware = (
+export const RegisterAppMiddlewares = (
   app: Koa<Koa.DefaultState, Koa.DefaultContext>,
 ) => {
   app
