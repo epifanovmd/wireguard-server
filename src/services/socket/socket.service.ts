@@ -49,7 +49,8 @@ export class SocketService {
     this.socket?.on("connection", clientSocket => {
       const { headers } = clientSocket.request;
       const cookie = parse(headers.cookie || "");
-      const token = cookie?.token ?? clientSocket.handshake.query.access_token;
+      const token =
+        cookie?.access_token ?? clientSocket.handshake.query.access_token;
 
       if (token) {
         verifyToken(token)
