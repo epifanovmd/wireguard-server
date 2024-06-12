@@ -1,18 +1,28 @@
-export interface AuthClient {
+export type Profile = {
   id: string;
-  login: string;
+  username: string;
   name: string;
-}
+  email?: string;
+  salt: string;
+  password: string;
+};
 
-export interface AuthRequest {
-  login: string;
+export interface AuthDto {
+  username: string;
   password: string;
 }
 
-export interface RegistrationRequest extends AuthRequest {
-  name: string;
+export type PrivateProfile = Omit<Profile, "salt" | "password">;
+
+export interface ProfileDto extends PrivateProfile {
+  tokens: Tokens;
 }
 
-export type AuthResponse = AuthClient;
+export interface Tokens {
+  accessToken: string;
+  refreshToken: string;
+}
 
-export type RedisClient = AuthClient & AuthRequest & { salt: string };
+export interface CreateProfileDto
+  extends AuthDto,
+    Pick<Profile, "email" | "name"> {}

@@ -1,10 +1,12 @@
 import Koa from "koa";
-import { AuthClient } from "../services/auth";
+import { PrivateProfile } from "../services/auth";
+
+export type JWTDecoded = PrivateProfile & { iat: number; exp: number };
 
 interface RequestClient {
   ctx: {
     request: {
-      user: AuthClient | undefined;
+      user: JWTDecoded | undefined;
     };
   };
 }

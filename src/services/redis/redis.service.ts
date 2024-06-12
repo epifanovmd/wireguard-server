@@ -1,10 +1,10 @@
 import { injectable as Injectable } from "inversify";
 import { createClient } from "redis";
 import { ApiError } from "../../common";
-import { RedisClient } from "../auth";
+import { Profile } from "../auth";
 
 const rediscl = createClient({
-  url: "redis://redis:6379",
+  url: "redis://localhost:6379",
 });
 
 rediscl.connect().catch(err => {
@@ -17,19 +17,20 @@ rediscl.on("connect", () => {
 
 @Injectable()
 export class RedisService {
-  getClient = async (login: string): Promise<RedisClient | null> => {
-    const client = await rediscl.get(login);
+  getProfile = async (username: string): Promise<Profile | null> => {
+    const client = await rediscl.get(username);
 
     if (client) {
-      return JSON.parse(client) as RedisClient;
+      return JSON.parse(client) as Profile;
     } else {
       return null;
     }
   };
-  setClient = (login: string, body: RedisClient) =>
-    rediscl.set(login, JSON.stringify(body)).then(async res => {
+
+  setProfile = (username: string, body: Profile) =>
+    rediscl.set(username, JSON.stringify(body)).then(async res => {
       if (res === "OK") {
-        const client = await this.getClient(login);
+        const client = await this.getProfile(username);
 
         if (client) {
           return client;

@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import { Server } from "socket.io";
 import { app } from "../../app";
 import { jwtSecretKey } from "../../common";
-import { AuthClient } from "../auth";
+import { ProfileDto } from "../auth";
 import { Socket, SocketEmitEvents, SocketEvents } from "./socket.types";
 
 @Injectable()
@@ -44,7 +44,7 @@ export class SocketService {
     return this._socket;
   }
 
-  onConnection = (listener: (client: AuthClient, socket: Socket) => void) => {
+  onConnection = (listener: (client: ProfileDto, socket: Socket) => void) => {
     this.socket?.on("connection", clientSocket => {
       const { headers } = clientSocket.request;
       const cookie = parse(headers.cookie || "");
@@ -58,7 +58,7 @@ export class SocketService {
             return;
           }
 
-          const client = decoded as AuthClient;
+          const client = decoded as ProfileDto;
 
           listener?.(client, clientSocket);
 

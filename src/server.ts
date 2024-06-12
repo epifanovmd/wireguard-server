@@ -1,4 +1,3 @@
-import KoaRouter from "koa-router";
 import { app, router } from "./app";
 
 import { errorHandler, notFoundHandler } from "./common";

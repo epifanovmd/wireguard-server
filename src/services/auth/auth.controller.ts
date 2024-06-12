@@ -1,7 +1,17 @@
-import { Body, Controller, Post, Route, Tags } from "tsoa";
 import { inject as Inject, injectable as Injectable } from "inversify";
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  Route,
+  Security,
+  Tags,
+} from "tsoa";
+import { KoaRequest } from "../../types/koa";
 import { AuthService } from "./auth.service";
-import { AuthRequest, AuthResponse, RegistrationRequest } from "./auth.types";
+import { AuthDto, CreateProfileDto, ProfileDto, Tokens } from "./auth.types";
 
 const PHONE_REGEX = /^[\d+][\d() -]{4,14}\d$/;
 const EMAIL_REGEX = /^(\S+)@([a-z0-9-]+)(\.)([a-z]{2,4})(\.?)([a-z]{0,4})+$/;
@@ -14,27 +24,51 @@ export class AuthController extends Controller {
     super();
   }
 
-  @Post("/registration")
-  registration(@Body() body: RegistrationRequest): Promise<AuthResponse> {
-    return this._authService.registration(body).then(res => ({
-      id: res.id,
-      login: res.login,
-      name: res.name,
-    }));
+  @Post("/signUp")
+  signUp(@Body() body: CreateProfileDto): Promise<ProfileDto> {
+    return this._authService.signUp(body).then(this._transportDto);
   }
 
-  @Post("/login")
-  login(@Body() body: AuthRequest): Promise<AuthResponse> {
-    return this._authService.login(body).then(res => {
-      const token = res.token;
-
-      this.setHeader("set-cookie", `token=${token};path=/;`);
-
-      return {
-        id: res.id,
-        login: res.login,
-        name: res.name,
-      };
-    });
+  @Post("/signIn")
+  signIn(@Body() body: AuthDto): Promise<ProfileDto> {
+    return this._authService.signIn(body).then(this._transportDto);
   }
+
+  @Post("/logout")
+  logout(): Promise<string> {
+    this.setHeader("set-cookie", [
+      "access_token=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT",
+      "refresh_token=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT",
+    ]);
+
+    return Promise.resolve("");
+  }
+
+  @Get("/refresh")
+  @Security("jwt")
+  refresh(@Request() req: KoaRequest): Promise<Tokens> {
+    const refreshToken = req.ctx.cookies.get("access_token");
+
+    return this._authService
+      .updateTokens(refreshToken)
+      .then(this._setHeaderTokens);
+  }
+
+  private _transportDto = (profile: ProfileDto): ProfileDto => {
+    this._setHeaderTokens(profile.tokens);
+
+    return profile;
+  };
+
+  private _setHeaderTokens = ({ accessToken, refreshToken }: Tokens) => {
+    this.setHeader("set-cookie", [
+      `access_token=${accessToken};path=/;`,
+      `refresh_token=${refreshToken};path=/;`,
+    ]);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+  };
 }
