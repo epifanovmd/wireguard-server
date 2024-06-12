@@ -18,17 +18,16 @@ export const verifyToken = (
         (err: VerifyErrors, decoded: JWTDecoded) => {
           if (err) {
             reject(err);
-          } else {
-            // Check if JWT contains all required scopes
-            if (scopes) {
-              // for (const scope of scopes) {
-              //   if (!decoded.role.includes(scope)) {
-              //     reject(new ApiError("Access restricted", 401));
-              //   }
-              // }
-            }
-            resolve(decoded);
           }
+          // Check if JWT contains all required scopes
+          if (scopes) {
+            // for (const scope of scopes) {
+            //   if (!decoded.role.includes(scope)) {
+            //     reject(new ApiError("Access restricted", 401));
+            //   }
+            // }
+          }
+          resolve(decoded);
         },
       );
     }
