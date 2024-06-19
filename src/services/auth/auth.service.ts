@@ -60,8 +60,8 @@ export class AuthService {
     throw new ApiError("Неверный логин или пароль", 500);
   }
 
-  async updateTokens(refreshToken?: string) {
-    const { iat, exp, ...profile } = await verifyToken(refreshToken);
+  async updateTokens(token?: string) {
+    const { iat, exp, ...profile } = await verifyToken(token);
 
     return this.getTokens(profile);
   }
