@@ -6,16 +6,22 @@
       "http"
     ],
     "securityDefinitions": {
-      "api_key": {
-        "type": "apiKey",
-        "name": "access_token",
-        "in": "query"
+      "jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     },
     "host": "77.91.85.77:8181",
     "outputDirectory": "./",
     "specMerging": "recursive",
     "specVersion": 3
+  },
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "http",
+      "scheme": "bearer"
+    }
   },
   "routes": {
     "authenticationModule": "./src/middleware/jwt.middleware.ts",

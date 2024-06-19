@@ -183,10 +183,10 @@
 			}
 		},
 		"securitySchemes": {
-			"api_key": {
-				"type": "apiKey",
-				"name": "access_token",
-				"in": "query"
+			"jwt": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
 			}
 		}
 	},
@@ -268,30 +268,8 @@
 				}
 			}
 		},
-		"/api/auth/logout": {
-			"post": {
-				"operationId": "Logout",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Authorization"
-				],
-				"security": [],
-				"parameters": []
-			}
-		},
 		"/api/auth/refresh": {
-			"get": {
+			"post": {
 				"operationId": "Refresh",
 				"responses": {
 					"200": {
@@ -308,12 +286,26 @@
 				"tags": [
 					"Authorization"
 				],
-				"security": [
-					{
-						"jwt": []
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"refreshToken": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"refreshToken"
+								],
+								"type": "object"
+							}
+						}
 					}
-				],
-				"parameters": []
+				}
 			}
 		},
 		"/api/wireguard/start": {
