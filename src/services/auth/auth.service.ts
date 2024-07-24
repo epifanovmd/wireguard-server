@@ -5,17 +5,17 @@ import { ApiError } from "../../common";
 import { createTokenAsync, verifyToken } from "../../common/helpers";
 import { RedisService } from "../redis";
 import {
-  AuthDto,
-  CreateProfileDto,
-  PrivateProfile,
-  ProfileDto,
+  ISignInRequestDto,
+  ISignUpRequestDto,
+  IProfileDto,
+  IProfileWithTokensDto,
 } from "./auth.types";
 
 @Injectable()
 export class AuthService {
   constructor(@Inject(RedisService) private _redisService: RedisService) {}
 
-  async signUp(body: CreateProfileDto): Promise<ProfileDto> {
+  async signUp(body: ISignUpRequestDto): Promise<IProfileWithTokensDto> {
     const client = await this._redisService.getProfile(body.username);
 
     if (client) {
@@ -24,15 +24,12 @@ export class AuthService {
         500,
       );
     } else {
-      const salt = v4();
-
       return this._redisService
         .setProfile(body.username, {
           id: v4(),
           username: body.username,
           name: body.name,
-          password: sha256(body.password + salt),
-          salt,
+          password: sha256(body.password),
         })
         .then(() =>
           this.signIn({
@@ -43,13 +40,13 @@ export class AuthService {
     }
   }
 
-  async signIn(body: AuthDto): Promise<ProfileDto> {
+  async signIn(body: ISignInRequestDto): Promise<IProfileWithTokensDto> {
     const client = await this._redisService.getProfile(body.username);
 
     if (client) {
-      const { password, salt, ...rest } = client;
+      const { password, ...rest } = client;
 
-      if (password === sha256(body.password + salt)) {
+      if (password === sha256(body.password)) {
         return {
           ...rest,
           tokens: await this.getTokens(rest),
@@ -66,7 +63,7 @@ export class AuthService {
     return this.getTokens(profile);
   }
 
-  async getTokens(profile: PrivateProfile) {
+  async getTokens(profile: IProfileDto) {
     const [accessToken, refreshToken] = await createTokenAsync([
       {
         profile,

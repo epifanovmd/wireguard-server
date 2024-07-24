@@ -15,7 +15,7 @@ import {
 import { ApiError } from "../../common";
 import { KoaRequest } from "../../types/koa";
 import { WireguardService } from "./wireguard.service";
-import { WireguardClient } from "./wireguard.types";
+import { IWireguardClientDto } from "./wireguard.types";
 
 @Injectable()
 @Tags("Wireguard")
@@ -59,7 +59,7 @@ export class WireguardController extends Controller {
 
   @Get("/clients")
   @Security("jwt")
-  getClients(): Promise<WireguardClient[]> {
+  getClients(): Promise<IWireguardClientDto[]> {
     try {
       return this._wireguardService.getClients();
     } catch (e) {
@@ -69,7 +69,7 @@ export class WireguardController extends Controller {
 
   @Get("/client")
   @Security("jwt")
-  getClient(@Query("clientId") clientId: string): Promise<WireguardClient> {
+  getClient(@Query("clientId") clientId: string): Promise<IWireguardClientDto> {
     try {
       return this._wireguardService.getClient({ clientId });
     } catch (e) {
@@ -118,7 +118,7 @@ export class WireguardController extends Controller {
 
   @Post("/client")
   @Security("jwt")
-  createClient(@Body() body: { name: string }): Promise<WireguardClient> {
+  createClient(@Body() body: { name: string }): Promise<IWireguardClientDto> {
     try {
       return this._wireguardService.createClient(body);
     } catch (e) {
@@ -140,7 +140,7 @@ export class WireguardController extends Controller {
   @Security("jwt")
   enableClient(
     @Body() { clientId }: { clientId: string },
-  ): Promise<WireguardClient> {
+  ): Promise<IWireguardClientDto> {
     try {
       return this._wireguardService.enableClient({ clientId });
     } catch (e) {
@@ -152,7 +152,7 @@ export class WireguardController extends Controller {
   @Security("jwt")
   disableClient(
     @Body() { clientId }: { clientId: string },
-  ): Promise<WireguardClient> {
+  ): Promise<IWireguardClientDto> {
     try {
       return this._wireguardService.disableClient({ clientId });
     } catch (e) {
@@ -165,7 +165,7 @@ export class WireguardController extends Controller {
   updateClient(
     clientId: string,
     @Body() { name, address }: { name: string; address: string },
-  ): Promise<WireguardClient> {
+  ): Promise<IWireguardClientDto> {
     try {
       return this._wireguardService.updateClient({
         clientId,

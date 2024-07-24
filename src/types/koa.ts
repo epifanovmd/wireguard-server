@@ -1,7 +1,7 @@
 import Koa from "koa";
-import { PrivateProfile } from "../services/auth";
+import { IProfileDto } from "../services/auth";
 
-export type JWTDecoded = PrivateProfile & { iat: number; exp: number };
+export type JWTDecoded = IProfileDto & { iat: number; exp: number };
 
 interface RequestClient {
   ctx: {

@@ -1,15 +1,15 @@
-export interface WireguardConfig {
+export interface IWireguardConfig {
   server: {
     privateKey: string;
     publicKey: string;
     address: string;
   };
   clients: {
-    [key: string]: WireguardClient;
+    [key: string]: IWireguardClientDto;
   };
 }
 
-export interface WireguardClient {
+export interface IWireguardClientDto {
   id: string;
   enabled: boolean;
   name: string;

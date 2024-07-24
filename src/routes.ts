@@ -17,7 +17,7 @@ import * as KoaRouter from '@koa/router';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "Tokens": {
+    "TokensDto": {
         "dataType": "refObject",
         "properties": {
             "accessToken": {"dataType":"string","required":true},
@@ -26,29 +26,19 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_Profile.Exclude_keyofProfile.salt-or-password__": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"id":{"dataType":"string","required":true},"username":{"dataType":"string","required":true},"name":{"dataType":"string","required":true},"email":{"dataType":"string"}},"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Omit_Profile.salt-or-password_": {
-        "dataType": "refAlias",
-        "type": {"ref":"Pick_Profile.Exclude_keyofProfile.salt-or-password__","validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ProfileDto": {
+    "IProfileWithTokensDto": {
         "dataType": "refObject",
         "properties": {
+            "username": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "email": {"dataType":"string"},
             "id": {"dataType":"string","required":true},
-            "username": {"dataType":"string","required":true},
-            "name": {"dataType":"string","required":true},
-            "email": {"dataType":"string"},
-            "tokens": {"ref":"Tokens","required":true},
+            "tokens": {"ref":"TokensDto","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "CreateProfileDto": {
+    "ISignUpRequestDto": {
         "dataType": "refObject",
         "properties": {
             "username": {"dataType":"string","required":true},
@@ -59,7 +49,7 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "AuthDto": {
+    "ISignInRequestDto": {
         "dataType": "refObject",
         "properties": {
             "username": {"dataType":"string","required":true},
@@ -68,7 +58,7 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "WireguardClient": {
+    "IWireguardClientDto": {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string","required":true},
@@ -105,7 +95,7 @@ export function RegisterRoutes(router: KoaRouter) {
 
             async function AuthController_signUp(context: any, next: any) {
             const args = {
-                    body: {"in":"body","name":"body","required":true,"ref":"CreateProfileDto"},
+                    body: {"in":"body","name":"body","required":true,"ref":"ISignUpRequestDto"},
             };
 
             let validatedArgs: any[] = [];
@@ -134,7 +124,7 @@ export function RegisterRoutes(router: KoaRouter) {
 
             async function AuthController_signIn(context: any, next: any) {
             const args = {
-                    body: {"in":"body","name":"body","required":true,"ref":"AuthDto"},
+                    body: {"in":"body","name":"body","required":true,"ref":"ISignInRequestDto"},
             };
 
             let validatedArgs: any[] = [];

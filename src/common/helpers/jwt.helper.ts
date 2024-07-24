@@ -1,5 +1,5 @@
 import jwt, { sign, SignOptions, VerifyErrors } from "jsonwebtoken";
-import { PrivateProfile } from "../../services/auth";
+import { IProfileDto } from "../../services/auth";
 import { JWTDecoded } from "../../types/koa";
 import { jwtSecretKey } from "../constants";
 import { ApiError } from "../handlers";
@@ -33,11 +33,11 @@ export const verifyToken = (
     }
   });
 
-export const createToken = (profile: PrivateProfile, opts?: SignOptions) =>
+export const createToken = (profile: IProfileDto, opts?: SignOptions) =>
   new Promise<string>(resolve => {
     resolve(sign(profile, jwtSecretKey, opts));
   });
 
 export const createTokenAsync = (
-  data: { profile: PrivateProfile; opts?: SignOptions }[],
+  data: { profile: IProfileDto; opts?: SignOptions }[],
 ) => Promise.all(data.map(value => createToken(value.profile, value.opts)));

@@ -35,6 +35,7 @@ const bootstrap = () => {
     .use(notFoundHandler)
     .listen(PORT, HOST, () => {
       console.info(`REST API Server running on : http://localhost:${PORT}`);
+      console.info(`Swagger on : http://localhost:${PORT}/api-docs`);
     });
 };
 

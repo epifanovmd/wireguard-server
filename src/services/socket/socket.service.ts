@@ -4,7 +4,7 @@ import { injectable as Injectable } from "inversify";
 import { Server } from "socket.io";
 import { app } from "../../app";
 import { verifyToken } from "../../common/helpers";
-import { PrivateProfile } from "../auth";
+import { IProfileDto } from "../auth";
 import { Socket, SocketEmitEvents, SocketEvents } from "./socket.types";
 
 @Injectable()
@@ -43,9 +43,7 @@ export class SocketService {
     return this._socket;
   }
 
-  onConnection = (
-    listener: (client: PrivateProfile, socket: Socket) => void,
-  ) => {
+  onConnection = (listener: (client: IProfileDto, socket: Socket) => void) => {
     this.socket?.on("connection", clientSocket => {
       const { headers } = clientSocket.request;
       const cookie = parse(headers.cookie || "");
