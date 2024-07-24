@@ -1,4 +1,5 @@
 import jwt, { sign, SignOptions, VerifyErrors } from "jsonwebtoken";
+
 import { IProfileDto } from "../../services/auth";
 import { JWTDecoded } from "../../types/koa";
 import { jwtSecretKey } from "../constants";

@@ -1,10 +1,11 @@
 import { injectable as Injectable } from "inversify";
 import { createClient } from "redis";
+
 import { ApiError } from "../../common";
 import { IProfileModel } from "../auth";
 
 const rediscl = createClient({
-  url: "redis://redis:6379",
+  url: "redis://localhost:6379",
 });
 
 rediscl.connect().catch(err => {

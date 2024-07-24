@@ -1,4 +1,5 @@
 import { inject, injectable as Injectable } from "inversify";
+
 import { WireguardService } from "../wireguard";
 import { SocketService } from "./socket.service";
 import { Socket } from "./socket.types";
@@ -74,7 +75,7 @@ export class SocketGateway {
         this._unsubscribe(subscribeId);
       });
 
-      clientSocket.on("unsubscribeFromClient", clientId => {
+      clientSocket.on("unsubscribeFromClient", _clientId => {
         this._unsubscribe(subscribeId);
       });
     });

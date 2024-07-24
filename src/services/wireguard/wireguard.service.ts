@@ -3,6 +3,7 @@ import { inject, injectable } from "inversify";
 import path from "path";
 import QRCode from "qrcode";
 import { v4 } from "uuid";
+
 import { config } from "../../../config";
 import { ApiError } from "../../common";
 import { UtilsService } from "../utils";

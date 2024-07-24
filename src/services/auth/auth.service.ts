@@ -1,14 +1,15 @@
 import { inject as Inject, injectable as Injectable } from "inversify";
 import sha256 from "sha256";
 import { v4 } from "uuid";
+
 import { ApiError } from "../../common";
 import { createTokenAsync, verifyToken } from "../../common/helpers";
 import { RedisService } from "../redis";
 import {
-  ISignInRequestDto,
-  ISignUpRequestDto,
   IProfileDto,
   IProfileWithTokensDto,
+  ISignInRequestDto,
+  ISignUpRequestDto,
 } from "./auth.types";
 
 @Injectable()

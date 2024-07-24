@@ -1,7 +1,8 @@
 import { Context, Next } from "koa";
+
 import { ApiError } from "./error.handler";
 
-export const notFoundHandler = (ctx: Context, next: Next) => {
+export const notFoundHandler = (ctx: Context, _next: Next) => {
   if (ctx.status === 404) {
     const err = new ApiError("RouteNotFoundException", 404);
 

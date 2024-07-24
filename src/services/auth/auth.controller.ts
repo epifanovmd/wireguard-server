@@ -1,12 +1,12 @@
 import { inject as Inject, injectable as Injectable } from "inversify";
 import { Body, Controller, Post, Route, Tags } from "tsoa";
+
 import { AuthService } from "./auth.service";
 import {
+  IProfileWithTokensDto,
   ISignInRequestDto,
   ISignUpRequestDto,
-  IProfileDto,
   TokensDto,
-  IProfileWithTokensDto,
 } from "./auth.types";
 
 const PHONE_REGEX = /^[\d+][\d() -]{4,14}\d$/;

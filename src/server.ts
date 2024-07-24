@@ -1,5 +1,4 @@
 import { app, router } from "./app";
-
 import { errorHandler, notFoundHandler } from "./common";
 import { RegisterAppMiddlewares, RegisterSwagger } from "./middleware";
 import { iocContainer } from "./modules";

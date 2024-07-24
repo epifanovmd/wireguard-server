@@ -12,6 +12,7 @@ import {
   Security,
   Tags,
 } from "tsoa";
+
 import { ApiError } from "../../common";
 import { KoaRequest } from "../../types/koa";
 import { WireguardService } from "./wireguard.service";

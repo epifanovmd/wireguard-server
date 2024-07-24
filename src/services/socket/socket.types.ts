@@ -1,4 +1,5 @@
 import { Socket as SocketIO } from "socket.io";
+
 import { IWireguardClientDto } from "../wireguard";
 
 export interface SocketEvents {

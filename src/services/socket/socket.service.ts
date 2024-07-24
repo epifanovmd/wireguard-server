@@ -2,6 +2,7 @@ import { parse } from "cookie";
 import { createServer } from "http";
 import { injectable as Injectable } from "inversify";
 import { Server } from "socket.io";
+
 import { app } from "../../app";
 import { verifyToken } from "../../common/helpers";
 import { IProfileDto } from "../auth";
@@ -43,7 +44,9 @@ export class SocketService {
     return this._socket;
   }
 
-  onConnection = (listener: (client: IProfileDto, socket: Socket) => void) => {
+  onConnection = (
+    listener: (_client: IProfileDto, _socket: Socket) => void,
+  ) => {
     this.socket?.on("connection", clientSocket => {
       const { headers } = clientSocket.request;
       const cookie = parse(headers.cookie || "");
