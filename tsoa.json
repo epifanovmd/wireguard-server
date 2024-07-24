@@ -16,11 +16,11 @@
       "servers": [
         {
           "url": "http://77.91.85.77:8181",
-          "description": "Prod development"
+          "description": "Prod"
         },
         {
           "url": "http://localhost:8181",
-          "description": "Local development"
+          "description": "Local dev"
         }
       ]
     },
