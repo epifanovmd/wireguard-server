@@ -5,7 +5,7 @@ import { ApiError } from "../../common";
 import { IProfileModel } from "../auth";
 
 const rediscl = createClient({
-  url: "redis://localhost:6379",
+  url: "redis://redis:6379",
 });
 
 rediscl.connect().catch(err => {
