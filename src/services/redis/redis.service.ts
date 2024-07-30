@@ -5,6 +5,7 @@ import { ApiError } from "../../common";
 import { IProfileModel } from "../auth";
 
 const rediscl = createClient({
+  password: "epifanRedisPass",
   url: "redis://redis:6379",
 });
 
