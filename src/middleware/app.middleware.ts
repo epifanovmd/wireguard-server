@@ -28,7 +28,11 @@ export const RegisterAppMiddlewares = (
       cors({
         origin(ctx) {
           // console.log("ctx", ctx.request.header);
-          const allowHosts = ["http://wireguard.force-dev.ru"];
+          const allowHosts = [
+            "http://localhost:3000",
+            "http://wireguard.force-dev.ru",
+            "https://socket-test-client.netlify.app",
+          ];
 
           if (
             ctx.request.header.origin &&

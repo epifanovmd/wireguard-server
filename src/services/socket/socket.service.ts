@@ -21,6 +21,7 @@ export class SocketService {
       cors: {
         origin: [
           "http://localhost:3000",
+          "http://wireguard.force-dev.ru",
           "https://socket-test-client.netlify.app",
         ],
         methods: ["GET", "POST"],
