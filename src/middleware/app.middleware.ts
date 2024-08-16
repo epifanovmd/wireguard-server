@@ -16,7 +16,7 @@ export const RegisterAppMiddlewares = (
     )
     .use(
       bodyParser({
-        detectJSON: ctx => (/\.json$/i).test(ctx.path),
+        detectJSON: ctx => /\.json$/i.test(ctx.path),
       }),
     )
     .use(
@@ -28,7 +28,7 @@ export const RegisterAppMiddlewares = (
       cors({
         origin(ctx) {
           // console.log("ctx", ctx.request.header);
-          const allowHosts = ["http://77.91.85.77:8181"];
+          const allowHosts = ["http://wireguard.force-dev.ru/"];
 
           if (
             ctx.request.header.origin &&
