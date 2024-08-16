@@ -24,5 +24,26 @@ export const RegisterAppMiddlewares = (
         contentSecurityPolicy: false,
       }),
     )
-    .use(cors());
+    .use(
+      cors({
+        origin(ctx) {
+          // console.log("ctx", ctx.request.header);
+          const allowHosts = ["http://77.91.85.77:8181"];
+
+          if (
+            ctx.request.header.origin &&
+            allowHosts.includes(ctx.request.header.origin)
+          ) {
+            return ctx.request.header.origin;
+          }
+
+          return false;
+        },
+        exposeHeaders: ["WWW-Authenticate", "Server-Authorization"],
+        maxAge: 5,
+        credentials: true,
+        allowMethods: ["GET", "POST", "PATCH", "DELETE"],
+        allowHeaders: ["Content-Type", "Authorization", "Accept"],
+      }),
+    );
 };

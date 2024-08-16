@@ -21,22 +21,51 @@ export class AuthController extends Controller {
   }
 
   /**
-   * Endpoint description
-   * @param body Body param
-   * @summary Endpoint summary.
+   * Регистрация нового пользователя
+   * @param body Данные для регистрации
+   * @summary Регистрация пользователя.
    */
   @Post("/signUp")
-  signUp(@Body() body: ISignUpRequestDto): Promise<IProfileWithTokensDto> {
-    return this._authService.signUp(body);
+  async signUp(
+    @Body() body: ISignUpRequestDto,
+  ): Promise<IProfileWithTokensDto> {
+    try {
+      return await this._authService.signUp(body);
+    } catch (error) {
+      console.error("Ошибка регистрации:", error);
+      throw new Error("Ошибка регистрации");
+    }
   }
 
+  /**
+   * Авторизация пользователя
+   * @param body Данные для авторизации
+   * @summary Авторизация пользователя.
+   */
   @Post("/signIn")
-  signIn(@Body() body: ISignInRequestDto): Promise<IProfileWithTokensDto> {
-    return this._authService.signIn(body);
+  async signIn(
+    @Body() body: ISignInRequestDto,
+  ): Promise<IProfileWithTokensDto> {
+    try {
+      return await this._authService.signIn(body);
+    } catch (error) {
+      console.error("Ошибка авторизации:", error);
+      throw new Error("Ошибка авторизации");
+    }
   }
 
+  /**
+   * Обновление токенов
+   * @param body Токен для обновления
+   * @summary Обновление токенов.
+   */
   @Post("/refresh")
-  refresh(@Body() body: { refreshToken: string }): Promise<TokensDto> {
-    return this._authService.updateTokens(body.refreshToken);
+  async refresh(@Body() body: { refreshToken: string }): Promise<TokensDto> {
+    try {
+      return await this._authService.updateTokens(body.refreshToken);
+    } catch (error) {
+      console.error("Ошибка обновления токенов:", error);
+      throw new Error("Ошибка обновления токенов");
+    }
   }
 }
