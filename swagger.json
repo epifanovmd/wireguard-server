@@ -192,21 +192,21 @@
 						}
 					}
 				},
-				"description": "Endpoint description",
-				"summary": "Endpoint summary.",
+				"description": "Регистрация нового пользователя",
+				"summary": "Регистрация пользователя.",
 				"tags": [
 					"Authorization"
 				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
-					"description": "Body param",
+					"description": "Данные для регистрации",
 					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/ISignUpRequestDto",
-								"description": "Body param"
+								"description": "Данные для регистрации"
 							}
 						}
 					}
@@ -228,17 +228,21 @@
 						}
 					}
 				},
+				"description": "Авторизация пользователя",
+				"summary": "Авторизация пользователя.",
 				"tags": [
 					"Authorization"
 				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
+					"description": "Данные для авторизации",
 					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ISignInRequestDto"
+								"$ref": "#/components/schemas/ISignInRequestDto",
+								"description": "Данные для авторизации"
 							}
 						}
 					}
@@ -260,12 +264,15 @@
 						}
 					}
 				},
+				"description": "Обновление токенов",
+				"summary": "Обновление токенов.",
 				"tags": [
 					"Authorization"
 				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
+					"description": "Токен для обновления",
 					"required": true,
 					"content": {
 						"application/json": {
@@ -278,7 +285,8 @@
 								"required": [
 									"refreshToken"
 								],
-								"type": "object"
+								"type": "object",
+								"description": "Токен для обновления"
 							}
 						}
 					}

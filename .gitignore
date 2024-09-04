@@ -1,6 +1,7 @@
+.husky
+.idea
 dist
 build
 .vscode/
 node_modules
-.idea
 yarn-error.log
