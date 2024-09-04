@@ -19,7 +19,7 @@ FROM node:${NODE_VERSION}
 WORKDIR /app
 
 COPY --from=installer /app /app
-COPY . ./backend
+COPY . .
 
 RUN yarn build
 
