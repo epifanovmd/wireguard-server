@@ -4,17 +4,17 @@ FROM node:${NODE_VERSION} as installer
 
 WORKDIR /app
 
-RUN apt update && apt install  --yes  \
-    iptables  \
-    iproute2  \
-    wireguard-tools
-
 COPY package*.json .
 COPY yarn.lock .
 
 RUN yarn
 
 FROM node:${NODE_VERSION}
+
+RUN apt update && apt install  --yes  \
+    iptables  \
+    iproute2  \
+    wireguard-tools
 
 WORKDIR /app
 
