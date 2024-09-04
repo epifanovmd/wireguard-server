@@ -13,7 +13,7 @@
       "publicKey": "rjO0FyNL5FoHpX+LzGFQxjVlRwT4NYj7ZygBPH0IfVs=",
       "preSharedKey": "Md0RIntd/A9GRb8mC7DMlJ6EMqZIG31UZ60dVqiMhJ0=",
       "createdAt": "2024-01-14T16:24:06.606Z",
-      "updatedAt": "2024-01-14T16:24:06.606Z",
+      "updatedAt": "2024-09-04T21:30:02.566Z",
       "enabled": true
     },
     "b71d0d84-a4c6-423d-814b-5915e28effea": {
@@ -234,6 +234,39 @@
       "preSharedKey": "2Fz0N7fbBf1qyPxjmWOkx2KlEUiV2w/lXdNSw3nf5g0=",
       "createdAt": "2024-06-02T18:25:23.565Z",
       "updatedAt": "2024-06-02T18:25:23.565Z",
+      "enabled": true
+    },
+    "398e0edb-e3d4-492f-b7e0-720989a2c37a": {
+      "id": "398e0edb-e3d4-492f-b7e0-720989a2c37a",
+      "name": "Лехина Настя",
+      "address": "10.8.0.16",
+      "privateKey": "MPONFfRIt1OtiVpDb1FbHbIiUkycaM4EWs25pvqismc=",
+      "publicKey": "VTdDqi5tpOiWy7slOO8emo1rA3oTDLWjgyg6tgazt38=",
+      "preSharedKey": "f9oRZ8F89NofGEQxQ7JCD9dFO0OdyrPClDwvaOdBZA4=",
+      "createdAt": "2024-07-31T07:39:43.545Z",
+      "updatedAt": "2024-07-31T07:39:43.545Z",
+      "enabled": true
+    },
+    "8f30210d-2ec0-463c-bee2-78ab81683779": {
+      "id": "8f30210d-2ec0-463c-bee2-78ab81683779",
+      "name": "Рома ноут",
+      "address": "10.8.0.24",
+      "privateKey": "UFsE6BL7Q6sP+Ni+Y0MsfK1kRMAKC8IWQXLD6WYWQ3o=",
+      "publicKey": "8/+eTVmDSUQdRJjlYB28n9zR7gsflV0zPvq/exFfRAE=",
+      "preSharedKey": "nX8Wj4LTWutt7M1+yYc/6Jz5Vd6ET2cimgK2pu/PGUg=",
+      "createdAt": "2024-08-12T18:25:24.938Z",
+      "updatedAt": "2024-08-12T18:25:24.938Z",
+      "enabled": true
+    },
+    "2f7505dc-817d-4004-81b6-f2e38e97a5c1": {
+      "id": "2f7505dc-817d-4004-81b6-f2e38e97a5c1",
+      "name": "Keenetic",
+      "address": "10.8.0.25",
+      "privateKey": "AKvv8HlODNSV0mdd9wMvk0PQabtAKZ/NRH76AIjZLlo=",
+      "publicKey": "yK5wqt6+IiMACcxVKacJUcfqNhMo1jUGQv9HFXU2dBY=",
+      "preSharedKey": "ZmW95pgbFrztiFnKVtjwWCzvKowsWdE92E6wk7ECh7g=",
+      "createdAt": "2024-08-14T19:05:09.609Z",
+      "updatedAt": "2024-08-14T19:05:09.609Z",
       "enabled": true
     }
   }
