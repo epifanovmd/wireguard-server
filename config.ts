@@ -1,3 +1,9 @@
+import dotenv from "dotenv";
+
+dotenv.config({
+  path: [`.env.${process.env.NODE_ENV || "development"}`, ".env"],
+});
+
 export const config = {
   PUBLIC_HOST: process.env.PUBLIC_HOST,
   SERVER_HOST: process.env.SERVER_HOST || "0.0.0.0",
@@ -23,4 +29,11 @@ export const config = {
   WG_PRE_DOWN: process.env.WG_PRE_DOWN || "",
   WG_POST_UP: process.env.WG_POST_UP || "",
   WG_POST_DOWN: process.env.WG_POST_DOWN || "",
+
+  REDIS_HOST: process.env.REDIS_HOST || "localhost",
+  REDIS_PORT: process.env.REDIS_PORT || 6379,
 };
+
+console.log("process.env.REDIS_HOST", process.env.REDIS_HOST);
+console.log("env", process.env.NODE_ENV);
+// console.log("config", config);

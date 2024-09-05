@@ -1,12 +1,15 @@
 import { injectable as Injectable } from "inversify";
 import { createClient } from "redis";
 
+import { config } from "../../../config";
 import { ApiError } from "../../common";
 import { IProfileModel } from "../auth";
 
+const { REDIS_HOST, REDIS_PORT } = config;
+
 const rediscl = createClient({
   password: "epifanRedisPass",
-  url: "redis://redis:6379",
+  url: `redis://${REDIS_HOST}:${REDIS_PORT}`,
 });
 
 rediscl.connect().catch(err => {

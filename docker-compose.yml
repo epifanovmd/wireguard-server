@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   redis:
-    env_file: .env
+    env_file: .env.development
     container_name: redis-client
     image: redis:latest
     command:
@@ -22,7 +22,7 @@ services:
     restart: unless-stopped
 
   wg:
-    env_file: .env
+    env_file: .env.development
     build: .
     container_name: wireguard
     volumes:
