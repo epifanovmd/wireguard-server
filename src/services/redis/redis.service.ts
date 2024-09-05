@@ -5,10 +5,10 @@ import { config } from "../../../config";
 import { ApiError } from "../../common";
 import { IProfileModel } from "../auth";
 
-const { REDIS_HOST, REDIS_PORT } = config;
+const { REDIS_HOST, REDIS_PORT, REDIS_PASS } = config;
 
 const rediscl = createClient({
-  password: "epifanRedisPass",
+  password: REDIS_PASS,
   url: `redis://${REDIS_HOST}:${REDIS_PORT}`,
 });
 

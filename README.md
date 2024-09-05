@@ -57,9 +57,7 @@ REST API Server running on : http://localhost:8181
 
 ### Run in docker container with postgres
 ```sh
-$ [[ $(docker ps -f name=wireguard -q -a) != '' ]] && docker rm --force $(docker ps -f name=wireguard -q -a)
-$ docker compose up -d --no-deps --build --force-recreate
-$ docker image prune -a --force
+$ bash start.sh
 ```
 
 License
