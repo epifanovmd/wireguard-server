@@ -4,19 +4,25 @@ import helmet from "koa-helmet";
 import cors from "koa2-cors";
 import { RateLimit } from "koa2-ratelimit";
 
+import { config } from "../../config";
+
+const { RATE_LIMIT, RATE_LIMIT_INTERVAL, CORS_ALLOW_IPS } = config;
+
+const jsonRegexp = new RegExp(/\.json$/i);
+
 export const RegisterAppMiddlewares = (
   app: Koa<Koa.DefaultState, Koa.DefaultContext>,
 ) => {
   app
     .use(
       RateLimit.middleware({
-        interval: 15 * 60 * 1000, // 15 minutes
-        max: 1000,
+        interval: RATE_LIMIT_INTERVAL,
+        max: RATE_LIMIT,
       }),
     )
     .use(
       bodyParser({
-        detectJSON: ctx => /\.json$/i.test(ctx.path),
+        detectJSON: ctx => jsonRegexp.test(ctx.path),
       }),
     )
     .use(
@@ -27,16 +33,9 @@ export const RegisterAppMiddlewares = (
     .use(
       cors({
         origin(ctx) {
-          // console.log("ctx", ctx.request.header);
-          const allowHosts = [
-            "http://localhost:3000",
-            "http://wireguard.force-dev.ru",
-            "https://socket-test-client.netlify.app",
-          ];
-
           if (
             ctx.request.header.origin &&
-            allowHosts.includes(ctx.request.header.origin)
+            CORS_ALLOW_IPS.includes(ctx.request.header.origin)
           ) {
             return ctx.request.header.origin;
           }

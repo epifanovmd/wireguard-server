@@ -1,3 +1,4 @@
+import { config } from "../config";
 import { app, router } from "./app";
 import { errorHandler, notFoundHandler } from "./common";
 import { RegisterAppMiddlewares, RegisterSwagger } from "./middleware";
@@ -6,8 +7,7 @@ import { RegisterRoutes } from "./routes";
 import { SocketGateway } from "./services/socket/socket.gateway";
 import { WireguardService } from "./services/wireguard";
 
-const PORT = Number(process.env.SERVER_PORT ?? 8181);
-const HOST = process.env.SERVER_HOST ?? "0.0.0.0";
+const { SERVER_HOST, SERVER_PORT } = config;
 
 const wireguardService = iocContainer.get(WireguardService);
 const socketGateway = iocContainer.get(SocketGateway);
@@ -32,9 +32,11 @@ const bootstrap = () => {
     .use(router.routes())
     .use(router.allowedMethods())
     .use(notFoundHandler)
-    .listen(PORT, HOST, () => {
-      console.info(`REST API Server running on : http://localhost:${PORT}`);
-      console.info(`Swagger on : http://localhost:${PORT}/api-docs`);
+    .listen(SERVER_PORT, SERVER_HOST, () => {
+      const url = `http://${SERVER_HOST}:${SERVER_PORT}`;
+
+      console.info(`REST API Server running on: ${url}`);
+      console.info(`Swagger on: ${url}/api-docs`);
     });
 };
 

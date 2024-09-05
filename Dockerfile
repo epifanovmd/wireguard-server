@@ -1,6 +1,6 @@
 ARG NODE_VERSION=20.10.0
 
-FROM node:${NODE_VERSION} as installer
+FROM node:${NODE_VERSION} AS installer
 
 WORKDIR /app
 
