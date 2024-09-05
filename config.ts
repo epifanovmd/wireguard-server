@@ -1,4 +1,5 @@
 export const config = {
+  PUBLIC_HOST: process.env.PUBLIC_HOST,
   SERVER_HOST: process.env.SERVER_HOST || "0.0.0.0",
   SERVER_PORT: Number(process.env.SERVER_PORT || 8181),
   SOCKET_PORT: process.env.SOCKET_PORT || 3232,
@@ -12,7 +13,6 @@ export const config = {
   JWT_SECRET_KEY: process.env.SOCKET_PORT || "rest-api--auth-secret-key",
 
   WG_PATH: process.env.WG_PATH || "/etc/wireguard/",
-  WG_HOST: process.env.WG_HOST,
   WG_PORT: process.env.WG_PORT || 51820,
   WG_MTU: process.env.WG_MTU || null,
   WG_PERSISTENT_KEEPALIVE: process.env.WG_PERSISTENT_KEEPALIVE || 0,

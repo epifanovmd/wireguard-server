@@ -10,8 +10,8 @@ import { UtilsService } from "../utils";
 import { IWireguardClientDto, IWireguardConfig } from "./wireguard.types";
 
 const {
+  PUBLIC_HOST,
   WG_PATH,
-  WG_HOST,
   WG_PORT,
   WG_MTU,
   WG_DEFAULT_DNS,
@@ -72,8 +72,8 @@ export class WireguardService {
       .catch(() => null);
 
   getConfig = async () => {
-    if (!WG_HOST) {
-      throw new ApiError("WG_HOST Environment Variable Not Set!", 500);
+    if (!PUBLIC_HOST) {
+      throw new ApiError("PUBLIC_HOST Environment Variable Not Set!", 500);
     }
 
     try {
@@ -201,7 +201,7 @@ PublicKey = ${config.server.publicKey}
 PresharedKey = ${client.preSharedKey}
 AllowedIPs = ${WG_ALLOWED_IPS}
 PersistentKeepalive = ${WG_PERSISTENT_KEEPALIVE}
-Endpoint = ${WG_HOST}:${WG_PORT}`;
+Endpoint = ${PUBLIC_HOST}:${WG_PORT}`;
   };
 
   getClientQRCodeSVG = async ({ clientId }: { clientId: string }) => {
