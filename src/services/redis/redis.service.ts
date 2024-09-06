@@ -1,9 +1,8 @@
-import { injectable as Injectable } from "inversify";
+import { injectable } from "inversify";
 import { createClient } from "redis";
 
 import { config } from "../../../config";
 import { ApiError } from "../../common";
-import { IProfileModel } from "../auth";
 
 const { REDIS_HOST, REDIS_PORT, REDIS_PASS } = config;
 
@@ -17,35 +16,34 @@ rediscl.connect().catch(err => {
 });
 
 rediscl.on("connect", () => {
-  console.log("Redis connected.");
+  console.log("Redis connection has been established successfully.");
 });
 
-@Injectable()
+@injectable()
 export class RedisService {
-  getProfile = async (username: string): Promise<IProfileModel | null> => {
-    const client = await rediscl.get(username);
+  async set<Data>(key: string, data: Data) {
+    const status = await rediscl.set(key, JSON.stringify(data));
 
-    if (client) {
-      return JSON.parse(client) as IProfileModel;
+    await rediscl.persist(key);
+
+    if (status === "OK") {
+      return data;
+    }
+
+    throw new ApiError("Ошибка записи в базу данных", 500);
+  }
+
+  async get<Data>(key: string) {
+    const data = await rediscl.get(key);
+
+    if (data) {
+      return JSON.parse(data) as Data;
     } else {
       return null;
     }
-  };
+  }
 
-  setProfile = (username: string, body: IProfileModel) =>
-    rediscl.set(username, JSON.stringify(body)).then(async res => {
-      await rediscl.persist(username);
-
-      if (res === "OK") {
-        const client = await this.getProfile(username);
-
-        if (client) {
-          return client;
-        }
-
-        throw new ApiError("Клиент не найден в базе данных", 500);
-      } else {
-        throw new ApiError("Ошибка записи в базу данных", 500);
-      }
-    });
+  delete(key: string) {
+    return rediscl.del(key);
+  }
 }

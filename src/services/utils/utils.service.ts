@@ -24,9 +24,9 @@ export class UtilsService {
   }
 
   exec(cmd: string): Promise<string> {
-    if (process.platform !== "linux") {
-      return Promise.resolve("");
-    }
+    // if (process.platform !== "linux") {
+    //   return Promise.resolve("");
+    // }
 
     return new Promise((resolve, reject) => {
       child_process.exec(

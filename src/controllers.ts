@@ -1,1 +1,6 @@
-export { AuthController, WireguardController } from "./services";
+export {
+  AuthController,
+  ProfileController,
+  WgClientController,
+  WireguardController,
+} from "./services";

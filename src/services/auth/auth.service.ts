@@ -1,58 +1,70 @@
-import { inject as Inject, injectable as Injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import sha256 from "sha256";
 import { v4 } from "uuid";
 
 import { ApiError } from "../../common";
 import { createTokenAsync, verifyToken } from "../../common/helpers";
-import { RedisService } from "../redis";
+import { IProfileDto, ProfileService } from "../profile";
 import {
-  IProfileDto,
   IProfileWithTokensDto,
   ISignInRequestDto,
   ISignUpRequestDto,
+  ITokensDto,
 } from "./auth.types";
 
-@Injectable()
+@injectable()
 export class AuthService {
-  constructor(@Inject(RedisService) private _redisService: RedisService) {}
+  constructor(
+    @inject(ProfileService) private _profileService: ProfileService,
+  ) {}
 
-  async signUp(body: ISignUpRequestDto): Promise<IProfileWithTokensDto> {
-    const client = await this._redisService.getProfile(body.username);
+  async signUp({
+    username,
+    password,
+    ...rest
+  }: ISignUpRequestDto): Promise<IProfileWithTokensDto> {
+    const client = await this._profileService
+      .getProfileByAttr({
+        username,
+      })
+      .catch(() => null);
 
     if (client) {
       throw new ApiError(
-        `Клиент с логином - ${body.username}, уже зарегистрирован`,
+        `Клиент с логином - ${username}, уже зарегистрирован`,
         500,
       );
     } else {
-      return this._redisService
-        .setProfile(body.username, {
+      return this._profileService
+        .createProfile({
           id: v4(),
-          username: body.username,
-          name: body.name,
-          password: sha256(body.password),
+          ...rest,
+          username,
+          passwordHash: sha256(password),
         })
         .then(() =>
           this.signIn({
-            username: body.username,
-            password: body.password,
+            username,
+            password,
           }),
         );
     }
   }
 
   async signIn(body: ISignInRequestDto): Promise<IProfileWithTokensDto> {
-    const client = await this._redisService.getProfile(body.username);
+    const { username, password } = body;
 
-    if (client) {
-      const { password, ...rest } = client;
+    const { id, passwordHash } = await this._profileService.getProfileByAttr({
+      username,
+    });
 
-      if (password === sha256(body.password)) {
-        return {
-          ...rest,
-          tokens: await this.getTokens(rest),
-        };
-      }
+    if (passwordHash === sha256(password)) {
+      const profile = (await this._profileService.getProfile(id)).toJSON();
+
+      return {
+        ...profile,
+        tokens: await this.getTokens(profile),
+      };
     }
 
     throw new ApiError("Неверный логин или пароль", 500);
@@ -64,7 +76,7 @@ export class AuthService {
     return this.getTokens(profile);
   }
 
-  async getTokens(profile: IProfileDto) {
+  async getTokens(profile: IProfileDto): Promise<ITokensDto> {
     const [accessToken, refreshToken] = await createTokenAsync([
       {
         profile,

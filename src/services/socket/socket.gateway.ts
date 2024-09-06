@@ -1,6 +1,6 @@
 import { inject, injectable as Injectable } from "inversify";
 
-import { WireguardService } from "../wireguard";
+// import { WireguardService } from "../wireguard";
 import { SocketService } from "./socket.service";
 import { Socket } from "./socket.types";
 
@@ -10,8 +10,8 @@ export class SocketGateway {
 
   constructor(
     @inject(SocketService) private _socketService: SocketService,
-    @inject(WireguardService) private _wireguardService: WireguardService,
-  ) {}
+  ) // @inject(WireguardService) private _wireguardService: WireguardService,
+  {}
 
   start = () => {
     this._socketService.onConnection((client, clientSocket) => {
@@ -35,13 +35,13 @@ export class SocketGateway {
 
       this._unsubscribe(subscribeId);
 
-      const intervalId = setInterval(async () => {
-        const clients = await this._wireguardService.getClients();
+      // const intervalId = setInterval(async () => {
+      //   const clients = await this._wireguardService.getClients();
+      //
+      //   clientSocket.emit("all", clients);
+      // }, 1000);
 
-        clientSocket.emit("all", clients);
-      }, 1000);
-
-      this.subscribes.set(subscribeId, intervalId);
+      // this.subscribes.set(subscribeId, intervalId);
 
       clientSocket.on("disconnect", () => {
         this._unsubscribe(subscribeId);
@@ -59,17 +59,17 @@ export class SocketGateway {
 
       this._unsubscribe(subscribeId);
 
-      const intervalId = setInterval(async () => {
-        const client = await this._wireguardService
-          .getClient({ clientId })
-          .catch(() => null);
+      // const intervalId = setInterval(async () => {
+      //   const client = await this._wireguardService
+      //     .getClient({ clientId })
+      //     .catch(() => null);
+      //
+      //   if (client) {
+      //     clientSocket.emit("client", client);
+      //   }
+      // }, 1000);
 
-        if (client) {
-          clientSocket.emit("client", client);
-        }
-      }, 1000);
-
-      this.subscribes.set(subscribeId, intervalId);
+      // this.subscribes.set(subscribeId, intervalId);
 
       clientSocket.on("disconnect", () => {
         this._unsubscribe(subscribeId);

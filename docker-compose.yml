@@ -1,22 +1,35 @@
 services:
-  redis:
-    container_name: redis-client
-    image: redis:latest
-    command:
-      - 'redis-server'
-      - '--loglevel ${REDIS_LOGLEVEL}'
-      - '--databases 2'
-      - '--save 900 1'
-      - '--save 300 10'
-      - '--save 60 10000'
-      - '--maxmemory ${REDIS_MAXMEM}'
-      - '--maxmemory-policy ${REDIS_POLICY}'
-      - '--requirepass ${REDIS_PASS}'
-    ports:
-      - "6379:6379"
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-pg_user_name}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pg_password}
     volumes:
-      - ./redis/data:/data
+      - ./postgres:${POSTGRES_DATA}
+    ports:
+      - "${POSTGRES_PORT}:5432"
     restart: unless-stopped
+
+
+#  redis:
+#    container_name: redis-client
+#    image: redis:latest
+#    command:
+#      - 'redis-server'
+#      - '--loglevel ${REDIS_LOGLEVEL}'
+#      - '--databases 2'
+#      - '--save 900 1'
+#      - '--save 300 10'
+#      - '--save 60 10000'
+#      - '--maxmemory ${REDIS_MAXMEM}'
+#      - '--maxmemory-policy ${REDIS_POLICY}'
+#      - '--requirepass ${REDIS_PASS}'
+#    ports:
+#      - "6379:6379"
+#    volumes:
+#      - ./redis/data:/data
+#    restart: unless-stopped
 
   wg:
     build: .
@@ -35,7 +48,10 @@ services:
       - net.ipv4.ip_forward=1
       - net.ipv4.conf.all.src_valid_mark=1
     depends_on:
-      - redis
+      - postgres
+#      - redis
 
 volumes:
-  wireguard:
+  postgres:
+  redis:
+  wg:

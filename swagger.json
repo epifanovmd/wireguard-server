@@ -6,7 +6,128 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"TokensDto": {
+			"Pick_ProfileModel.Exclude_keyofProfileModel.passwordHash__": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"username": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"IProfileDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"username": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ListResponse_IProfileDto-Array_": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IProfileDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Partial_TProfileCreateModel_": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"username": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"passwordHash": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "Make all properties in T optional"
+			},
+			"TProfileUpdateModel": {
+				"$ref": "#/components/schemas/Partial_TProfileCreateModel_"
+			},
+			"ITokensDto": {
 				"properties": {
 					"accessToken": {
 						"type": "string"
@@ -24,30 +145,59 @@
 			},
 			"IProfileWithTokensDto": {
 				"properties": {
+					"id": {
+						"type": "string"
+					},
 					"username": {
 						"type": "string"
 					},
-					"name": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
 						"type": "string"
 					},
 					"email": {
 						"type": "string"
 					},
-					"id": {
+					"phone": {
 						"type": "string"
 					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
 					"tokens": {
-						"$ref": "#/components/schemas/TokensDto"
+						"$ref": "#/components/schemas/ITokensDto"
 					}
 				},
 				"required": [
-					"username",
-					"name",
-					"id",
 					"tokens"
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"Pick_TProfileCreateModel.Exclude_keyofTProfileCreateModel.id-or-username-or-passwordHash__": {
+				"properties": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
 			"ISignUpRequestDto": {
 				"properties": {
@@ -57,17 +207,22 @@
 					"password": {
 						"type": "string"
 					},
-					"name": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
 						"type": "string"
 					},
 					"email": {
+						"type": "string"
+					},
+					"phone": {
 						"type": "string"
 					}
 				},
 				"required": [
 					"username",
-					"password",
-					"name"
+					"password"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -88,15 +243,103 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IWireguardClientDto": {
+			"IWireguardPeerStatus": {
+				"properties": {
+					"publicKey": {
+						"type": "string"
+					},
+					"preSharedKey": {
+						"type": "string"
+					},
+					"endpoint": {
+						"type": "string"
+					},
+					"allowedIps": {
+						"type": "string"
+					},
+					"latestHandshakeAt": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"transferRx": {
+						"type": "number",
+						"format": "double"
+					},
+					"transferTx": {
+						"type": "number",
+						"format": "double"
+					},
+					"persistentKeepalive": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"publicKey",
+					"preSharedKey",
+					"endpoint",
+					"allowedIps",
+					"latestHandshakeAt",
+					"transferRx",
+					"transferTx",
+					"persistentKeepalive"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IWgServerDto": {
 				"properties": {
 					"id": {
 						"type": "string"
 					},
-					"enabled": {
-						"type": "boolean"
+					"profileId": {
+						"type": "string"
 					},
 					"name": {
+						"type": "string"
+					},
+					"privateKey": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"clients": {
+						"items": {
+							"$ref": "#/components/schemas/IWgClientsDto"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InferAttributes_WgClient_": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"serverId": {
+						"type": "string"
+					},
+					"profileId": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"allowedIPs": {
 						"type": "string"
 					},
 					"publicKey": {
@@ -108,30 +351,24 @@
 					"preSharedKey": {
 						"type": "string"
 					},
-					"address": {
-						"type": "string"
-					},
-					"allowedIPs": {
-						"type": "string"
-					},
-					"latestHandshakeAt": {
-						"type": "string",
-						"format": "date-time",
-						"nullable": true
-					},
 					"transferRx": {
 						"type": "number",
-						"format": "double",
-						"nullable": true
+						"format": "double"
 					},
 					"transferTx": {
 						"type": "number",
-						"format": "double",
-						"nullable": true
+						"format": "double"
+					},
+					"latestHandshakeAt": {
+						"type": "string",
+						"format": "date-time"
 					},
 					"persistentKeepalive": {
-						"type": "string",
-						"nullable": true
+						"type": "number",
+						"format": "double"
+					},
+					"enabled": {
+						"type": "boolean"
 					},
 					"createdAt": {
 						"type": "string",
@@ -142,15 +379,176 @@
 						"format": "date-time"
 					}
 				},
+				"type": "object",
+				"description": "Utility type to extract Attributes of a given Model class.\n\nIt returns all instance properties defined in the Model, except:\n- those inherited from Model (intermediate inheritance works),\n- the ones whose type is a function,\n- the ones manually excluded using the second parameter.\n- the ones branded using {@link NonAttribute}\n\nIt cannot detect whether something is a getter or not, you should use the `Excluded`\nparameter to exclude getter & setters from the attribute list."
+			},
+			"IWgClientsDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"serverId": {
+						"type": "string"
+					},
+					"profileId": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"allowedIPs": {
+						"type": "string"
+					},
+					"publicKey": {
+						"type": "string"
+					},
+					"privateKey": {
+						"type": "string"
+					},
+					"preSharedKey": {
+						"type": "string"
+					},
+					"transferRx": {
+						"type": "number",
+						"format": "double"
+					},
+					"transferTx": {
+						"type": "number",
+						"format": "double"
+					},
+					"latestHandshakeAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"persistentKeepalive": {
+						"type": "number",
+						"format": "double"
+					},
+					"enabled": {
+						"type": "boolean"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"profile": {
+						"$ref": "#/components/schemas/IProfileDto"
+					},
+					"server": {
+						"$ref": "#/components/schemas/IWgServerDto"
+					}
+				},
 				"required": [
-					"id",
-					"enabled",
-					"name",
-					"publicKey",
-					"address",
-					"createdAt",
-					"updatedAt"
+					"profile",
+					"server"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InferAttributes_WgServer_": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"profileId": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"privateKey": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"type": "object",
+				"description": "Utility type to extract Attributes of a given Model class.\n\nIt returns all instance properties defined in the Model, except:\n- those inherited from Model (intermediate inheritance works),\n- the ones whose type is a function,\n- the ones manually excluded using the second parameter.\n- the ones branded using {@link NonAttribute}\n\nIt cannot detect whether something is a getter or not, you should use the `Excluded`\nparameter to exclude getter & setters from the attribute list."
+			},
+			"ListResponse_IWgClientsDto-Array_": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IWgClientsDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IWgClientCreateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"serverId": {
+						"type": "string"
+					},
+					"allowedIPs": {
+						"type": "string"
+					},
+					"persistentKeepalive": {
+						"type": "number",
+						"format": "double"
+					},
+					"enabled": {
+						"type": "boolean"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IWgClientUpdateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"serverId": {
+						"type": "string"
+					},
+					"allowedIPs": {
+						"type": "string"
+					},
+					"persistentKeepalive": {
+						"type": "number",
+						"format": "double"
+					},
+					"enabled": {
+						"type": "boolean"
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			}
@@ -177,6 +575,190 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/api/profile": {
+			"get": {
+				"operationId": "GetAllProfiles",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ListResponse_IProfileDto-Array_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/profile/{id}": {
+			"get": {
+				"operationId": "GetProfileById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TProfileUpdateModel"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "number",
+									"format": "double"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/profile/my": {
+			"get": {
+				"operationId": "GetMyProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/api/auth/signUp": {
 			"post": {
 				"operationId": "SignUp",
@@ -192,21 +774,21 @@
 						}
 					}
 				},
-				"description": "Регистрация нового пользователя",
-				"summary": "Регистрация пользователя.",
+				"description": "Endpoint description",
+				"summary": "Endpoint summary.",
 				"tags": [
 					"Authorization"
 				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
-					"description": "Данные для регистрации",
+					"description": "Body param",
 					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/ISignUpRequestDto",
-								"description": "Данные для регистрации"
+								"description": "Body param"
 							}
 						}
 					}
@@ -228,21 +810,17 @@
 						}
 					}
 				},
-				"description": "Авторизация пользователя",
-				"summary": "Авторизация пользователя.",
 				"tags": [
 					"Authorization"
 				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
-					"description": "Данные для авторизации",
 					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ISignInRequestDto",
-								"description": "Данные для авторизации"
+								"$ref": "#/components/schemas/ISignInRequestDto"
 							}
 						}
 					}
@@ -258,21 +836,18 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/TokensDto"
+									"$ref": "#/components/schemas/ITokensDto"
 								}
 							}
 						}
 					}
 				},
-				"description": "Обновление токенов",
-				"summary": "Обновление токенов.",
 				"tags": [
 					"Authorization"
 				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
-					"description": "Токен для обновления",
 					"required": true,
 					"content": {
 						"application/json": {
@@ -285,27 +860,19 @@
 								"required": [
 									"refreshToken"
 								],
-								"type": "object",
-								"description": "Токен для обновления"
+								"type": "object"
 							}
 						}
 					}
 				}
 			}
 		},
-		"/api/wireguard/start": {
+		"/api/wireguard/start/{interfaceName}": {
 			"get": {
 				"operationId": "StartVpn",
 				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "boolean"
-								}
-							}
-						}
+					"204": {
+						"description": "No content"
 					}
 				},
 				"tags": [
@@ -316,10 +883,19 @@
 						"jwt": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "path",
+						"name": "interfaceName",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
-		"/api/wireguard/stop": {
+		"/api/wireguard/stop/{interfaceName}": {
 			"get": {
 				"operationId": "StopVpn",
 				"responses": {
@@ -342,10 +918,19 @@
 						"jwt": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "path",
+						"name": "interfaceName",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
-		"/api/wireguard/status": {
+		"/api/wireguard/status/{interfaceName}": {
 			"get": {
 				"operationId": "CheckStatus",
 				"responses": {
@@ -354,63 +939,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "string",
-									"nullable": true
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Wireguard"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/api/wireguard/clients": {
-			"get": {
-				"operationId": "GetClients",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/IWireguardClientDto"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Wireguard"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/api/wireguard/client": {
-			"get": {
-				"operationId": "GetClient",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWireguardClientDto"
+									"$ref": "#/components/schemas/IWireguardPeerStatus"
 								}
 							}
 						}
@@ -426,31 +955,41 @@
 				],
 				"parameters": [
 					{
+						"in": "path",
+						"name": "interfaceName",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
 						"in": "query",
-						"name": "clientId",
+						"name": "publicKey",
 						"required": true,
 						"schema": {
 							"type": "string"
 						}
 					}
 				]
-			},
+			}
+		},
+		"/api/wgclients/wgserver/create": {
 			"post": {
-				"operationId": "CreateClient",
+				"operationId": "CreateWgServer",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IWireguardClientDto"
+									"$ref": "#/components/schemas/IWgServerDto"
 								}
 							}
 						}
 					}
 				},
 				"tags": [
-					"Wireguard"
+					"WgClient"
 				],
 				"security": [
 					{
@@ -478,93 +1017,23 @@
 				}
 			}
 		},
-		"/api/wireguard/client/qrcode": {
-			"get": {
-				"operationId": "GetClientQRCodeSVG",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Wireguard"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "clientId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/wireguard/client/configuration": {
-			"get": {
-				"operationId": "GetClientConfiguration",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Wireguard"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "clientId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/wireguard/client/{clientId}": {
+		"/api/wgclients/wgserver/delete/{id}": {
 			"delete": {
-				"operationId": "DeleteClient",
+				"operationId": "DeleteWgServer",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "string"
+									"$ref": "#/components/schemas/IWgServerDto"
 								}
 							}
 						}
 					}
 				},
 				"tags": [
-					"Wireguard"
+					"WgClient"
 				],
 				"security": [
 					{
@@ -574,7 +1043,87 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "clientId",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wgclients": {
+			"get": {
+				"operationId": "GetWgClients",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ListResponse_IWgClientsDto-Array_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgClient"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/wgclients/{id}": {
+			"get": {
+				"operationId": "GetWgClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWgClientsDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgClient"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
 						"required": true,
 						"schema": {
 							"type": "string"
@@ -582,22 +1131,56 @@
 					}
 				]
 			},
-			"put": {
-				"operationId": "UpdateClient",
+			"post": {
+				"operationId": "CreateWgClient",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IWireguardClientDto"
+									"$ref": "#/components/schemas/IWgClientsDto"
 								}
 							}
 						}
 					}
 				},
 				"tags": [
-					"Wireguard"
+					"WgClient"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IWgClientCreateRequest"
+							}
+						}
+					}
+				}
+			},
+			"patch": {
+				"operationId": "UpdateWgClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWgClientsDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgClient"
 				],
 				"security": [
 					{
@@ -607,7 +1190,7 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "clientId",
+						"name": "id",
 						"required": true,
 						"schema": {
 							"type": "string"
@@ -619,111 +1202,45 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"properties": {
-									"address": {
-										"type": "string"
-									},
-									"name": {
-										"type": "string"
-									}
-								},
-								"required": [
-									"address",
-									"name"
-								],
-								"type": "object"
+								"$ref": "#/components/schemas/IWgClientUpdateRequest"
 							}
 						}
 					}
 				}
-			}
-		},
-		"/api/wireguard/client/enable": {
-			"post": {
-				"operationId": "EnableClient",
+			},
+			"delete": {
+				"operationId": "DeleteWgClient",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IWireguardClientDto"
+									"type": "number",
+									"format": "double"
 								}
 							}
 						}
 					}
 				},
 				"tags": [
-					"Wireguard"
+					"WgClient"
 				],
 				"security": [
 					{
 						"jwt": []
 					}
 				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"properties": {
-									"clientId": {
-										"type": "string"
-									}
-								},
-								"required": [
-									"clientId"
-								],
-								"type": "object"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/wireguard/client/disable": {
-			"post": {
-				"operationId": "DisableClient",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWireguardClientDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Wireguard"
-				],
-				"security": [
+				"parameters": [
 					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"properties": {
-									"clientId": {
-										"type": "string"
-									}
-								},
-								"required": [
-									"clientId"
-								],
-								"type": "object"
-							}
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
 						}
 					}
-				}
+				]
 			}
 		}
 	},

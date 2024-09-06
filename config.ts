@@ -22,7 +22,7 @@ export const config = {
   WG_PORT: process.env.WG_PORT || 51820,
   WG_MTU: process.env.WG_MTU || null,
   WG_PERSISTENT_KEEPALIVE: process.env.WG_PERSISTENT_KEEPALIVE || 0,
-  WG_DEFAULT_ADDRESS: process.env.WG_DEFAULT_ADDRESS || "10.8.0.x",
+  WG_DEFAULT_ADDRESS: process.env.WG_DEFAULT_ADDRESS || "10.x.x.x",
   WG_DEFAULT_DNS: process.env.WG_DEFAULT_DNS || "1.1.1.1",
   WG_ALLOWED_IPS: process.env.WG_ALLOWED_IPS || "0.0.0.0/0, ::/0",
   WG_PRE_UP: process.env.WG_PRE_UP || "",
@@ -34,8 +34,11 @@ export const config = {
 
   REDIS_HOST: process.env.REDIS_HOST || "localhost",
   REDIS_PORT: process.env.REDIS_PORT || 6379,
-};
 
-console.log("process.env.REDIS_HOST", process.env.REDIS_HOST);
-console.log("env", process.env.NODE_ENV);
-// console.log("config", config);
+  POSTGRES_HOST: process.env.POSTGRES_HOST || "localhost",
+  POSTGRES_PORT: Number(process.env.POSTGRES_PORT || 5432),
+  POSTGRES_DATABASE: process.env.POSTGRES_DATABASE || "postgres",
+  POSTGRES_USER: process.env.POSTGRES_USER || "pg_user_name",
+  POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD || "pg_password",
+  POSTGRES_DATA: process.env.POSTGRES_DATA || "/data/postgres",
+};

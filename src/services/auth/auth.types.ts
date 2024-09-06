@@ -1,26 +1,16 @@
-export interface IProfileData {
-  username: string;
-  name: string;
-  email?: string;
-}
+import { IProfileDto, TProfileCreateModel } from "../profile";
 
 export interface IProfilePassword {
   password: string;
 }
 
-export interface IProfileDto extends IProfileData {
-  id: string;
-}
-
-export interface IProfileModel extends IProfileDto, IProfilePassword {}
-
-export interface TokensDto {
+export interface ITokensDto {
   accessToken: string;
   refreshToken: string;
 }
 
 export interface IProfileWithTokensDto extends IProfileDto {
-  tokens: TokensDto;
+  tokens: ITokensDto;
 }
 
 export interface ISignInRequestDto {
@@ -28,4 +18,7 @@ export interface ISignInRequestDto {
   password: string;
 }
 
-export interface ISignUpRequestDto extends ISignInRequestDto, IProfileData {}
+export interface ISignUpRequestDto
+  extends ISignInRequestDto,
+    Omit<TProfileCreateModel, "id" | "username" | "passwordHash">,
+    IProfilePassword {}

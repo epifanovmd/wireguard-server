@@ -1,6 +1,6 @@
 import { Socket as SocketIO } from "socket.io";
 
-import { IWireguardClientDto } from "../wireguard";
+// import { IWireguardClientDto } from "../wireguard";
 
 export interface SocketEvents {
   subscribeToAll: () => void;
@@ -10,8 +10,8 @@ export interface SocketEvents {
 }
 
 export interface SocketEmitEvents {
-  all: (...args: [data: IWireguardClientDto[]]) => void;
-  client: (...args: [data: IWireguardClientDto]) => void;
+  // all: (...args: [data: IWireguardClientDto[]]) => void;
+  // client: (...args: [data: IWireguardClientDto]) => void;
 }
 
 export type Socket = SocketIO<SocketEvents, SocketEmitEvents>;
