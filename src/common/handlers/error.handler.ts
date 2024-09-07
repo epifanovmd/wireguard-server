@@ -22,7 +22,7 @@ export const errorHandler = async (ctx: Context, next: Next) => {
       error: {
         status: status,
         message: err.errors?.[0]?.message ?? err.message,
-        original: err,
+        errors: err.errors,
       },
     };
   }
