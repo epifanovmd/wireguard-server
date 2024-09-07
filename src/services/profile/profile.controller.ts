@@ -13,7 +13,6 @@ import {
 } from "tsoa";
 
 import { ApiError, assertNotNull } from "../../common";
-import { ListResponse } from "../../dto/ListResponse";
 import { KoaRequest } from "../../types/koa";
 import {
   IProfileDto,
