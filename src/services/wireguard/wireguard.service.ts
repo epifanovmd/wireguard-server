@@ -44,8 +44,11 @@ export class WireguardService {
       .then(res => res || null)
       .catch(() => null);
 
-  saveInterfaceConfig = async (wgServer: IWgServerDto) => {
-    await this._saveInterface(wgServer);
+  saveInterfaceConfig = async (
+    wgServer: IWgServerDto,
+    clients: IWgServerDto["clients"],
+  ) => {
+    await this._saveInterface(wgServer, clients);
     await this._syncInterface(wgServer.name);
   };
 
@@ -103,9 +106,10 @@ export class WireguardService {
     return fs.rm(path.join(WG_PATH, `${interfaceName}.conf`)).catch(() => {});
   };
 
-  private _saveInterface = async (server: IWgServerDto) => {
-    const clients = server.clients ?? [];
-
+  private _saveInterface = async (
+    server: IWgServerDto,
+    clients: IWgServerDto["clients"] = [],
+  ) => {
     const result = clients.reduce<string>((acc, client) => {
       if (client.enabled === false) {
         return acc;

@@ -53,19 +53,19 @@ IPAddress.init(
       allowNull: true,
     },
     a: {
-      type: DataTypes.INTEGER({ length: 3 }),
+      type: DataTypes.INTEGER(),
       allowNull: false,
     },
     b: {
-      type: DataTypes.INTEGER({ length: 3 }),
+      type: DataTypes.INTEGER(),
       allowNull: false,
     },
     c: {
-      type: DataTypes.INTEGER({ length: 3 }),
+      type: DataTypes.INTEGER(),
       allowNull: false,
     },
     d: {
-      type: DataTypes.INTEGER({ length: 3 }),
+      type: DataTypes.INTEGER(),
       allowNull: false,
     },
     free: {

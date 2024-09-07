@@ -20,10 +20,11 @@ export class WgServerService {
     @inject(WireguardService) private _wireguardService: WireguardService,
   ) {}
 
-  getWgServers = (offset?: number, limit?: number) =>
+  getWgServers = (profileId: string, offset?: number, limit?: number) =>
     WgServer.findAll({
       limit,
       offset,
+      where: { profileId },
       attributes: WgServerService.wgServerAttributes,
       order: [["createdAt", "DESC"]],
       include: WgServerService.include,
@@ -53,10 +54,8 @@ export class WgServerService {
       return result;
     });
 
-  createWgServer = async (body: ICreateWgServerRequest) => {
-    const server = await this.getWgServerByAttr({ name: body.name }).catch(
-      () => null,
-    );
+  createWgServer = async (profileId: string, body: ICreateWgServerRequest) => {
+    const server = await this.getWgServerByAttr({ ...body }).catch(() => null);
 
     if (server) {
       return server;
@@ -67,6 +66,7 @@ export class WgServerService {
 
     return WgServer.create({
       id,
+      profileId,
       privateKey,
       ...body,
       address: this._ipAddressService.formatIp(
@@ -76,7 +76,7 @@ export class WgServerService {
         ipaddress.d,
       ),
     }).then(async result => {
-      await this._wireguardService.saveInterfaceConfig(result);
+      await this._wireguardService.saveInterfaceConfig(result, result.clients);
       await this._wireguardService.start(result.name);
 
       return this.getWgServer(result.id);
@@ -86,15 +86,20 @@ export class WgServerService {
   updateWireguardConfig = async (serverId: string) => {
     const server = await this.getWgServer(serverId);
 
-    await this._wireguardService.saveInterfaceConfig(server);
+    await this._wireguardService.saveInterfaceConfig(server, server.clients);
   };
 
-  deleteWgServer = async (id: string) => {
-    return WgServer.destroy({ where: { id } }).then(async value => {
-      await this._ipAddressService.deleteIPAddressForServer(id);
+  deleteWgServer = async (profileId: string, id: string) => {
+    const wgServer = await this.getWgServer(id);
 
-      return value;
-    });
+    if (wgServer.profileId !== profileId) {
+      throw new ApiError("Невозможно удалить сервер", 403);
+    }
+
+    await this._wireguardService.deleteConfig(wgServer.name);
+
+    // delete only instance for run beforeDestroy hook
+    return wgServer.destroy().then(async () => id);
   };
 
   static get wgServerAttributes(): (keyof WgServerModel)[] | undefined {
@@ -105,7 +110,6 @@ export class WgServerService {
     return [
       {
         model: WgClient,
-        as: "clients",
       },
       {
         model: Profile,

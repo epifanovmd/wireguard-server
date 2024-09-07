@@ -14,10 +14,16 @@ export const errorHandler = async (ctx: Context, next: Next) => {
   try {
     await next();
   } catch (err) {
-    ctx.status = err.statusCode || 500;
+    const status = err.status || err.statusCode || 500;
+
+    ctx.status = status;
     ctx.body = {
       message: err.message,
-      error: { status: err.status, message: err.message },
+      error: {
+        status: status,
+        message: err.errors?.[0]?.message ?? err.message,
+        original: err,
+      },
     };
   }
 };

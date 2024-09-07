@@ -7,6 +7,7 @@ import {
 } from "sequelize";
 
 import { sequelize } from "../../db/db";
+import { IPAddress } from "../ipaddress";
 import { IProfileDto, Profile } from "../profile";
 import { IWgServerDto, WgServer } from "../wgserver";
 
@@ -30,8 +31,6 @@ export type TWgClientsCreateModel = InferCreationAttributes<
   WgClient,
   { omit: "createdAt" | "updatedAt" }
 >;
-
-export type TWgClientsUpdateModel = Partial<TWgClientsCreateModel>;
 
 export class WgClient extends Model<WgClientModel, TWgClientsCreateModel> {
   declare id: string;
@@ -120,10 +119,10 @@ WgClient.init(
   },
   {
     sequelize,
-    modelName: "wgclients",
+    modelName: "clients",
     name: {
-      singular: "wgclient",
-      plural: "wgclients",
+      singular: "client",
+      plural: "clients",
     },
     indexes: [
       {
@@ -135,12 +134,10 @@ WgClient.init(
 );
 
 WgClient.sync({ force: false }).then(() => {
-  WgClient.hasOne(WgServer, {
-    sourceKey: "serverId",
-    foreignKey: "id",
-  });
-  WgClient.hasOne(Profile, {
-    sourceKey: "profileId",
-    foreignKey: "id",
+  WgClient.belongsTo(WgServer);
+  WgClient.belongsTo(Profile);
+
+  WgClient.beforeDestroy(async client => {
+    await IPAddress.destroy({ where: { clientId: client.id } });
   });
 });

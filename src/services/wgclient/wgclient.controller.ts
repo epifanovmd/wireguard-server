@@ -13,10 +13,9 @@ import {
   Tags,
 } from "tsoa";
 
-import { ApiError, assertNotNull } from "../../common";
+import { getContextProfile } from "../../common/helpers";
 import { ListResponse } from "../../dto/ListResponse";
 import { KoaRequest } from "../../types/koa";
-import { IWgServerDto } from "../wgserver";
 import {
   IWgClientCreateRequest,
   IWgClientsDto,
@@ -35,74 +34,63 @@ export class WgClientController extends Controller {
   }
 
   @Security("jwt")
-  @Post("wgserver/create")
-  createWgServer(
-    @Request() req: KoaRequest,
-    @Body() body: { name: string },
-  ): Promise<IWgServerDto> {
-    const profileId = assertNotNull(
-      req.ctx.request.user?.id,
-      new ApiError("No token provided1", 401),
-    );
-
-    return this._wgClientService.createWgServer({
-      profileId,
-      name: body.name,
-    });
-  }
-
-  @Security("jwt")
-  @Delete("/wgserver/delete/{id}")
-  deleteWgServer(id: string): Promise<IWgServerDto> {
-    return this._wgClientService.deleteWgServer(id) as any;
-  }
-
-  @Security("jwt")
   @Get()
   getWgClients(
+    @Request() req: KoaRequest,
     @Query("offset") offset?: number,
     @Query("limit") limit?: number,
   ): Promise<ListResponse<IWgClientsDto[]>> {
-    return this._wgClientService.getWgClients(offset, limit).then(result => ({
-      offset,
-      limit,
-      count: result.length,
-      data: result,
-    })) as any;
+    const profileId = getContextProfile(req);
+
+    return this._wgClientService
+      .getWgClients(profileId, offset, limit)
+      .then(result => ({
+        offset,
+        limit,
+        count: result.length,
+        data: result,
+      }));
   }
 
   @Security("jwt")
   @Get("{id}")
-  getWgClient(id: string): Promise<IWgClientsDto> {
-    return this._wgClientService.getWgClient(id) as any;
+  getWgClient(@Request() req: KoaRequest, id: string): Promise<IWgClientsDto> {
+    const profileId = getContextProfile(req);
+
+    return this._wgClientService.getWgClientByAttr({
+      profileId,
+      id,
+    });
   }
 
   @Security("jwt")
   @Post("/{id}")
-  async createWgClient(
+  createWgClient(
     @Request() req: KoaRequest,
     @Body() body: IWgClientCreateRequest,
   ): Promise<IWgClientsDto> {
-    const profileId = assertNotNull(
-      req.ctx.request.user?.id,
-      new ApiError("No token provided1", 401),
-    );
+    const profileId = getContextProfile(req);
 
-    return this._wgClientService.createWgClient(profileId, body) as any;
+    return this._wgClientService.createWgClient(profileId, body);
   }
 
   @Security("jwt")
   @Patch("/{id}")
   updateWgClient(
-    id: string,
+    @Request() req: KoaRequest,
     @Body() body: IWgClientUpdateRequest,
+    id: string,
   ): Promise<IWgClientsDto> {
-    return this._wgClientService.updateWgClient(id, body) as any;
+    const profileId = getContextProfile(req);
+
+    return this._wgClientService.updateWgClient(profileId, id, body);
   }
 
   @Security("jwt")
   @Delete("/{id}")
-  deleteWgClient(id: string): Promise<number> {
-    return this._wgClientService.deleteWgClient(id);
+  deleteWgClient(@Request() req: KoaRequest, id: string): Promise<string> {
+    const profileId = getContextProfile(req);
+
+    return this._wgClientService.deleteWgClient(profileId, id);
   }
 }

@@ -1,6 +1,9 @@
+import { DataTypes } from "sequelize";
+
 import { config } from "../config";
 import { app, router } from "./app";
 import { errorHandler, notFoundHandler } from "./common";
+import { sequelize } from "./db/db";
 import { RegisterAppMiddlewares, RegisterSwagger } from "./middleware";
 import { iocContainer } from "./modules";
 import { RegisterRoutes } from "./routes";

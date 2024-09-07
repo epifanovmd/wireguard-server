@@ -8,14 +8,18 @@ import {
 
 import { sequelize } from "../../db/db";
 import { IPAddress } from "../ipaddress";
-import { Profile } from "../profile";
+import { IProfileDto, Profile } from "../profile";
 import { IWgClientsDto, WgClient } from "../wgclient";
 
 export interface ICreateWgServerRequest
-  extends Omit<TWgServersCreateModel, "id" | "privateKey" | "address"> {}
+  extends Omit<
+    TWgServersCreateModel,
+    "id" | "profileId" | "privateKey" | "address"
+  > {}
 
 export interface IWgServerDto extends WgServerModel {
   clients?: IWgClientsDto[];
+  profile?: IProfileDto;
 }
 
 export type WgServerModel = InferAttributes<WgServer>;
@@ -24,8 +28,6 @@ export type TWgServersCreateModel = InferCreationAttributes<
   WgServer,
   { omit: "createdAt" | "updatedAt" }
 >;
-
-export type TWgServersUpdateModel = Partial<TWgServersCreateModel>;
 
 export class WgServer extends Model<WgServerModel, TWgServersCreateModel> {
   declare id: string;
@@ -41,8 +43,8 @@ export class WgServer extends Model<WgServerModel, TWgServersCreateModel> {
   declare readonly updatedAt: Date;
 
   // associations
-  declare clients?: NonAttribute<WgClient[]>;
-  declare profile: NonAttribute<Profile[]>;
+  declare clients: NonAttribute<WgClient[]>;
+  declare profile: NonAttribute<Profile>;
   declare ipaddress: NonAttribute<IPAddress>;
 }
 
@@ -75,10 +77,10 @@ WgServer.init(
   },
   {
     sequelize,
-    modelName: "wgservers",
+    modelName: "servers",
     name: {
-      singular: "wgserver",
-      plural: "wgservers",
+      singular: "server",
+      plural: "servers",
     },
     indexes: [
       {
@@ -89,16 +91,17 @@ WgServer.init(
   },
 );
 
-WgServer.sync({ force: false }).then(() => {
-  WgServer.hasMany(WgClient, {
-    foreignKey: "serverId",
-    as: "clients",
-  });
-  WgServer.hasOne(Profile, {
-    sourceKey: "profileId",
-    foreignKey: "id",
-  });
-  WgServer.hasOne(IPAddress, {
-    foreignKey: "serverId",
+WgServer.sync({ force: false }).then(async () => {
+  WgServer.hasMany(WgClient);
+  WgServer.belongsTo(Profile);
+  WgServer.hasOne(IPAddress);
+
+  WgServer.beforeDestroy(async wgServer => {
+    await WgClient.findAll({ where: { serverId: wgServer.id } }).then(clients =>
+      // delete only instance for run beforeDestroy hook
+      clients.forEach(client => client.destroy()),
+    );
+
+    await IPAddress.destroy({ where: { serverId: wgServer.id } });
   });
 });

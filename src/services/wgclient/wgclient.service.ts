@@ -6,7 +6,7 @@ import { v4 } from "uuid";
 import { ApiError } from "../../common";
 import { IPAddressService } from "../ipaddress";
 import { Profile, ProfileService } from "../profile";
-import { ICreateWgServerRequest, WgServer, WgServerService } from "../wgserver";
+import { WgServer } from "../wgserver";
 import { WireguardService } from "../wireguard";
 import { getClientConfig } from "./wgclient.constants";
 import {
@@ -20,30 +20,14 @@ import {
 export class WgClientService {
   constructor(
     @inject(IPAddressService) private _ipAddressService: IPAddressService,
-    @inject(WgServerService) private _wgServerService: WgServerService,
     @inject(WireguardService) private _wireguardService: WireguardService,
   ) {}
 
-  createWgServer = async (body: ICreateWgServerRequest) => {
-    return this._wgServerService.createWgServer(body);
-  };
-
-  deleteWgServer = async (id: string) => {
-    const server = await this._wgServerService.getWgServer(id);
-
-    await this.deleteWgClientFromServer(id);
-
-    return this._wgServerService.deleteWgServer(id).then(async res => {
-      await this._wireguardService.deleteConfig(server.name);
-
-      return res;
-    });
-  };
-
-  getWgClients = (offset?: number, limit?: number) =>
+  getWgClients = (profileId: string, offset?: number, limit?: number) =>
     WgClient.findAll({
       limit,
       offset,
+      where: { profileId },
       attributes: WgClientService.wgClientAttributes,
       order: [["createdAt", "DESC"]],
       include: WgClientService.include,
@@ -87,7 +71,7 @@ export class WgClientService {
   };
 
   createWgClient = async (profileId: string, body: IWgClientCreateRequest) => {
-    const client = await this.getWgClientByAttr({ name: body.name }).catch(
+    const client = await this.getWgClientByAttr({ profileId, ...body }).catch(
       () => null,
     );
 
@@ -96,60 +80,86 @@ export class WgClientService {
     }
 
     const id = v4();
-    const server = await this._wgServerService.getWgServer(body.serverId);
-    const ipaddress = await this._ipAddressService.createClientIPAddress(
-      id,
-      server.address,
-    );
+    const server = await WgServer.findByPk(body.serverId);
 
-    const privateKey = await this._wireguardService.getPrivateKey();
-    const publicKey = await this._wireguardService.getPublicKey(privateKey);
-    const preSharedKey = await this._wireguardService.getPreSharedKey();
+    if (server) {
+      const ipaddress = await this._ipAddressService.createClientIPAddress(
+        id,
+        server.address,
+      );
 
-    return WgClient.create({
-      id,
-      profileId,
-      ...body,
-      privateKey,
-      preSharedKey,
-      publicKey,
-      address: this._ipAddressService.formatIp(
-        ipaddress.a,
-        ipaddress.b,
-        ipaddress.c,
-        ipaddress.d,
-      ),
-    }).then(result => {
-      this._wgServerService.updateWireguardConfig(result.serverId);
+      const privateKey = await this._wireguardService.getPrivateKey();
+      const publicKey = await this._wireguardService.getPublicKey(privateKey);
+      const preSharedKey = await this._wireguardService.getPreSharedKey();
 
-      return this.getWgClient(result.id);
-    });
+      return WgClient.create({
+        id,
+        profileId,
+        ...body,
+        privateKey,
+        preSharedKey,
+        publicKey,
+        address: this._ipAddressService.formatIp(
+          ipaddress.a,
+          ipaddress.b,
+          ipaddress.c,
+          ipaddress.d,
+        ),
+      }).then(async result => {
+        const client = await this.getWgClient(result.id);
+
+        const serverId = client.server.id;
+
+        const clients = await WgClient.findAll({ where: { serverId } });
+
+        await this._wireguardService.saveInterfaceConfig(
+          client.server,
+          clients,
+        );
+
+        return client;
+      });
+    } else {
+      throw new ApiError("Сервер wireguard не найден", 404);
+    }
   };
 
-  updateWgClient = (id: string, body: IWgClientUpdateRequest) =>
-    WgClient.update(body, { where: { id } }).then(async () => {
-      const client = await this.getWgClient(id);
+  updateWgClient = async (
+    profileId: string,
+    id: string,
+    body: IWgClientUpdateRequest,
+  ) => {
+    const client = await this.getWgClient(id);
 
-      await this._wgServerService.updateWireguardConfig(client.serverId);
+    if (client.profileId !== profileId) {
+      throw new ApiError("Невозможно обновить клиента", 403);
+    }
+
+    return client.update(body).then(async () => {
+      await this._wireguardService.saveInterfaceConfig(
+        client.server,
+        client.server.clients,
+      );
 
       return client;
     });
-
-  deleteWgClient = async (id: string) => {
-    const client = await this.getWgClient(id);
-
-    return WgClient.destroy({ where: { id: client.id } }).then(async value => {
-      await this._ipAddressService.deleteIPAddressForClient(client.id);
-      await this._wgServerService.updateWireguardConfig(client.serverId);
-
-      return value;
-    });
   };
 
-  deleteWgClientFromServer = async (serverId: string) => {
-    const clients = await WgClient.findAll({ where: { serverId } });
+  deleteWgClient = async (profileId: string, id: string) => {
+    const client = await this.getWgClient(id);
 
-    return Promise.all(clients.map(client => this.deleteWgClient(client.id)));
+    if (client.profileId !== profileId) {
+      throw new ApiError("Невозможно удалить клиента", 403);
+    }
+
+    return client.destroy().then(async value => {
+      await this._wireguardService.saveInterfaceConfig(
+        client.server,
+        client.server.clients,
+      );
+
+      return client.id;
+    });
   };
 
   static get wgClientAttributes(): (keyof WgClientModel)[] | undefined {

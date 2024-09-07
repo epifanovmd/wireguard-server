@@ -973,7 +973,7 @@
 				]
 			}
 		},
-		"/api/wgclients/wgserver/create": {
+		"/api/wgserver/create": {
 			"post": {
 				"operationId": "CreateWgServer",
 				"responses": {
@@ -989,7 +989,7 @@
 					}
 				},
 				"tags": [
-					"WgClient"
+					"WgServer"
 				],
 				"security": [
 					{
@@ -1017,7 +1017,7 @@
 				}
 			}
 		},
-		"/api/wgclients/wgserver/delete/{id}": {
+		"/api/wgserver/delete/{id}": {
 			"delete": {
 				"operationId": "DeleteWgServer",
 				"responses": {
@@ -1033,7 +1033,7 @@
 					}
 				},
 				"tags": [
-					"WgClient"
+					"WgServer"
 				],
 				"security": [
 					{
@@ -1216,8 +1216,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "number",
-									"format": "double"
+									"type": "string"
 								}
 							}
 						}

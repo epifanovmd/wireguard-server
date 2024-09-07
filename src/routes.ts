@@ -9,6 +9,8 @@ import { AuthController } from './services/auth/auth.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { WireguardController } from './services/wireguard/wireguard.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { WgServerController } from './services/wgserver/wgserver.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { WgClientController } from './services/wgclient/wgclient.controller';
 import { koaAuthentication } from './middleware/jwt.middleware';
 // @ts-ignore - no great way to install types from subpackage
@@ -554,12 +556,12 @@ export function RegisterRoutes(router: KoaRouter) {
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.post('/api/wgclients/wgserver/create',
+        router.post('/api/wgserver/create',
             authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<Middleware>(WgClientController)),
-            ...(fetchMiddlewares<Middleware>(WgClientController.prototype.createWgServer)),
+            ...(fetchMiddlewares<Middleware>(WgServerController)),
+            ...(fetchMiddlewares<Middleware>(WgServerController.prototype.createWgServer)),
 
-            async function WgClientController_createWgServer(context: any, next: any) {
+            async function WgServerController_createWgServer(context: any, next: any) {
             const args = {
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
                     body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string","required":true}}},
@@ -576,7 +578,7 @@ export function RegisterRoutes(router: KoaRouter) {
 
             const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
 
-            const controller: any = await container.get<WgClientController>(WgClientController);
+            const controller: any = await container.get<WgServerController>(WgServerController);
             if (typeof controller['setStatus'] === 'function') {
                 controller.setStatus(undefined);
             }
@@ -585,12 +587,12 @@ export function RegisterRoutes(router: KoaRouter) {
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.delete('/api/wgclients/wgserver/delete/:id',
+        router.delete('/api/wgserver/delete/:id',
             authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<Middleware>(WgClientController)),
-            ...(fetchMiddlewares<Middleware>(WgClientController.prototype.deleteWgServer)),
+            ...(fetchMiddlewares<Middleware>(WgServerController)),
+            ...(fetchMiddlewares<Middleware>(WgServerController.prototype.deleteWgServer)),
 
-            async function WgClientController_deleteWgServer(context: any, next: any) {
+            async function WgServerController_deleteWgServer(context: any, next: any) {
             const args = {
                     id: {"in":"path","name":"id","required":true,"dataType":"string"},
             };
@@ -606,7 +608,7 @@ export function RegisterRoutes(router: KoaRouter) {
 
             const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
 
-            const controller: any = await container.get<WgClientController>(WgClientController);
+            const controller: any = await container.get<WgServerController>(WgServerController);
             if (typeof controller['setStatus'] === 'function') {
                 controller.setStatus(undefined);
             }

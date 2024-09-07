@@ -129,8 +129,6 @@ export class IPAddressService {
       where: serverWhere,
     });
 
-    console.log("max", max);
-
     if (max === null || isNaN(Number(max))) {
       return {
         id: v4(),
@@ -172,7 +170,7 @@ export class IPAddressService {
 
     const maxB = await IPAddress.max<number | null, IPAddress>("b");
 
-    if (maxB) {
+    if (maxB !== null) {
       const maxC = await IPAddress.max<number | null, IPAddress>("c", {
         where: {
           b: { [Op.eq]: maxB },

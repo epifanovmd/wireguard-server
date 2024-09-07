@@ -6,6 +6,7 @@ import {
 } from "sequelize";
 
 import { sequelize } from "../../db/db";
+import { WgServer } from "../wgserver";
 
 export interface IProfileDto extends Omit<ProfileModel, "passwordHash"> {}
 
@@ -92,4 +93,6 @@ Profile.init(
   },
 );
 
-Profile.sync({ force: false }).then(() => {});
+Profile.sync({ force: false }).then(() => {
+  Profile.hasMany(WgServer);
+});
