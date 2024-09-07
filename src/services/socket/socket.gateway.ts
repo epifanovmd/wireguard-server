@@ -1,6 +1,6 @@
 import { inject, injectable as Injectable } from "inversify";
 
-// import { WireguardService } from "../wireguard";
+import { WireguardService } from "../wireguard";
 import { SocketService } from "./socket.service";
 import { Socket } from "./socket.types";
 
@@ -10,8 +10,8 @@ export class SocketGateway {
 
   constructor(
     @inject(SocketService) private _socketService: SocketService,
-  ) // @inject(WireguardService) private _wireguardService: WireguardService,
-  {}
+    @inject(WireguardService) private _wireguardService: WireguardService,
+  ) {}
 
   start = () => {
     this._socketService.onConnection((client, clientSocket) => {

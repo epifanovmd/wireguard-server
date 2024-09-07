@@ -7,6 +7,7 @@ import {
 } from "sequelize";
 
 import { sequelize } from "../../db/db";
+import { ListResponse } from "../../dto/ListResponse";
 import { IPAddress } from "../ipaddress";
 import { IProfileDto, Profile } from "../profile";
 import { IWgClientsDto, WgClient } from "../wgclient";
@@ -21,6 +22,7 @@ export interface IWgServerDto extends WgServerModel {
   clients?: IWgClientsDto[];
   profile?: IProfileDto;
 }
+export interface IWgServersListDto extends ListResponse<IWgServerDto[]> {}
 
 export type WgServerModel = InferAttributes<WgServer>;
 

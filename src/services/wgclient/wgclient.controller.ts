@@ -18,6 +18,7 @@ import { ListResponse } from "../../dto/ListResponse";
 import { KoaRequest } from "../../types/koa";
 import {
   IWgClientCreateRequest,
+  IWgClientListDto,
   IWgClientsDto,
   IWgClientUpdateRequest,
 } from "./wgclient.model";
@@ -39,7 +40,7 @@ export class WgClientController extends Controller {
     @Request() req: KoaRequest,
     @Query("offset") offset?: number,
     @Query("limit") limit?: number,
-  ): Promise<ListResponse<IWgClientsDto[]>> {
+  ): Promise<IWgClientListDto> {
     const profileId = getContextProfile(req);
 
     return this._wgClientService

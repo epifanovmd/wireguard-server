@@ -7,6 +7,7 @@ import {
 } from "sequelize";
 
 import { sequelize } from "../../db/db";
+import { ListResponse } from "../../dto/ListResponse";
 import { IPAddress } from "../ipaddress";
 import { IProfileDto, Profile } from "../profile";
 import { IWgServerDto, WgServer } from "../wgserver";
@@ -16,6 +17,7 @@ export interface IWgClientCreateRequest
     TWgClientsCreateModel,
     "serverId" | "name" | "enabled" | "allowedIPs" | "persistentKeepalive"
   > {}
+export interface IWgClientListDto extends ListResponse<IWgClientsDto[]> {}
 
 export interface IWgClientUpdateRequest
   extends Partial<IWgClientCreateRequest> {}

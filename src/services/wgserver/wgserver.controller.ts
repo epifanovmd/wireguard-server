@@ -15,7 +15,7 @@ import {
 import { getContextProfile } from "../../common/helpers";
 import { ListResponse } from "../../dto/ListResponse";
 import { KoaRequest } from "../../types/koa";
-import { IWgServerDto } from "./wgserver.model";
+import { IWgServerDto, IWgServersListDto } from "./wgserver.model";
 import { WgServerService } from "./wgserver.service";
 
 @injectable()
@@ -34,7 +34,7 @@ export class WgServerController extends Controller {
     @Request() req: KoaRequest,
     @Query("offset") offset?: number,
     @Query("limit") limit?: number,
-  ): Promise<ListResponse<IWgServerDto[]>> {
+  ): Promise<IWgServersListDto> {
     const profileId = getContextProfile(req);
 
     return this._wgServerService

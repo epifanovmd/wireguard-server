@@ -6,243 +6,6 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"Pick_ProfileModel.Exclude_keyofProfileModel.passwordHash__": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"username": {
-						"type": "string"
-					},
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"email": {
-						"type": "string"
-					},
-					"phone": {
-						"type": "string"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"IProfileDto": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"username": {
-						"type": "string"
-					},
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"email": {
-						"type": "string"
-					},
-					"phone": {
-						"type": "string"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ListResponse_IProfileDto-Array_": {
-				"properties": {
-					"count": {
-						"type": "number",
-						"format": "double"
-					},
-					"offset": {
-						"type": "number",
-						"format": "double"
-					},
-					"limit": {
-						"type": "number",
-						"format": "double"
-					},
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/IProfileDto"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Partial_TProfileCreateModel_": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"username": {
-						"type": "string"
-					},
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"email": {
-						"type": "string"
-					},
-					"phone": {
-						"type": "string"
-					},
-					"passwordHash": {
-						"type": "string"
-					}
-				},
-				"type": "object",
-				"description": "Make all properties in T optional"
-			},
-			"TProfileUpdateModel": {
-				"$ref": "#/components/schemas/Partial_TProfileCreateModel_"
-			},
-			"ITokensDto": {
-				"properties": {
-					"accessToken": {
-						"type": "string"
-					},
-					"refreshToken": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"accessToken",
-					"refreshToken"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IProfileWithTokensDto": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"username": {
-						"type": "string"
-					},
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"email": {
-						"type": "string"
-					},
-					"phone": {
-						"type": "string"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"tokens": {
-						"$ref": "#/components/schemas/ITokensDto"
-					}
-				},
-				"required": [
-					"tokens"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Pick_TProfileCreateModel.Exclude_keyofTProfileCreateModel.id-or-username-or-passwordHash__": {
-				"properties": {
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"email": {
-						"type": "string"
-					},
-					"phone": {
-						"type": "string"
-					}
-				},
-				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"ISignUpRequestDto": {
-				"properties": {
-					"username": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					},
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"email": {
-						"type": "string"
-					},
-					"phone": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"username",
-					"password"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ISignInRequestDto": {
-				"properties": {
-					"username": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"username",
-					"password"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"IWireguardPeerStatus": {
 				"properties": {
 					"publicKey": {
@@ -287,21 +50,9 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IWgServerDto": {
+			"Pick_ProfileModel.Exclude_keyofProfileModel.passwordHash__": {
 				"properties": {
 					"id": {
-						"type": "string"
-					},
-					"profileId": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"privateKey": {
-						"type": "string"
-					},
-					"address": {
 						"type": "string"
 					},
 					"createdAt": {
@@ -312,75 +63,56 @@
 						"type": "string",
 						"format": "date-time"
 					},
-					"clients": {
-						"items": {
-							"$ref": "#/components/schemas/IWgClientsDto"
-						},
-						"type": "array"
+					"username": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"IProfileDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"username": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
 					}
 				},
 				"type": "object",
 				"additionalProperties": false
-			},
-			"InferAttributes_WgClient_": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"serverId": {
-						"type": "string"
-					},
-					"profileId": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"address": {
-						"type": "string"
-					},
-					"allowedIPs": {
-						"type": "string"
-					},
-					"publicKey": {
-						"type": "string"
-					},
-					"privateKey": {
-						"type": "string"
-					},
-					"preSharedKey": {
-						"type": "string"
-					},
-					"transferRx": {
-						"type": "number",
-						"format": "double"
-					},
-					"transferTx": {
-						"type": "number",
-						"format": "double"
-					},
-					"latestHandshakeAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"persistentKeepalive": {
-						"type": "number",
-						"format": "double"
-					},
-					"enabled": {
-						"type": "boolean"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"type": "object",
-				"description": "Utility type to extract Attributes of a given Model class.\n\nIt returns all instance properties defined in the Model, except:\n- those inherited from Model (intermediate inheritance works),\n- the ones whose type is a function,\n- the ones manually excluded using the second parameter.\n- the ones branded using {@link NonAttribute}\n\nIt cannot detect whether something is a getter or not, you should use the `Excluded`\nparameter to exclude getter & setters from the attribute list."
 			},
 			"IWgClientsDto": {
 				"properties": {
@@ -454,6 +186,15 @@
 			},
 			"InferAttributes_WgServer_": {
 				"properties": {
+					"clients": {
+						"items": {
+							"$ref": "#/components/schemas/IWgClientsDto"
+						},
+						"type": "array"
+					},
+					"profile": {
+						"$ref": "#/components/schemas/IProfileDto"
+					},
 					"id": {
 						"type": "string"
 					},
@@ -481,7 +222,105 @@
 				"type": "object",
 				"description": "Utility type to extract Attributes of a given Model class.\n\nIt returns all instance properties defined in the Model, except:\n- those inherited from Model (intermediate inheritance works),\n- the ones whose type is a function,\n- the ones manually excluded using the second parameter.\n- the ones branded using {@link NonAttribute}\n\nIt cannot detect whether something is a getter or not, you should use the `Excluded`\nparameter to exclude getter & setters from the attribute list."
 			},
-			"ListResponse_IWgClientsDto-Array_": {
+			"IWgServerDto": {
+				"properties": {
+					"clients": {
+						"items": {
+							"$ref": "#/components/schemas/IWgClientsDto"
+						},
+						"type": "array"
+					},
+					"profile": {
+						"$ref": "#/components/schemas/IProfileDto"
+					},
+					"id": {
+						"type": "string"
+					},
+					"profileId": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"privateKey": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InferAttributes_WgClient_": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"serverId": {
+						"type": "string"
+					},
+					"profileId": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"allowedIPs": {
+						"type": "string"
+					},
+					"publicKey": {
+						"type": "string"
+					},
+					"privateKey": {
+						"type": "string"
+					},
+					"preSharedKey": {
+						"type": "string"
+					},
+					"transferRx": {
+						"type": "number",
+						"format": "double"
+					},
+					"transferTx": {
+						"type": "number",
+						"format": "double"
+					},
+					"latestHandshakeAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"persistentKeepalive": {
+						"type": "number",
+						"format": "double"
+					},
+					"enabled": {
+						"type": "boolean"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"type": "object",
+				"description": "Utility type to extract Attributes of a given Model class.\n\nIt returns all instance properties defined in the Model, except:\n- those inherited from Model (intermediate inheritance works),\n- the ones whose type is a function,\n- the ones manually excluded using the second parameter.\n- the ones branded using {@link NonAttribute}\n\nIt cannot detect whether something is a getter or not, you should use the `Excluded`\nparameter to exclude getter & setters from the attribute list."
+			},
+			"IWgClientListDto": {
 				"properties": {
 					"count": {
 						"type": "number",
@@ -510,10 +349,10 @@
 			},
 			"IWgClientCreateRequest": {
 				"properties": {
-					"name": {
+					"serverId": {
 						"type": "string"
 					},
-					"serverId": {
+					"name": {
 						"type": "string"
 					},
 					"allowedIPs": {
@@ -532,10 +371,10 @@
 			},
 			"IWgClientUpdateRequest": {
 				"properties": {
-					"name": {
+					"serverId": {
 						"type": "string"
 					},
-					"serverId": {
+					"name": {
 						"type": "string"
 					},
 					"allowedIPs": {
@@ -549,6 +388,218 @@
 						"type": "boolean"
 					}
 				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IWgServersListDto": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IWgServerDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProfileListDto": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IProfileDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_TProfileCreateModel.Exclude_keyofTProfileCreateModel.id-or-passwordHash__": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"IProfileUpdateRequest": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITokensDto": {
+				"properties": {
+					"accessToken": {
+						"type": "string"
+					},
+					"refreshToken": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"accessToken",
+					"refreshToken"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProfileWithTokensDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"username": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"tokens": {
+						"$ref": "#/components/schemas/ITokensDto"
+					}
+				},
+				"required": [
+					"tokens"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_TProfileCreateModel.Exclude_keyofTProfileCreateModel.id-or-username-or-passwordHash__": {
+				"properties": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ISignUpRequestDto": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"username",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISignInRequestDto": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"username",
+					"password"
+				],
 				"type": "object",
 				"additionalProperties": false
 			}
@@ -575,298 +626,6 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/api/profile": {
-			"get": {
-				"operationId": "GetAllProfiles",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ListResponse_IProfileDto-Array_"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "offset",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					},
-					{
-						"in": "query",
-						"name": "limit",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
-			}
-		},
-		"/api/profile/{id}": {
-			"get": {
-				"operationId": "GetProfileById",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProfileDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			},
-			"patch": {
-				"operationId": "UpdateProfile",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProfileDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/TProfileUpdateModel"
-							}
-						}
-					}
-				}
-			},
-			"delete": {
-				"operationId": "DeleteProfile",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "number",
-									"format": "double"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
-			}
-		},
-		"/api/profile/my": {
-			"get": {
-				"operationId": "GetMyProfile",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProfileDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/api/auth/signUp": {
-			"post": {
-				"operationId": "SignUp",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProfileWithTokensDto"
-								}
-							}
-						}
-					}
-				},
-				"description": "Endpoint description",
-				"summary": "Endpoint summary.",
-				"tags": [
-					"Authorization"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"description": "Body param",
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ISignUpRequestDto",
-								"description": "Body param"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/auth/signIn": {
-			"post": {
-				"operationId": "SignIn",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProfileWithTokensDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Authorization"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ISignInRequestDto"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/auth/refresh": {
-			"post": {
-				"operationId": "Refresh",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ITokensDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Authorization"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"properties": {
-									"refreshToken": {
-										"type": "string"
-									}
-								},
-								"required": [
-									"refreshToken"
-								],
-								"type": "object"
-							}
-						}
-					}
-				}
-			}
-		},
 		"/api/wireguard/start/{interfaceName}": {
 			"get": {
 				"operationId": "StartVpn",
@@ -973,85 +732,6 @@
 				]
 			}
 		},
-		"/api/wgserver/create": {
-			"post": {
-				"operationId": "CreateWgServer",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWgServerDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"WgServer"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"properties": {
-									"name": {
-										"type": "string"
-									}
-								},
-								"required": [
-									"name"
-								],
-								"type": "object"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/wgserver/delete/{id}": {
-			"delete": {
-				"operationId": "DeleteWgServer",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWgServerDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"WgServer"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
 		"/api/wgclients": {
 			"get": {
 				"operationId": "GetWgClients",
@@ -1061,7 +741,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ListResponse_IWgClientsDto-Array_"
+									"$ref": "#/components/schemas/IWgClientListDto"
 								}
 							}
 						}
@@ -1240,6 +920,455 @@
 						}
 					}
 				]
+			}
+		},
+		"/api/wgserver": {
+			"get": {
+				"operationId": "GetWgServers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWgServersListDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgServer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/wgserver/{id}": {
+			"get": {
+				"operationId": "GetWgServer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWgServerDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgServer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wgserver/create": {
+			"post": {
+				"operationId": "CreateWgServer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWgServerDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgServer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"name": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"name"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/wgserver/delete/{id}": {
+			"delete": {
+				"operationId": "DeleteWgServer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgServer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/profile": {
+			"get": {
+				"operationId": "GetAllProfiles",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileListDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/profile/{id}": {
+			"get": {
+				"operationId": "GetProfileById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IProfileUpdateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/profile/my": {
+			"get": {
+				"operationId": "GetMyProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/auth/signUp": {
+			"post": {
+				"operationId": "SignUp",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileWithTokensDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Endpoint description",
+				"summary": "Endpoint summary.",
+				"tags": [
+					"Authorization"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"description": "Body param",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ISignUpRequestDto",
+								"description": "Body param"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/auth/signIn": {
+			"post": {
+				"operationId": "SignIn",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileWithTokensDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authorization"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ISignInRequestDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/auth/refresh": {
+			"post": {
+				"operationId": "Refresh",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ITokensDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authorization"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"refreshToken": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"refreshToken"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
 			}
 		}
 	},

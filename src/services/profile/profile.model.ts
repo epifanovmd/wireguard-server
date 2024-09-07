@@ -6,21 +6,19 @@ import {
 } from "sequelize";
 
 import { sequelize } from "../../db/db";
+import { ListResponse } from "../../dto/ListResponse";
 import { WgServer } from "../wgserver";
 
+export interface IProfileUpdateRequest
+  extends Omit<TProfileCreateModel, "id" | "passwordHash"> {}
 export interface IProfileDto extends Omit<ProfileModel, "passwordHash"> {}
-
-export type TProfileRequest = Partial<
-  Omit<TProfileCreateModel, "id" | "passwordHash">
->;
+export interface IProfileListDto extends ListResponse<IProfileDto[]> {}
 
 export type ProfileModel = InferAttributes<Profile>;
 export type TProfileCreateModel = InferCreationAttributes<
   Profile,
   { omit: "createdAt" | "updatedAt" }
 >;
-
-export type TProfileUpdateModel = Partial<TProfileCreateModel>;
 
 export class Profile extends Model<ProfileModel, TProfileCreateModel> {
   declare id: string;

@@ -3,15 +3,15 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
   import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse, fetchMiddlewares } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { ProfileController } from './services/profile/profile.controller';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { AuthController } from './services/auth/auth.controller';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { WireguardController } from './services/wireguard/wireguard.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { WgClientController } from './services/wgclient/wgclient.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { WgServerController } from './services/wgserver/wgserver.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { WgClientController } from './services/wgclient/wgclient.controller';
+import { ProfileController } from './services/profile/profile.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { AuthController } from './services/auth/auth.controller';
 import { koaAuthentication } from './middleware/jwt.middleware';
 // @ts-ignore - no great way to install types from subpackage
 const promiseAny = require('promise.any');
@@ -23,27 +23,139 @@ import * as KoaRouter from '@koa/router';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
+    "IWireguardPeerStatus": {
+        "dataType": "refObject",
+        "properties": {
+            "publicKey": {"dataType":"string","required":true},
+            "preSharedKey": {"dataType":"string","required":true},
+            "endpoint": {"dataType":"string","required":true},
+            "allowedIps": {"dataType":"string","required":true},
+            "latestHandshakeAt": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true},
+            "transferRx": {"dataType":"double","required":true},
+            "transferTx": {"dataType":"double","required":true},
+            "persistentKeepalive": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_ProfileModel.Exclude_keyofProfileModel.passwordHash__": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"id":{"dataType":"string"},"username":{"dataType":"string"},"firstName":{"dataType":"string"},"lastName":{"dataType":"string"},"email":{"dataType":"string"},"phone":{"dataType":"string"},"createdAt":{"dataType":"datetime"},"updatedAt":{"dataType":"datetime"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"id":{"dataType":"string"},"createdAt":{"dataType":"datetime"},"updatedAt":{"dataType":"datetime"},"username":{"dataType":"string"},"firstName":{"dataType":"string"},"lastName":{"dataType":"string"},"email":{"dataType":"string"},"phone":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IProfileDto": {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string"},
+            "createdAt": {"dataType":"datetime"},
+            "updatedAt": {"dataType":"datetime"},
             "username": {"dataType":"string"},
             "firstName": {"dataType":"string"},
             "lastName": {"dataType":"string"},
             "email": {"dataType":"string"},
             "phone": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IWgClientsDto": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string"},
+            "serverId": {"dataType":"string"},
+            "profileId": {"dataType":"string"},
+            "name": {"dataType":"string"},
+            "address": {"dataType":"string"},
+            "allowedIPs": {"dataType":"string"},
+            "publicKey": {"dataType":"string"},
+            "privateKey": {"dataType":"string"},
+            "preSharedKey": {"dataType":"string"},
+            "transferRx": {"dataType":"double"},
+            "transferTx": {"dataType":"double"},
+            "latestHandshakeAt": {"dataType":"datetime"},
+            "persistentKeepalive": {"dataType":"double"},
+            "enabled": {"dataType":"boolean"},
+            "createdAt": {"dataType":"datetime"},
+            "updatedAt": {"dataType":"datetime"},
+            "profile": {"ref":"IProfileDto","required":true},
+            "server": {"ref":"IWgServerDto","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "InferAttributes_WgServer_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"clients":{"dataType":"array","array":{"dataType":"refObject","ref":"IWgClientsDto"}},"profile":{"ref":"IProfileDto"},"id":{"dataType":"string"},"profileId":{"dataType":"string"},"name":{"dataType":"string"},"privateKey":{"dataType":"string"},"address":{"dataType":"string"},"createdAt":{"dataType":"datetime"},"updatedAt":{"dataType":"datetime"}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IWgServerDto": {
+        "dataType": "refObject",
+        "properties": {
+            "clients": {"dataType":"array","array":{"dataType":"refObject","ref":"IWgClientsDto"}},
+            "profile": {"ref":"IProfileDto"},
+            "id": {"dataType":"string"},
+            "profileId": {"dataType":"string"},
+            "name": {"dataType":"string"},
+            "privateKey": {"dataType":"string"},
+            "address": {"dataType":"string"},
             "createdAt": {"dataType":"datetime"},
             "updatedAt": {"dataType":"datetime"},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ListResponse_IProfileDto-Array_": {
+    "InferAttributes_WgClient_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"id":{"dataType":"string"},"serverId":{"dataType":"string"},"profileId":{"dataType":"string"},"name":{"dataType":"string"},"address":{"dataType":"string"},"allowedIPs":{"dataType":"string"},"publicKey":{"dataType":"string"},"privateKey":{"dataType":"string"},"preSharedKey":{"dataType":"string"},"transferRx":{"dataType":"double"},"transferTx":{"dataType":"double"},"latestHandshakeAt":{"dataType":"datetime"},"persistentKeepalive":{"dataType":"double"},"enabled":{"dataType":"boolean"},"createdAt":{"dataType":"datetime"},"updatedAt":{"dataType":"datetime"}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IWgClientListDto": {
+        "dataType": "refObject",
+        "properties": {
+            "count": {"dataType":"double"},
+            "offset": {"dataType":"double"},
+            "limit": {"dataType":"double"},
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"IWgClientsDto"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IWgClientCreateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "serverId": {"dataType":"string"},
+            "name": {"dataType":"string"},
+            "allowedIPs": {"dataType":"string"},
+            "persistentKeepalive": {"dataType":"double"},
+            "enabled": {"dataType":"boolean"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IWgClientUpdateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "serverId": {"dataType":"string"},
+            "name": {"dataType":"string"},
+            "allowedIPs": {"dataType":"string"},
+            "persistentKeepalive": {"dataType":"double"},
+            "enabled": {"dataType":"boolean"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IWgServersListDto": {
+        "dataType": "refObject",
+        "properties": {
+            "count": {"dataType":"double"},
+            "offset": {"dataType":"double"},
+            "limit": {"dataType":"double"},
+            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"IWgServerDto"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IProfileListDto": {
         "dataType": "refObject",
         "properties": {
             "count": {"dataType":"double"},
@@ -54,14 +166,21 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Partial_TProfileCreateModel_": {
+    "Pick_TProfileCreateModel.Exclude_keyofTProfileCreateModel.id-or-passwordHash__": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"id":{"dataType":"string"},"username":{"dataType":"string"},"firstName":{"dataType":"string"},"lastName":{"dataType":"string"},"email":{"dataType":"string"},"phone":{"dataType":"string"},"passwordHash":{"dataType":"string"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"username":{"dataType":"string"},"firstName":{"dataType":"string"},"lastName":{"dataType":"string"},"email":{"dataType":"string"},"phone":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "TProfileUpdateModel": {
-        "dataType": "refAlias",
-        "type": {"ref":"Partial_TProfileCreateModel_","validators":{}},
+    "IProfileUpdateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "username": {"dataType":"string"},
+            "firstName": {"dataType":"string"},
+            "lastName": {"dataType":"string"},
+            "email": {"dataType":"string"},
+            "phone": {"dataType":"string"},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ITokensDto": {
@@ -77,13 +196,13 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string"},
+            "createdAt": {"dataType":"datetime"},
+            "updatedAt": {"dataType":"datetime"},
             "username": {"dataType":"string"},
             "firstName": {"dataType":"string"},
             "lastName": {"dataType":"string"},
             "email": {"dataType":"string"},
             "phone": {"dataType":"string"},
-            "createdAt": {"dataType":"datetime"},
-            "updatedAt": {"dataType":"datetime"},
             "tokens": {"ref":"ITokensDto","required":true},
         },
         "additionalProperties": false,
@@ -116,106 +235,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IWireguardPeerStatus": {
-        "dataType": "refObject",
-        "properties": {
-            "publicKey": {"dataType":"string","required":true},
-            "preSharedKey": {"dataType":"string","required":true},
-            "endpoint": {"dataType":"string","required":true},
-            "allowedIps": {"dataType":"string","required":true},
-            "latestHandshakeAt": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true},
-            "transferRx": {"dataType":"double","required":true},
-            "transferTx": {"dataType":"double","required":true},
-            "persistentKeepalive": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IWgServerDto": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"string"},
-            "profileId": {"dataType":"string"},
-            "name": {"dataType":"string"},
-            "privateKey": {"dataType":"string"},
-            "address": {"dataType":"string"},
-            "createdAt": {"dataType":"datetime"},
-            "updatedAt": {"dataType":"datetime"},
-            "clients": {"dataType":"array","array":{"dataType":"refObject","ref":"IWgClientsDto"}},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "InferAttributes_WgClient_": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"id":{"dataType":"string"},"serverId":{"dataType":"string"},"profileId":{"dataType":"string"},"name":{"dataType":"string"},"address":{"dataType":"string"},"allowedIPs":{"dataType":"string"},"publicKey":{"dataType":"string"},"privateKey":{"dataType":"string"},"preSharedKey":{"dataType":"string"},"transferRx":{"dataType":"double"},"transferTx":{"dataType":"double"},"latestHandshakeAt":{"dataType":"datetime"},"persistentKeepalive":{"dataType":"double"},"enabled":{"dataType":"boolean"},"createdAt":{"dataType":"datetime"},"updatedAt":{"dataType":"datetime"}},"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IWgClientsDto": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"string"},
-            "serverId": {"dataType":"string"},
-            "profileId": {"dataType":"string"},
-            "name": {"dataType":"string"},
-            "address": {"dataType":"string"},
-            "allowedIPs": {"dataType":"string"},
-            "publicKey": {"dataType":"string"},
-            "privateKey": {"dataType":"string"},
-            "preSharedKey": {"dataType":"string"},
-            "transferRx": {"dataType":"double"},
-            "transferTx": {"dataType":"double"},
-            "latestHandshakeAt": {"dataType":"datetime"},
-            "persistentKeepalive": {"dataType":"double"},
-            "enabled": {"dataType":"boolean"},
-            "createdAt": {"dataType":"datetime"},
-            "updatedAt": {"dataType":"datetime"},
-            "profile": {"ref":"IProfileDto","required":true},
-            "server": {"ref":"IWgServerDto","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "InferAttributes_WgServer_": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"id":{"dataType":"string"},"profileId":{"dataType":"string"},"name":{"dataType":"string"},"privateKey":{"dataType":"string"},"address":{"dataType":"string"},"createdAt":{"dataType":"datetime"},"updatedAt":{"dataType":"datetime"}},"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ListResponse_IWgClientsDto-Array_": {
-        "dataType": "refObject",
-        "properties": {
-            "count": {"dataType":"double"},
-            "offset": {"dataType":"double"},
-            "limit": {"dataType":"double"},
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"IWgClientsDto"},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IWgClientCreateRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "name": {"dataType":"string"},
-            "serverId": {"dataType":"string"},
-            "allowedIPs": {"dataType":"string"},
-            "persistentKeepalive": {"dataType":"double"},
-            "enabled": {"dataType":"boolean"},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IWgClientUpdateRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "name": {"dataType":"string"},
-            "serverId": {"dataType":"string"},
-            "allowedIPs": {"dataType":"string"},
-            "persistentKeepalive": {"dataType":"double"},
-            "enabled": {"dataType":"boolean"},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 
@@ -226,6 +245,379 @@ export function RegisterRoutes(router: KoaRouter) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
+        router.get('/api/wireguard/start/:interfaceName',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WireguardController)),
+            ...(fetchMiddlewares<Middleware>(WireguardController.prototype.startVpn)),
+
+            async function WireguardController_startVpn(context: any, next: any) {
+            const args = {
+                    interfaceName: {"in":"path","name":"interfaceName","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WireguardController>(WireguardController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.startVpn.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.get('/api/wireguard/stop/:interfaceName',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WireguardController)),
+            ...(fetchMiddlewares<Middleware>(WireguardController.prototype.stopVpn)),
+
+            async function WireguardController_stopVpn(context: any, next: any) {
+            const args = {
+                    interfaceName: {"in":"path","name":"interfaceName","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WireguardController>(WireguardController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.stopVpn.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.get('/api/wireguard/status/:interfaceName',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WireguardController)),
+            ...(fetchMiddlewares<Middleware>(WireguardController.prototype.checkStatus)),
+
+            async function WireguardController_checkStatus(context: any, next: any) {
+            const args = {
+                    interfaceName: {"in":"path","name":"interfaceName","required":true,"dataType":"string"},
+                    publicKey: {"in":"query","name":"publicKey","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WireguardController>(WireguardController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.checkStatus.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.get('/api/wgclients',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WgClientController)),
+            ...(fetchMiddlewares<Middleware>(WgClientController.prototype.getWgClients)),
+
+            async function WgClientController_getWgClients(context: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    offset: {"in":"query","name":"offset","dataType":"double"},
+                    limit: {"in":"query","name":"limit","dataType":"double"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WgClientController>(WgClientController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.getWgClients.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.get('/api/wgclients/:id',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WgClientController)),
+            ...(fetchMiddlewares<Middleware>(WgClientController.prototype.getWgClient)),
+
+            async function WgClientController_getWgClient(context: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WgClientController>(WgClientController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.getWgClient.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.post('/api/wgclients/:id',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WgClientController)),
+            ...(fetchMiddlewares<Middleware>(WgClientController.prototype.createWgClient)),
+
+            async function WgClientController_createWgClient(context: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IWgClientCreateRequest"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WgClientController>(WgClientController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.createWgClient.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.patch('/api/wgclients/:id',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WgClientController)),
+            ...(fetchMiddlewares<Middleware>(WgClientController.prototype.updateWgClient)),
+
+            async function WgClientController_updateWgClient(context: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IWgClientUpdateRequest"},
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WgClientController>(WgClientController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.updateWgClient.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.delete('/api/wgclients/:id',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WgClientController)),
+            ...(fetchMiddlewares<Middleware>(WgClientController.prototype.deleteWgClient)),
+
+            async function WgClientController_deleteWgClient(context: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WgClientController>(WgClientController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.deleteWgClient.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.get('/api/wgserver',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WgServerController)),
+            ...(fetchMiddlewares<Middleware>(WgServerController.prototype.getWgServers)),
+
+            async function WgServerController_getWgServers(context: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    offset: {"in":"query","name":"offset","dataType":"double"},
+                    limit: {"in":"query","name":"limit","dataType":"double"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WgServerController>(WgServerController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.getWgServers.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.get('/api/wgserver/:id',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WgServerController)),
+            ...(fetchMiddlewares<Middleware>(WgServerController.prototype.getWgServer)),
+
+            async function WgServerController_getWgServer(context: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WgServerController>(WgServerController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.getWgServer.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.post('/api/wgserver/create',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WgServerController)),
+            ...(fetchMiddlewares<Middleware>(WgServerController.prototype.createWgServer)),
+
+            async function WgServerController_createWgServer(context: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string","required":true}}},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WgServerController>(WgServerController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.createWgServer.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        router.delete('/api/wgserver/delete/:id',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<Middleware>(WgServerController)),
+            ...(fetchMiddlewares<Middleware>(WgServerController.prototype.deleteWgServer)),
+
+            async function WgServerController_deleteWgServer(context: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            let validatedArgs: any[] = [];
+            try {
+              validatedArgs = getValidatedArgs(args, context, next);
+            } catch (err) {
+              const error = err as any;
+              context.status = error.status;
+              context.throw(error.status, JSON.stringify({ fields: error.fields }));
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
+
+            const controller: any = await container.get<WgServerController>(WgServerController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+            const promise = controller.deleteWgServer.apply(controller, validatedArgs as any);
+            return promiseHandler(controller, promise, context, undefined, undefined);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         router.get('/api/profile',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<Middleware>(ProfileController)),
@@ -325,7 +717,7 @@ export function RegisterRoutes(router: KoaRouter) {
             async function ProfileController_updateProfile(context: any, next: any) {
             const args = {
                     id: {"in":"path","name":"id","required":true,"dataType":"string"},
-                    body: {"in":"body","name":"body","required":true,"ref":"TProfileUpdateModel"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IProfileUpdateRequest"},
             };
 
             let validatedArgs: any[] = [];
@@ -355,7 +747,7 @@ export function RegisterRoutes(router: KoaRouter) {
 
             async function ProfileController_deleteProfile(context: any, next: any) {
             const args = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"double"},
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
             };
 
             let validatedArgs: any[] = [];
@@ -462,311 +854,6 @@ export function RegisterRoutes(router: KoaRouter) {
             }
 
             const promise = controller.refresh.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.get('/api/wireguard/start/:interfaceName',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<Middleware>(WireguardController)),
-            ...(fetchMiddlewares<Middleware>(WireguardController.prototype.startVpn)),
-
-            async function WireguardController_startVpn(context: any, next: any) {
-            const args = {
-                    interfaceName: {"in":"path","name":"interfaceName","required":true,"dataType":"string"},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<WireguardController>(WireguardController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.startVpn.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.get('/api/wireguard/stop/:interfaceName',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<Middleware>(WireguardController)),
-            ...(fetchMiddlewares<Middleware>(WireguardController.prototype.stopVpn)),
-
-            async function WireguardController_stopVpn(context: any, next: any) {
-            const args = {
-                    interfaceName: {"in":"path","name":"interfaceName","required":true,"dataType":"string"},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<WireguardController>(WireguardController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.stopVpn.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.get('/api/wireguard/status/:interfaceName',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<Middleware>(WireguardController)),
-            ...(fetchMiddlewares<Middleware>(WireguardController.prototype.checkStatus)),
-
-            async function WireguardController_checkStatus(context: any, next: any) {
-            const args = {
-                    interfaceName: {"in":"path","name":"interfaceName","required":true,"dataType":"string"},
-                    publicKey: {"in":"query","name":"publicKey","required":true,"dataType":"string"},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<WireguardController>(WireguardController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.checkStatus.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.post('/api/wgserver/create',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<Middleware>(WgServerController)),
-            ...(fetchMiddlewares<Middleware>(WgServerController.prototype.createWgServer)),
-
-            async function WgServerController_createWgServer(context: any, next: any) {
-            const args = {
-                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
-                    body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string","required":true}}},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<WgServerController>(WgServerController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.createWgServer.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.delete('/api/wgserver/delete/:id',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<Middleware>(WgServerController)),
-            ...(fetchMiddlewares<Middleware>(WgServerController.prototype.deleteWgServer)),
-
-            async function WgServerController_deleteWgServer(context: any, next: any) {
-            const args = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<WgServerController>(WgServerController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.deleteWgServer.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.get('/api/wgclients',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<Middleware>(WgClientController)),
-            ...(fetchMiddlewares<Middleware>(WgClientController.prototype.getWgClients)),
-
-            async function WgClientController_getWgClients(context: any, next: any) {
-            const args = {
-                    offset: {"in":"query","name":"offset","dataType":"double"},
-                    limit: {"in":"query","name":"limit","dataType":"double"},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<WgClientController>(WgClientController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.getWgClients.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.get('/api/wgclients/:id',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<Middleware>(WgClientController)),
-            ...(fetchMiddlewares<Middleware>(WgClientController.prototype.getWgClient)),
-
-            async function WgClientController_getWgClient(context: any, next: any) {
-            const args = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<WgClientController>(WgClientController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.getWgClient.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.post('/api/wgclients/:id',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<Middleware>(WgClientController)),
-            ...(fetchMiddlewares<Middleware>(WgClientController.prototype.createWgClient)),
-
-            async function WgClientController_createWgClient(context: any, next: any) {
-            const args = {
-                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
-                    body: {"in":"body","name":"body","required":true,"ref":"IWgClientCreateRequest"},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<WgClientController>(WgClientController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.createWgClient.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.patch('/api/wgclients/:id',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<Middleware>(WgClientController)),
-            ...(fetchMiddlewares<Middleware>(WgClientController.prototype.updateWgClient)),
-
-            async function WgClientController_updateWgClient(context: any, next: any) {
-            const args = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
-                    body: {"in":"body","name":"body","required":true,"ref":"IWgClientUpdateRequest"},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<WgClientController>(WgClientController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.updateWgClient.apply(controller, validatedArgs as any);
-            return promiseHandler(controller, promise, context, undefined, undefined);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.delete('/api/wgclients/:id',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<Middleware>(WgClientController)),
-            ...(fetchMiddlewares<Middleware>(WgClientController.prototype.deleteWgClient)),
-
-            async function WgClientController_deleteWgClient(context: any, next: any) {
-            const args = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
-            };
-
-            let validatedArgs: any[] = [];
-            try {
-              validatedArgs = getValidatedArgs(args, context, next);
-            } catch (err) {
-              const error = err as any;
-              context.status = error.status;
-              context.throw(error.status, JSON.stringify({ fields: error.fields }));
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(context.request) : iocContainer;
-
-            const controller: any = await container.get<WgClientController>(WgClientController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-            const promise = controller.deleteWgClient.apply(controller, validatedArgs as any);
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
