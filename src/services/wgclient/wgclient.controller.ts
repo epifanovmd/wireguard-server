@@ -65,7 +65,7 @@ export class WgClientController extends Controller {
   }
 
   @Security("jwt")
-  @Get("{id}")
+  @Get("{id}/configuration")
   getWgClientConfiguration(
     @Request() req: KoaRequest,
     id: string,
