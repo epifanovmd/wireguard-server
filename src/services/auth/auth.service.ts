@@ -7,8 +7,8 @@ import { createTokenAsync, verifyToken } from "../../common/helpers";
 import { IProfileDto, ProfileService } from "../profile";
 import {
   IProfileWithTokensDto,
-  ISignInRequestDto,
-  ISignUpRequestDto,
+  ISignInRequest,
+  ISignUpRequest,
   ITokensDto,
 } from "./auth.types";
 
@@ -22,7 +22,7 @@ export class AuthService {
     username,
     password,
     ...rest
-  }: ISignUpRequestDto): Promise<IProfileWithTokensDto> {
+  }: ISignUpRequest): Promise<IProfileWithTokensDto> {
     const client = await this._profileService
       .getProfileByAttr({
         username,
@@ -51,7 +51,7 @@ export class AuthService {
     }
   }
 
-  async signIn(body: ISignInRequestDto): Promise<IProfileWithTokensDto> {
+  async signIn(body: ISignInRequest): Promise<IProfileWithTokensDto> {
     const { username, password } = body;
 
     const { id, passwordHash } = await this._profileService.getProfileByAttr({

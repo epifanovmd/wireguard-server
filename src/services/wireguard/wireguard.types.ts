@@ -1,4 +1,4 @@
-export interface IWireguardPeerStatus {
+export interface IWireguardPeerStatusDto {
   publicKey: string;
   preSharedKey: string;
   endpoint: string;

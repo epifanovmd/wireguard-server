@@ -12,7 +12,7 @@ import {
   Tags,
 } from "tsoa";
 
-import { ApiError, assertNotNull } from "../../common";
+import { getContextProfile } from "../../common/helpers";
 import { KoaRequest } from "../../types/koa";
 import {
   IProfileDto,
@@ -28,6 +28,7 @@ export class ProfileController extends Controller {
   constructor(@inject(ProfileService) private _profileService: ProfileService) {
     super();
   }
+
   @Security("jwt")
   @Get()
   getAllProfiles(
@@ -51,12 +52,20 @@ export class ProfileController extends Controller {
   @Security("jwt")
   @Get("/my")
   getMyProfile(@Request() req: KoaRequest): Promise<IProfileDto> {
-    const profileId = assertNotNull(
-      req.ctx.request.user?.id,
-      new ApiError("No token provided", 401),
-    );
+    const profileId = getContextProfile(req);
 
     return this._profileService.getProfile(profileId);
+  }
+
+  @Security("jwt")
+  @Patch("/my/{id}")
+  updateMyProfile(
+    @Request() req: KoaRequest,
+    @Body() body: IProfileUpdateRequest,
+  ): Promise<IProfileDto> {
+    const profileId = getContextProfile(req);
+
+    return this._profileService.updateProfile(profileId, body);
   }
 
   @Security("jwt")
@@ -66,6 +75,14 @@ export class ProfileController extends Controller {
     @Body() body: IProfileUpdateRequest,
   ): Promise<IProfileDto> {
     return this._profileService.updateProfile(id, body);
+  }
+
+  @Security("jwt")
+  @Delete("/my/{id}")
+  deleteMyProfile(@Request() req: KoaRequest): Promise<string> {
+    const profileId = getContextProfile(req);
+
+    return this._profileService.deleteProfile(profileId);
   }
 
   @Security("jwt")

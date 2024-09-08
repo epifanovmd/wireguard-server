@@ -23,7 +23,7 @@ import * as KoaRouter from '@koa/router';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "IWireguardPeerStatus": {
+    "IWireguardPeerStatusDto": {
         "dataType": "refObject",
         "properties": {
             "publicKey": {"dataType":"string","required":true},
@@ -208,25 +208,20 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_TProfileCreateModel.Exclude_keyofTProfileCreateModel.id-or-username-or-passwordHash__": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"firstName":{"dataType":"string"},"lastName":{"dataType":"string"},"email":{"dataType":"string"},"phone":{"dataType":"string"}},"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ISignUpRequestDto": {
+    "ISignUpRequest": {
         "dataType": "refObject",
         "properties": {
-            "username": {"dataType":"string","required":true},
-            "password": {"dataType":"string","required":true},
+            "username": {"dataType":"string"},
             "firstName": {"dataType":"string"},
             "lastName": {"dataType":"string"},
             "email": {"dataType":"string"},
             "phone": {"dataType":"string"},
+            "password": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ISignInRequestDto": {
+    "ISignInRequest": {
         "dataType": "refObject",
         "properties": {
             "username": {"dataType":"string","required":true},
@@ -776,7 +771,7 @@ export function RegisterRoutes(router: KoaRouter) {
 
             async function AuthController_signUp(context: any, next: any) {
             const args = {
-                    body: {"in":"body","name":"body","required":true,"ref":"ISignUpRequestDto"},
+                    body: {"in":"body","name":"body","required":true,"ref":"ISignUpRequest"},
             };
 
             let validatedArgs: any[] = [];
@@ -805,7 +800,7 @@ export function RegisterRoutes(router: KoaRouter) {
 
             async function AuthController_signIn(context: any, next: any) {
             const args = {
-                    body: {"in":"body","name":"body","required":true,"ref":"ISignInRequestDto"},
+                    body: {"in":"body","name":"body","required":true,"ref":"ISignInRequest"},
             };
 
             let validatedArgs: any[] = [];

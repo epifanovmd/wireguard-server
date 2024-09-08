@@ -10,7 +10,7 @@ import {
   getWireguardPeersConfig,
   getWireguardSeverBlockConfig,
 } from "./wireguard.constants";
-import { IWireguardPeerStatus } from "./wireguard.types";
+import { IWireguardPeerStatusDto } from "./wireguard.types";
 
 const { WG_PATH } = config;
 
@@ -71,7 +71,7 @@ export class WireguardService {
           persistentKeepalive,
         ] = line.split("\t");
 
-        const peer: IWireguardPeerStatus = {
+        const peer: IWireguardPeerStatusDto = {
           publicKey,
           preSharedKey,
           endpoint,
