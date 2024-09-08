@@ -2,6 +2,7 @@ import { inject, injectable } from "inversify";
 import { Includeable, WhereOptions } from "sequelize";
 import { v4 } from "uuid";
 
+import { config } from "../../../config";
 import { ApiError } from "../../common";
 import { IPAddressService } from "../ipaddress";
 import { Profile, ProfileService } from "../profile";
@@ -64,10 +65,13 @@ export class WgServerService {
     const ipaddress = await this._ipAddressService.createServerIPAddress(id);
     const privateKey = await this._wireguardService.getPrivateKey();
 
+    const maxPort = await WgServer.max<number | null, WgServer>("port");
+
     return WgServer.create({
       id,
       profileId,
       privateKey,
+      port: maxPort ? maxPort + 1 : config.WG_DEFAULT_INTERFACE_PORT,
       ...body,
       address: this._ipAddressService.formatIp(
         ipaddress.a,

@@ -3,7 +3,6 @@ import { WgClient } from "./wgclient.model";
 
 const {
   PUBLIC_HOST,
-  WG_PORT,
   WG_MTU,
   WG_DEFAULT_DNS,
   WG_PERSISTENT_KEEPALIVE,
@@ -22,4 +21,4 @@ PublicKey = ${wgClient.publicKey}
 PresharedKey = ${wgClient.preSharedKey}
 AllowedIPs = ${WG_ALLOWED_IPS}
 PersistentKeepalive = ${WG_PERSISTENT_KEEPALIVE}
-Endpoint = ${PUBLIC_HOST}:${WG_PORT}`;
+Endpoint = ${PUBLIC_HOST}:${wgClient.server.port}`;

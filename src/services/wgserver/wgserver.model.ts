@@ -15,7 +15,7 @@ import { IWgClientsDto, WgClient } from "../wgclient";
 export interface ICreateWgServerRequest
   extends Omit<
     TWgServersCreateModel,
-    "id" | "profileId" | "privateKey" | "address"
+    "id" | "profileId" | "privateKey" | "address" | "port"
   > {}
 
 export interface IWgServerDto extends WgServerModel {
@@ -37,6 +37,7 @@ export class WgServer extends Model<WgServerModel, TWgServersCreateModel> {
   declare profileId: string;
 
   declare name: string;
+  declare port: number;
   declare privateKey: string;
   declare address: string;
 
@@ -63,6 +64,10 @@ WgServer.init(
     },
     name: {
       type: DataTypes.STRING(16),
+      allowNull: false,
+    },
+    port: {
+      type: DataTypes.INTEGER(),
       allowNull: false,
     },
     privateKey: {

@@ -2,7 +2,7 @@ import { config } from "../../../config";
 import { IWgClientsDto } from "../wgclient";
 import { IWgServerDto } from "../wgserver";
 
-const { WG_PORT, WG_PRE_UP, WG_POST_UP, WG_PRE_DOWN, WG_POST_DOWN } = config;
+const { WG_PRE_UP, WG_POST_UP, WG_PRE_DOWN, WG_POST_DOWN } = config;
 
 export const getWireguardSeverBlockConfig = (server: IWgServerDto) => {
   return `
@@ -13,7 +13,7 @@ export const getWireguardSeverBlockConfig = (server: IWgServerDto) => {
 [Interface]
 PrivateKey = ${server.privateKey}
 Address = ${server.address}/24
-ListenPort = ${WG_PORT}
+ListenPort = ${server.port}
 PreUp = ${WG_PRE_UP}
 PreDown = ${WG_PRE_DOWN}
 PostUp = ${WG_POST_UP}
