@@ -58,7 +58,7 @@ export class ProfileController extends Controller {
   }
 
   @Security("jwt")
-  @Patch("/my/{id}")
+  @Patch("/my")
   updateMyProfile(
     @Request() req: KoaRequest,
     @Body() body: IProfileUpdateRequest,
@@ -78,7 +78,7 @@ export class ProfileController extends Controller {
   }
 
   @Security("jwt")
-  @Delete("/my/{id}")
+  @Delete("/my")
   deleteMyProfile(@Request() req: KoaRequest): Promise<string> {
     const profileId = getContextProfile(req);
 
