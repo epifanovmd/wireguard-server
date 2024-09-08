@@ -35,8 +35,9 @@ export class WgClientController extends Controller {
   }
 
   @Security("jwt")
-  @Get()
+  @Get("/server/{serverId}")
   getWgClients(
+    serverId: string,
     @Request() req: KoaRequest,
     @Query("offset") offset?: number,
     @Query("limit") limit?: number,
@@ -44,7 +45,7 @@ export class WgClientController extends Controller {
     const profileId = getContextProfile(req);
 
     return this._wgClientService
-      .getWgClients(profileId, offset, limit)
+      .getWgClients(profileId, serverId, offset, limit)
       .then(result => ({
         offset,
         limit,

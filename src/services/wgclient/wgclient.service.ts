@@ -22,11 +22,16 @@ export class WgClientService {
     @inject(WireguardService) private _wireguardService: WireguardService,
   ) {}
 
-  getWgClients = (profileId: string, offset?: number, limit?: number) =>
+  getWgClients = (
+    profileId: string,
+    serverId: string,
+    offset?: number,
+    limit?: number,
+  ) =>
     WgClient.findAll({
       limit,
       offset,
-      where: { profileId },
+      where: { profileId, serverId },
       attributes: WgClientService.wgClientAttributes,
       order: [["createdAt", "DESC"]],
       include: WgClientService.include,
