@@ -30,7 +30,34 @@ export class ProfileController extends Controller {
   }
 
   @Security("jwt")
-  @Get()
+  @Get("my")
+  getMyProfile(@Request() req: KoaRequest): Promise<IProfileDto> {
+    const profileId = getContextProfile(req);
+
+    return this._profileService.getProfile(profileId);
+  }
+
+  @Security("jwt")
+  @Patch("/my/update")
+  updateMyProfile(
+    @Request() req: KoaRequest,
+    @Body() body: IProfileUpdateRequest,
+  ): Promise<IProfileDto> {
+    const profileId = getContextProfile(req);
+
+    return this._profileService.updateProfile(profileId, body);
+  }
+
+  @Security("jwt")
+  @Delete("my/delete")
+  deleteMyProfile(@Request() req: KoaRequest): Promise<string> {
+    const profileId = getContextProfile(req);
+
+    return this._profileService.deleteProfile(profileId);
+  }
+
+  @Security("jwt")
+  @Get("all")
   getAllProfiles(
     @Query("offset") offset?: number,
     @Query("limit") limit?: number,
@@ -44,32 +71,13 @@ export class ProfileController extends Controller {
   }
 
   @Security("jwt")
-  @Get("{id}")
+  @Get("/{id}")
   getProfileById(id: string): Promise<IProfileDto> {
     return this._profileService.getProfile(id);
   }
 
   @Security("jwt")
-  @Get("/my")
-  getMyProfile(@Request() req: KoaRequest): Promise<IProfileDto> {
-    const profileId = getContextProfile(req);
-
-    return this._profileService.getProfile(profileId);
-  }
-
-  @Security("jwt")
-  @Patch("/my")
-  updateMyProfile(
-    @Request() req: KoaRequest,
-    @Body() body: IProfileUpdateRequest,
-  ): Promise<IProfileDto> {
-    const profileId = getContextProfile(req);
-
-    return this._profileService.updateProfile(profileId, body);
-  }
-
-  @Security("jwt")
-  @Patch("/{id}")
+  @Patch("update/{id}")
   updateProfile(
     id: string,
     @Body() body: IProfileUpdateRequest,
@@ -78,15 +86,7 @@ export class ProfileController extends Controller {
   }
 
   @Security("jwt")
-  @Delete("/my")
-  deleteMyProfile(@Request() req: KoaRequest): Promise<string> {
-    const profileId = getContextProfile(req);
-
-    return this._profileService.deleteProfile(profileId);
-  }
-
-  @Security("jwt")
-  @Delete("/{id}")
+  @Delete("delete/{id}")
   deleteProfile(id: string): Promise<string> {
     return this._profileService.deleteProfile(id);
   }

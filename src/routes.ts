@@ -135,7 +135,6 @@ const models: TsoaRoute.Models = {
     "IWgClientUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "serverId": {"dataType":"string"},
             "name": {"dataType":"string"},
             "allowedIPs": {"dataType":"string"},
             "persistentKeepalive": {"dataType":"double"},
@@ -426,7 +425,7 @@ export function RegisterRoutes(router: KoaRouter) {
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.post('/api/wgclients/:id',
+        router.post('/api/wgclients/create',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<Middleware>(WgClientController)),
             ...(fetchMiddlewares<Middleware>(WgClientController.prototype.createWgClient)),
@@ -457,7 +456,7 @@ export function RegisterRoutes(router: KoaRouter) {
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.patch('/api/wgclients/:id',
+        router.patch('/api/wgclients/update/:id',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<Middleware>(WgClientController)),
             ...(fetchMiddlewares<Middleware>(WgClientController.prototype.updateWgClient)),
@@ -489,7 +488,7 @@ export function RegisterRoutes(router: KoaRouter) {
             return promiseHandler(controller, promise, context, undefined, undefined);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        router.delete('/api/wgclients/:id',
+        router.delete('/api/wgclients/delete/:id',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<Middleware>(WgClientController)),
             ...(fetchMiddlewares<Middleware>(WgClientController.prototype.deleteWgClient)),

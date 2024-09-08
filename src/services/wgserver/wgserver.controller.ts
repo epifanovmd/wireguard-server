@@ -48,7 +48,7 @@ export class WgServerController extends Controller {
   }
 
   @Security("jwt")
-  @Get("{id}")
+  @Get("server/{id}")
   getWgServer(@Request() req: KoaRequest, id: string): Promise<IWgServerDto> {
     const profileId = getContextProfile(req);
 

@@ -14,7 +14,6 @@ import {
 } from "tsoa";
 
 import { getContextProfile } from "../../common/helpers";
-import { ListResponse } from "../../dto/ListResponse";
 import { KoaRequest } from "../../types/koa";
 import {
   IWgClientCreateRequest,
@@ -55,7 +54,7 @@ export class WgClientController extends Controller {
   }
 
   @Security("jwt")
-  @Get("{id}")
+  @Get("client/{id}")
   getWgClient(@Request() req: KoaRequest, id: string): Promise<IWgClientsDto> {
     const profileId = getContextProfile(req);
 
@@ -66,7 +65,7 @@ export class WgClientController extends Controller {
   }
 
   @Security("jwt")
-  @Get("{id}/configuration")
+  @Get("client/{id}/configuration")
   getWgClientConfiguration(
     @Request() req: KoaRequest,
     id: string,
@@ -77,7 +76,7 @@ export class WgClientController extends Controller {
   }
 
   @Security("jwt")
-  @Post("/create")
+  @Post("create")
   createWgClient(
     @Request() req: KoaRequest,
     @Body() body: IWgClientCreateRequest,
@@ -88,7 +87,7 @@ export class WgClientController extends Controller {
   }
 
   @Security("jwt")
-  @Patch("/update/{id}")
+  @Patch("update/{id}")
   updateWgClient(
     @Request() req: KoaRequest,
     @Body() body: IWgClientUpdateRequest,
@@ -100,7 +99,7 @@ export class WgClientController extends Controller {
   }
 
   @Security("jwt")
-  @Delete("/delete/{id}")
+  @Delete("delete/{id}")
   deleteWgClient(@Request() req: KoaRequest, id: string): Promise<string> {
     const profileId = getContextProfile(req);
 
