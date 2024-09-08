@@ -1,5 +1,4 @@
 import { inject, injectable } from "inversify";
-import QRCode from "qrcode";
 import { Includeable, WhereOptions } from "sequelize";
 import { v4 } from "uuid";
 
@@ -57,17 +56,13 @@ export class WgClientService {
       return result;
     });
 
-  getWgClientConfiguration = async (id: string) => {
-    return getClientConfig(await this.getWgClient(id));
-  };
-
-  getWgClientQRCodeSVG = async (id: string) => {
-    const config = await this.getWgClientConfiguration(id);
-
-    return QRCode.toString(config, {
-      type: "svg",
-      width: 128,
-    });
+  getWgClientConfiguration = async (profileId: string, id: string) => {
+    return getClientConfig(
+      await this.getWgClientByAttr({
+        profileId,
+        id,
+      }),
+    );
   };
 
   createWgClient = async (profileId: string, body: IWgClientCreateRequest) => {

@@ -65,6 +65,17 @@ export class WgClientController extends Controller {
   }
 
   @Security("jwt")
+  @Get("{id}")
+  getWgClientConfiguration(
+    @Request() req: KoaRequest,
+    id: string,
+  ): Promise<string> {
+    const profileId = getContextProfile(req);
+
+    return this._wgClientService.getWgClientConfiguration(profileId, id);
+  }
+
+  @Security("jwt")
   @Post("/{id}")
   createWgClient(
     @Request() req: KoaRequest,
