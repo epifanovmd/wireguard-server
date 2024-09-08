@@ -20,7 +20,7 @@ export interface IWgClientCreateRequest
 export interface IWgClientListDto extends ListResponse<IWgClientsDto[]> {}
 
 export interface IWgClientUpdateRequest
-  extends Partial<IWgClientCreateRequest> {}
+  extends Partial<Omit<IWgClientCreateRequest, "serverId">> {}
 
 export interface IWgClientsDto extends WgClientModel {
   profile: IProfileDto;
