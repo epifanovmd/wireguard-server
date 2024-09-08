@@ -204,6 +204,10 @@
 					"name": {
 						"type": "string"
 					},
+					"port": {
+						"type": "number",
+						"format": "double"
+					},
 					"privateKey": {
 						"type": "string"
 					},
@@ -241,6 +245,10 @@
 					},
 					"name": {
 						"type": "string"
+					},
+					"port": {
+						"type": "number",
+						"format": "double"
 					},
 					"privateKey": {
 						"type": "string"
@@ -415,33 +423,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IProfileListDto": {
-				"properties": {
-					"count": {
-						"type": "number",
-						"format": "double"
-					},
-					"offset": {
-						"type": "number",
-						"format": "double"
-					},
-					"limit": {
-						"type": "number",
-						"format": "double"
-					},
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/IProfileDto"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"Pick_TProfileCreateModel.Exclude_keyofTProfileCreateModel.id-or-passwordHash__": {
 				"properties": {
 					"username": {
@@ -481,6 +462,33 @@
 						"type": "string"
 					}
 				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProfileListDto": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IProfileDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -763,7 +771,7 @@
 				]
 			}
 		},
-		"/api/wgclients/{id}": {
+		"/api/wgclients/client/{id}": {
 			"get": {
 				"operationId": "GetWgClient",
 				"responses": {
@@ -798,7 +806,7 @@
 				]
 			}
 		},
-		"/api/wgclients/{id}/configuration": {
+		"/api/wgclients/client/{id}/configuration": {
 			"get": {
 				"operationId": "GetWgClientConfiguration",
 				"responses": {
@@ -949,6 +957,98 @@
 				]
 			}
 		},
+		"/api/wgserver/server/{id}/start": {
+			"get": {
+				"operationId": "StartServer",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"WgServer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wgserver/server/{id}/stop": {
+			"get": {
+				"operationId": "StopServer",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"WgServer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wgserver/server/{id}/status": {
+			"get": {
+				"operationId": "GetServerStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string",
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgServer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/api/wgserver": {
 			"get": {
 				"operationId": "GetWgServers",
@@ -994,7 +1094,7 @@
 				]
 			}
 		},
-		"/api/wgserver/{id}": {
+		"/api/wgserver/server/{id}": {
 			"get": {
 				"operationId": "GetWgServer",
 				"responses": {
@@ -1108,7 +1208,95 @@
 				]
 			}
 		},
-		"/api/profile": {
+		"/api/profile/my": {
+			"get": {
+				"operationId": "GetMyProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/profile/my/update": {
+			"patch": {
+				"operationId": "UpdateMyProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IProfileUpdateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/profile/my/delete": {
+			"delete": {
+				"operationId": "DeleteMyProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/profile/all": {
 			"get": {
 				"operationId": "GetAllProfiles",
 				"responses": {
@@ -1186,7 +1374,9 @@
 						}
 					}
 				]
-			},
+			}
+		},
+		"/api/profile/update/{id}": {
 			"patch": {
 				"operationId": "UpdateProfile",
 				"responses": {
@@ -1229,7 +1419,9 @@
 						}
 					}
 				}
-			},
+			}
+		},
+		"/api/profile/delete/{id}": {
 			"delete": {
 				"operationId": "DeleteProfile",
 				"responses": {
@@ -1262,90 +1454,6 @@
 						}
 					}
 				]
-			}
-		},
-		"/api/profile/my": {
-			"get": {
-				"operationId": "GetMyProfile",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProfileDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
-			},
-			"patch": {
-				"operationId": "UpdateMyProfile",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProfileDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IProfileUpdateRequest"
-							}
-						}
-					}
-				}
-			},
-			"delete": {
-				"operationId": "DeleteMyProfile",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
 			}
 		},
 		"/api/auth/signUp": {

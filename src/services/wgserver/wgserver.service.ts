@@ -114,6 +114,8 @@ export class WgServerService {
   deleteWgServer = async (profileId: string, id: string) => {
     const wgServer = await this.getWgServer(id);
 
+    await this._wireguardService.start(wgServer.name);
+
     if (wgServer.profileId !== profileId) {
       throw new ApiError("Невозможно удалить сервер", 403);
     }
