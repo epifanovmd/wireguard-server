@@ -77,7 +77,7 @@ export class WgClientController extends Controller {
   }
 
   @Security("jwt")
-  @Post("/{id}")
+  @Post("/create")
   createWgClient(
     @Request() req: KoaRequest,
     @Body() body: IWgClientCreateRequest,
@@ -88,7 +88,7 @@ export class WgClientController extends Controller {
   }
 
   @Security("jwt")
-  @Patch("/{id}")
+  @Patch("/update/{id}")
   updateWgClient(
     @Request() req: KoaRequest,
     @Body() body: IWgClientUpdateRequest,
@@ -100,7 +100,7 @@ export class WgClientController extends Controller {
   }
 
   @Security("jwt")
-  @Delete("/{id}")
+  @Delete("/delete/{id}")
   deleteWgClient(@Request() req: KoaRequest, id: string): Promise<string> {
     const profileId = getContextProfile(req);
 
