@@ -21,6 +21,24 @@ export class WgServerService {
     @inject(WireguardService) private _wireguardService: WireguardService,
   ) {}
 
+  async startServer(profileId: string, serverId: string) {
+    const server = await this.getWgServerByAttr({ profileId, serverId });
+
+    await this._wireguardService.start(server.name);
+  }
+
+  async stopServer(profileId: string, serverId: string) {
+    const server = await this.getWgServerByAttr({ profileId, serverId });
+
+    await this._wireguardService.stop(server.name);
+  }
+
+  async getServerStatus(profileId: string, serverId: string) {
+    const server = await this.getWgServerByAttr({ profileId, serverId });
+
+    return this._wireguardService.getInterfaceStatus(server.name);
+  }
+
   getWgServers = (profileId: string, offset?: number, limit?: number) =>
     WgServer.findAll({
       limit,

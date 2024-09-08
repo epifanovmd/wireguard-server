@@ -13,7 +13,6 @@ import {
 } from "tsoa";
 
 import { getContextProfile } from "../../common/helpers";
-import { ListResponse } from "../../dto/ListResponse";
 import { KoaRequest } from "../../types/koa";
 import { IWgServerDto, IWgServersListDto } from "./wgserver.model";
 import { WgServerService } from "./wgserver.service";
@@ -26,6 +25,33 @@ export class WgServerController extends Controller {
     @inject(WgServerService) private _wgServerService: WgServerService,
   ) {
     super();
+  }
+
+  @Security("jwt")
+  @Get("server/{id}/start")
+  startServer(@Request() req: KoaRequest, id: string): Promise<void> {
+    const profileId = getContextProfile(req);
+
+    return this._wgServerService.startServer(profileId, id);
+  }
+
+  @Security("jwt")
+  @Get("server/{id}/stop")
+  stopServer(@Request() req: KoaRequest, id: string): Promise<void> {
+    const profileId = getContextProfile(req);
+
+    return this._wgServerService.startServer(profileId, id);
+  }
+
+  @Security("jwt")
+  @Get("server/{id}/status")
+  getServerStatus(
+    @Request() req: KoaRequest,
+    id: string,
+  ): Promise<string | null> {
+    const profileId = getContextProfile(req);
+
+    return this._wgServerService.getServerStatus(profileId, id);
   }
 
   @Security("jwt")
