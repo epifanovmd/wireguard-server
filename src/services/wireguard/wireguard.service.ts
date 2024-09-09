@@ -52,14 +52,14 @@ export class WireguardService {
     await this._syncInterface(wgServer.name);
   };
 
-  getStatus = async (interfaceName: string, publicKey: string) => {
+  getStatuses = async (interfaceName: string) => {
     const dump = await this._utilsService.exec(`wg show ${interfaceName} dump`);
 
     return dump
       .trim()
       .split("\n")
       .slice(1)
-      .map(line => {
+      .reduce<Record<string, IWireguardPeerStatus>>((acc, line) => {
         const [
           publicKey,
           preSharedKey,
@@ -71,10 +71,7 @@ export class WireguardService {
           persistentKeepalive,
         ] = line.split("\t");
 
-        const peer: IWireguardPeerStatus = {
-          publicKey,
-          preSharedKey,
-          endpoint,
+        acc[publicKey] = {
           allowedIps,
           latestHandshakeAt:
             latestHandshakeAt === "0"
@@ -85,9 +82,45 @@ export class WireguardService {
           persistentKeepalive: persistentKeepalive,
         };
 
-        return peer;
-      })
-      .find(item => item.publicKey === publicKey);
+        return acc;
+      }, {});
+  };
+
+  getStatus = async (
+    interfaceName: string,
+    publicKey: string,
+  ): Promise<IWireguardPeerStatus | null> => {
+    const dump = await this._utilsService.exec(
+      `wg show ${interfaceName} dump | grep ${publicKey}`,
+    );
+
+    const line = dump.trim().split("\n")[0];
+
+    if (line) {
+      const [
+        _publicKey,
+        _preSharedKey,
+        _endpoint,
+        allowedIps,
+        latestHandshakeAt,
+        transferRx,
+        transferTx,
+        persistentKeepalive,
+      ] = line.split("\t");
+
+      return {
+        allowedIps,
+        latestHandshakeAt:
+          latestHandshakeAt === "0"
+            ? null
+            : new Date(Number(`${latestHandshakeAt}000`)),
+        transferRx: Number(transferRx),
+        transferTx: Number(transferTx),
+        persistentKeepalive: persistentKeepalive,
+      };
+    }
+
+    return null;
   };
 
   getPrivateKey = () => {

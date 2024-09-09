@@ -40,7 +40,7 @@ export class WireguardController extends Controller {
   checkStatus(
     interfaceName: string,
     @Query("publicKey") publicKey: string,
-  ): Promise<IWireguardPeerStatus | undefined> {
+  ): Promise<IWireguardPeerStatus | null> {
     try {
       return this._wireguardService.getStatus(interfaceName, publicKey);
     } catch (e) {
