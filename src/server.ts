@@ -5,8 +5,10 @@ import { RegisterAppMiddlewares, RegisterSwagger } from "./middleware";
 import { iocContainer } from "./modules";
 import { RegisterRoutes } from "./routes";
 import { SocketGateway } from "./services/socket/socket.gateway";
+import { WgServerService } from "./services/wgserver";
 const { SERVER_HOST, SERVER_PORT } = config;
 
+const wgServerService = iocContainer.get(WgServerService);
 const socketGateway = iocContainer.get(SocketGateway);
 
 const bootstrap = () => {
@@ -28,7 +30,9 @@ const bootstrap = () => {
     .use(router.routes())
     .use(router.allowedMethods())
     .use(notFoundHandler)
-    .listen(SERVER_PORT, SERVER_HOST, () => {
+    .listen(SERVER_PORT, SERVER_HOST, async () => {
+      await wgServerService.init();
+
       const url = `http://${SERVER_HOST}:${SERVER_PORT}`;
 
       console.info(`REST API Server running on: ${url}`);

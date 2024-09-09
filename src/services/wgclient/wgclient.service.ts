@@ -37,13 +37,19 @@ export class WgClientService {
       include: WgClientService.include,
     });
 
+  getWgClientsByAttr = (where: WhereOptions) =>
+    WgClient.findAll({
+      where,
+      include: WgClientService.include,
+    });
+
   getWgClientByAttr = (where: WhereOptions) =>
     WgClient.findOne({
       where,
       include: WgClientService.include,
     }).then(result => {
       if (result === null) {
-        return Promise.reject(new ApiError("Сервер wireguard не найден", 404));
+        return Promise.reject(new ApiError("Клиент wireguard не найден", 404));
       }
 
       return result;
@@ -55,7 +61,7 @@ export class WgClientService {
       include: WgClientService.include,
     }).then(result => {
       if (result === null) {
-        return Promise.reject(new ApiError("Сервер wireguard не найден", 404));
+        return Promise.reject(new ApiError("Клиент wireguard не найден", 404));
       }
 
       return result;
@@ -120,7 +126,7 @@ export class WgClientService {
         return client;
       });
     } else {
-      throw new ApiError("Сервер wireguard не найден", 404);
+      throw new ApiError("Клиент wireguard не найден", 404);
     }
   };
 

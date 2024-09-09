@@ -21,6 +21,16 @@ export class WgServerService {
     @inject(WireguardService) private _wireguardService: WireguardService,
   ) {}
 
+  async init() {
+    const servers = await WgServer.findAll({ attributes: ["name"] });
+
+    servers.map(async server => {
+      if (!(await this._wireguardService.getInterfaceStatus(server.name))) {
+        await this._wireguardService.start(server.name).catch(() => null);
+      }
+    });
+  }
+
   async startServer(profileId: string, serverId: string) {
     const server = await this.getWgServerByAttr({ profileId, serverId });
 
@@ -39,11 +49,10 @@ export class WgServerService {
     return this._wireguardService.getInterfaceStatus(server.name);
   }
 
-  getWgServers = (profileId: string, offset?: number, limit?: number) =>
+  getWgServers = (offset?: number, limit?: number) =>
     WgServer.findAll({
       limit,
       offset,
-      where: { profileId },
       attributes: WgServerService.wgServerAttributes,
       order: [["createdAt", "DESC"]],
       include: WgServerService.include,

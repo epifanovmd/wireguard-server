@@ -1,6 +1,7 @@
 import { inject, injectable as Injectable } from "inversify";
 
-import { WireguardService } from "../wireguard";
+import { WgClientService } from "../wgclient";
+import { IWireguardPeerStatusDto, WireguardService } from "../wireguard";
 import { SocketService } from "./socket.service";
 import { Socket } from "./socket.types";
 
@@ -11,11 +12,11 @@ export class SocketGateway {
   constructor(
     @inject(SocketService) private _socketService: SocketService,
     @inject(WireguardService) private _wireguardService: WireguardService,
+    @inject(WgClientService) private _wgClientService: WgClientService,
   ) {}
 
   start = () => {
     this._socketService.onConnection((client, clientSocket) => {
-      this._onSubscribeAllClients(clientSocket);
       this._onSubscribeToClient(clientSocket);
     });
   };
@@ -28,48 +29,35 @@ export class SocketGateway {
     }
   };
 
-  private _onSubscribeAllClients = (clientSocket: Socket) => {
-    clientSocket.on("subscribeToAll", () => {
-      console.log("subscribeToAll");
-      const subscribeId = clientSocket.id;
-
-      this._unsubscribe(subscribeId);
-
-      // const intervalId = setInterval(async () => {
-      //   const clients = await this._wireguardService.getClients();
-      //
-      //   clientSocket.emit("all", clients);
-      // }, 1000);
-
-      // this.subscribes.set(subscribeId, intervalId);
-
-      clientSocket.on("disconnect", () => {
-        this._unsubscribe(subscribeId);
-      });
-
-      clientSocket.on("unsubscribeFromAll", () => {
-        this._unsubscribe(subscribeId);
-      });
-    });
-  };
-
   private _onSubscribeToClient = (clientSocket: Socket) => {
-    clientSocket.on("subscribeToClient", clientId => {
+    clientSocket.on("subscribeToClient", async clientId => {
       const subscribeId = `${clientSocket.id}-${clientId}`;
 
       this._unsubscribe(subscribeId);
 
-      // const intervalId = setInterval(async () => {
-      //   const client = await this._wireguardService
-      //     .getClient({ clientId })
-      //     .catch(() => null);
-      //
-      //   if (client) {
-      //     clientSocket.emit("client", client);
-      //   }
-      // }, 1000);
+      const clients = await this._wgClientService.getWgClientsByAttr({
+        id: clientId,
+      });
 
-      // this.subscribes.set(subscribeId, intervalId);
+      const intervalId = setInterval(async () => {
+        const data = await Promise.all(
+          clients.map(({ publicKey, server }) =>
+            this._wireguardService.getStatus(server.name, publicKey),
+          ),
+        );
+
+        const response = data.reduce<IWireguardPeerStatusDto[]>((acc, item) => {
+          if (item) {
+            acc.push(item);
+          }
+
+          return acc;
+        }, []);
+
+        clientSocket.emit("client", response);
+      }, 1000);
+
+      this.subscribes.set(subscribeId, intervalId);
 
       clientSocket.on("disconnect", () => {
         this._unsubscribe(subscribeId);

@@ -61,16 +61,12 @@ export class WgServerController extends Controller {
     @Query("offset") offset?: number,
     @Query("limit") limit?: number,
   ): Promise<IWgServersListDto> {
-    const profileId = getContextProfile(req);
-
-    return this._wgServerService
-      .getWgServers(profileId, offset, limit)
-      .then(result => ({
-        offset,
-        limit,
-        count: result.length,
-        data: result,
-      }));
+    return this._wgServerService.getWgServers(offset, limit).then(result => ({
+      offset,
+      limit,
+      count: result.length,
+      data: result,
+    }));
   }
 
   @Security("jwt")

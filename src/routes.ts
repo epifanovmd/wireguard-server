@@ -85,7 +85,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "InferAttributes_WgServer_": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"clients":{"dataType":"array","array":{"dataType":"refObject","ref":"IWgClientsDto"}},"profile":{"ref":"IProfileDto"},"id":{"dataType":"string"},"profileId":{"dataType":"string"},"name":{"dataType":"string"},"port":{"dataType":"double"},"privateKey":{"dataType":"string"},"address":{"dataType":"string"},"createdAt":{"dataType":"datetime"},"updatedAt":{"dataType":"datetime"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"clients":{"dataType":"array","array":{"dataType":"refObject","ref":"IWgClientsDto"}},"profile":{"ref":"IProfileDto"},"id":{"dataType":"string"},"profileId":{"dataType":"string"},"name":{"dataType":"string"},"port":{"dataType":"double"},"privateKey":{"dataType":"string"},"publicKey":{"dataType":"string"},"address":{"dataType":"string"},"createdAt":{"dataType":"datetime"},"updatedAt":{"dataType":"datetime"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IWgServerDto": {
@@ -98,6 +98,7 @@ const models: TsoaRoute.Models = {
             "name": {"dataType":"string"},
             "port": {"dataType":"double"},
             "privateKey": {"dataType":"string"},
+            "publicKey": {"dataType":"string"},
             "address": {"dataType":"string"},
             "createdAt": {"dataType":"datetime"},
             "updatedAt": {"dataType":"datetime"},

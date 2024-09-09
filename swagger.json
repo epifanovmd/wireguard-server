@@ -211,6 +211,9 @@
 					"privateKey": {
 						"type": "string"
 					},
+					"publicKey": {
+						"type": "string"
+					},
 					"address": {
 						"type": "string"
 					},
@@ -251,6 +254,9 @@
 						"format": "double"
 					},
 					"privateKey": {
+						"type": "string"
+					},
+					"publicKey": {
 						"type": "string"
 					},
 					"address": {
