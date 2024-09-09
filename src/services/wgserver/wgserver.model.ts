@@ -103,7 +103,7 @@ WgServer.init(
   },
 );
 
-WgServer.sync({ force: true }).then(async () => {
+WgServer.sync({ force: false }).then(async () => {
   WgServer.hasMany(WgClient);
   WgServer.belongsTo(Profile);
   WgServer.hasOne(IPAddress);
