@@ -1,9 +1,9 @@
 export interface IWireguardPeerStatus {
   allowedIps: string;
-  latestHandshakeAt: Date | null;
+  latestHandshakeAt?: Date | string;
   transferRx: number;
   transferTx: number;
-  persistentKeepalive: string;
+  persistentKeepalive?: string;
 }
 export interface IWireguardPeerStatusDto
   extends Record<string, IWireguardPeerStatus | null> {}

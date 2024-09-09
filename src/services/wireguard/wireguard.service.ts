@@ -75,7 +75,7 @@ export class WireguardService {
           allowedIps,
           latestHandshakeAt:
             latestHandshakeAt === "0"
-              ? null
+              ? undefined
               : new Date(Number(`${latestHandshakeAt}000`)),
           transferRx: Number(transferRx),
           transferTx: Number(transferTx),
@@ -112,7 +112,7 @@ export class WireguardService {
         allowedIps,
         latestHandshakeAt:
           latestHandshakeAt === "0"
-            ? null
+            ? undefined
             : new Date(Number(`${latestHandshakeAt}000`)),
         transferRx: Number(transferRx),
         transferTx: Number(transferTx),
