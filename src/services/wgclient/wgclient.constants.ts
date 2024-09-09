@@ -11,7 +11,7 @@ const {
 
 export const getClientConfig = (wgClient: WgClient) => `
 [Interface]
-PrivateKey = ${wgClient.server.privateKey}
+PrivateKey = ${wgClient.privateKey}
 Address = ${wgClient.server.address}/32
 ${WG_DEFAULT_DNS ? `DNS = ${WG_DEFAULT_DNS}` : ""}
 ${WG_MTU ? `MTU = ${WG_MTU}` : ""}
