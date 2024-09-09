@@ -53,7 +53,9 @@ export class WireguardService {
   };
 
   getStatuses = async (interfaceName: string) => {
-    const dump = await this._utilsService.exec(`wg show ${interfaceName} dump`);
+    const dump = await this._utilsService
+      .exec(`wg show ${interfaceName} dump`)
+      .catch(() => "");
 
     return dump
       .trim()
@@ -91,9 +93,9 @@ export class WireguardService {
     interfaceName: string,
     publicKey: string,
   ): Promise<IWireguardPeerStatus | null> => {
-    const dump = await this._utilsService.exec(
-      `wg show ${interfaceName} dump | grep ${publicKey}`,
-    );
+    const dump = await this._utilsService
+      .exec(`wg show ${interfaceName} dump | grep ${publicKey}`)
+      .catch(() => "");
 
     const line = dump.trim().split("\n")[0];
 
