@@ -79,7 +79,8 @@ export class WireguardService {
               : new Date(Number(`${latestHandshakeAt}000`)),
           transferRx: Number(transferRx),
           transferTx: Number(transferTx),
-          persistentKeepalive: persistentKeepalive,
+          persistentKeepalive:
+            persistentKeepalive === "off" ? 0 : Number(persistentKeepalive),
         };
 
         return acc;
@@ -116,7 +117,8 @@ export class WireguardService {
             : new Date(Number(`${latestHandshakeAt}000`)),
         transferRx: Number(transferRx),
         transferTx: Number(transferTx),
-        persistentKeepalive: persistentKeepalive,
+        persistentKeepalive:
+          persistentKeepalive === "off" ? 0 : Number(persistentKeepalive),
       };
     }
 

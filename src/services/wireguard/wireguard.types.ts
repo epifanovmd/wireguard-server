@@ -3,7 +3,7 @@ export interface IWireguardPeerStatus {
   latestHandshakeAt?: Date | string;
   transferRx: number;
   transferTx: number;
-  persistentKeepalive?: string;
+  persistentKeepalive: number;
 }
 export interface IWireguardPeerStatusDto
   extends Record<string, IWireguardPeerStatus | null> {}
