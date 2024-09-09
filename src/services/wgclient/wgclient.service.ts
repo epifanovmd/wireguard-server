@@ -142,10 +142,14 @@ export class WgClientService {
     }
 
     return client.update(body).then(async () => {
-      await this._wireguardService.saveInterfaceConfig(
-        client.server,
-        client.server.clients,
-      );
+      const server = await WgServer.findByPk(client.server.id);
+
+      if (server) {
+        await this._wireguardService.saveInterfaceConfig(
+          server,
+          server.clients,
+        );
+      }
 
       return client;
     });
