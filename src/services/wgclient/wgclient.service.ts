@@ -142,7 +142,11 @@ export class WgClientService {
     }
 
     return client.update(body).then(async () => {
+      console.log("client", client);
       const server = await WgServer.findByPk(client.server.id);
+
+      console.log("server", server);
+      console.log("server.clients", server?.clients);
 
       if (server) {
         await this._wireguardService.saveInterfaceConfig(
