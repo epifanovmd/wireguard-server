@@ -11,9 +11,9 @@ export const getWireguardSeverBlockConfig = (server: IWgServerDto) => {
 
 # Server
 [Interface]
-PrivateKey = ${server.privateKey}
-Address = ${server.address}/24
-ListenPort = ${server.port}
+PrivateKey = ${server.privateKey} # Приватный ключ [Interface] сервера
+Address = ${server.address}/24 # Адрес VPN-сервера в частной сети
+ListenPort = ${server.port} # Порт, который будет слушать VPN-сервер
 PreUp = ${WG_PRE_UP}
 PreDown = ${WG_PRE_DOWN}
 PostUp = ${WG_POST_UP}
@@ -26,7 +26,8 @@ export const getWireguardPeersConfig = (client: IWgClientsDto) => {
 
 # Client: ${client.name} (${client.id})
 [Peer]
-PublicKey = ${client.publicKey}
+PublicKey = ${client.publicKey} # Публичный ключ [Peer] клиента
 PresharedKey = ${client.preSharedKey}
-AllowedIPs = ${client.address}/32`;
+AllowedIPs = ${client.address}/32 # IP-адрес в частной сети, который будет присвоен клиенту
+`;
 };

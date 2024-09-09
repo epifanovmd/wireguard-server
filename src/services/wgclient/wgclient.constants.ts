@@ -11,14 +11,14 @@ const {
 
 export const getClientConfig = (wgClient: WgClient) => `
 [Interface]
-PrivateKey = ${wgClient.privateKey}
-Address = ${wgClient.server.address}/32
+PrivateKey = ${wgClient.privateKey} #Приватный ключ [Peer] клиента на сервере
+Address = ${wgClient.server.address}/32 #IP-адрес клиента на сервере
 ${WG_DEFAULT_DNS ? `DNS = ${WG_DEFAULT_DNS}` : ""}
 ${WG_MTU ? `MTU = ${WG_MTU}` : ""}
 
 [Peer]
-PublicKey = ${wgClient.publicKey}
+PublicKey = ${wgClient.publicKey} # Публичный ключ [Interface] сервера
 PresharedKey = ${wgClient.preSharedKey}
-AllowedIPs = ${WG_ALLOWED_IPS}
-PersistentKeepalive = ${WG_PERSISTENT_KEEPALIVE}
-Endpoint = ${PUBLIC_HOST}:${wgClient.server.port}`;
+Endpoint = ${PUBLIC_HOST}:${wgClient.server.port}
+AllowedIPs = ${WG_ALLOWED_IPS} #IP-адрес сервера и порт
+PersistentKeepalive = ${WG_PERSISTENT_KEEPALIVE}`;
