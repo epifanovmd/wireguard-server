@@ -15,7 +15,7 @@ import { IWgClientsDto, WgClient } from "../wgclient";
 export interface ICreateWgServerRequest
   extends Omit<
     TWgServersCreateModel,
-    "id" | "profileId" | "privateKey" | "address" | "port"
+    "id" | "profileId" | "privateKey" | "publicKey" | "address" | "port"
   > {}
 
 export interface IWgServerDto extends WgServerModel {
@@ -39,6 +39,7 @@ export class WgServer extends Model<WgServerModel, TWgServersCreateModel> {
   declare name: string;
   declare port: number;
   declare privateKey: string;
+  declare publicKey: string;
   declare address: string;
 
   // timestamps!
@@ -74,6 +75,10 @@ WgServer.init(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
+    publicKey: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
     address: {
       type: DataTypes.STRING(19),
       allowNull: true,
@@ -98,7 +103,7 @@ WgServer.init(
   },
 );
 
-WgServer.sync({ force: false }).then(async () => {
+WgServer.sync({ force: true }).then(async () => {
   WgServer.hasMany(WgClient);
   WgServer.belongsTo(Profile);
   WgServer.hasOne(IPAddress);

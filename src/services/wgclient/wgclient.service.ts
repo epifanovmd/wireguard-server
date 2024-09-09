@@ -97,8 +97,8 @@ export class WgClientService {
         profileId,
         ...body,
         privateKey,
-        preSharedKey,
         publicKey,
+        preSharedKey,
         address: this._ipAddressService.formatIp(
           ipaddress.a,
           ipaddress.b,

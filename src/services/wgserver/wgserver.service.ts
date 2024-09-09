@@ -82,6 +82,7 @@ export class WgServerService {
     const id = v4();
     const ipaddress = await this._ipAddressService.createServerIPAddress(id);
     const privateKey = await this._wireguardService.getPrivateKey();
+    const publicKey = await this._wireguardService.getPublicKey(privateKey);
 
     const maxPort = await WgServer.max<number | null, WgServer>("port");
 
@@ -89,6 +90,7 @@ export class WgServerService {
       id,
       profileId,
       privateKey,
+      publicKey,
       port: maxPort ? maxPort + 1 : config.WG_DEFAULT_INTERFACE_PORT,
       ...body,
       address: this._ipAddressService.formatIp(
