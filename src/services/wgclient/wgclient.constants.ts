@@ -17,7 +17,7 @@ ${WG_DEFAULT_DNS ? `DNS = ${WG_DEFAULT_DNS}` : ""}
 ${WG_MTU ? `MTU = ${WG_MTU}` : ""}
 
 [Peer]
-PublicKey = ${wgClient.publicKey} # Публичный ключ [Interface] сервера
+PublicKey = ${wgClient.server.publicKey} # Публичный ключ [Interface] сервера
 PresharedKey = ${wgClient.preSharedKey}
 Endpoint = ${PUBLIC_HOST}:${wgClient.server.port}
 AllowedIPs = ${WG_ALLOWED_IPS} #IP-адрес сервера и порт
