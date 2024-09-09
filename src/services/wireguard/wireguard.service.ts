@@ -114,7 +114,7 @@ export class WireguardService {
       if (client.enabled === false) {
         return acc;
       } else {
-        return (acc += getWireguardPeersConfig(server, client));
+        return (acc += getWireguardPeersConfig(client));
       }
     }, getWireguardSeverBlockConfig(server));
 

@@ -21,15 +21,12 @@ PostDown = ${WG_POST_DOWN}
 `;
 };
 
-export const getWireguardPeersConfig = (
-  server: IWgServerDto,
-  client: IWgClientsDto,
-) => {
+export const getWireguardPeersConfig = (client: IWgClientsDto) => {
   return `
 
 # Client: ${client.name} (${client.id})
 [Peer]
-PublicKey = ${server.publicKey} # Публичный ключ клиента
+PublicKey = ${client.publicKey} # Публичный ключ клиента
 PresharedKey = ${client.preSharedKey}
 AllowedIPs = ${client.address}/32 # IP-адрес в частной сети, который будет присвоен клиенту
 `;
