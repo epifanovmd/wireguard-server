@@ -12,7 +12,7 @@ const {
 export const getClientConfig = (wgClient: WgClient) => `
 [Interface]
 PrivateKey = ${wgClient.privateKey} #Приватный ключ [Peer] клиента на сервере
-Address = ${wgClient.address}/32 #IP-адрес клиента на сервере
+Address = ${wgClient.address}/32 #IP-адрес [Peer] клиента на сервере
 ${WG_DEFAULT_DNS ? `DNS = ${WG_DEFAULT_DNS}` : ""}
 ${WG_MTU ? `MTU = ${WG_MTU}` : ""}
 
