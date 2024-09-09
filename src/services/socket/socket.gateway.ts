@@ -31,7 +31,7 @@ export class SocketGateway {
 
   private _onSubscribeToClient = (clientSocket: Socket) => {
     clientSocket.on("subscribeToClient", async clientId => {
-      const subscribeId = `${clientSocket.id}-${clientId}`;
+      const subscribeId = `${clientSocket.id}-${clientId.join(",")}`;
 
       this._unsubscribe(subscribeId);
 
@@ -63,7 +63,7 @@ export class SocketGateway {
         this._unsubscribe(subscribeId);
       });
 
-      clientSocket.on("unsubscribeFromClient", _clientId => {
+      clientSocket.on("unsubscribeFromClient", () => {
         this._unsubscribe(subscribeId);
       });
     });

@@ -4,7 +4,7 @@ import { IWireguardPeerStatusDto } from "../wireguard";
 
 export interface SocketEvents {
   subscribeToClient: (...args: [clientId: string[]]) => void;
-  unsubscribeFromClient: (...args: [clientId: string[]]) => void;
+  unsubscribeFromClient: () => void;
 }
 
 export interface SocketEmitEvents {
