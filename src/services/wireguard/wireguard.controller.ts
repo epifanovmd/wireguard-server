@@ -3,7 +3,7 @@ import { Controller, Get, Query, Route, Security, Tags } from "tsoa";
 
 import { ApiError } from "../../common";
 import { WireguardService } from "./wireguard.service";
-import { IWireguardPeerStatusDto } from "./wireguard.types";
+import { IWireguardPeerStatus } from "./wireguard.types";
 
 @Injectable()
 @Tags("Wireguard")
@@ -40,7 +40,7 @@ export class WireguardController extends Controller {
   checkStatus(
     interfaceName: string,
     @Query("publicKey") publicKey: string,
-  ): Promise<IWireguardPeerStatusDto | undefined> {
+  ): Promise<IWireguardPeerStatus | undefined> {
     try {
       return this._wireguardService.getStatus(interfaceName, publicKey);
     } catch (e) {

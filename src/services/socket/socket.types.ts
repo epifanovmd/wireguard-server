@@ -8,7 +8,7 @@ export interface SocketEvents {
 }
 
 export interface SocketEmitEvents {
-  client: (...args: [data: IWireguardPeerStatusDto[]]) => void;
+  client: (...args: [data: IWireguardPeerStatusDto]) => void;
 }
 
 export type Socket = SocketIO<SocketEvents, SocketEmitEvents>;

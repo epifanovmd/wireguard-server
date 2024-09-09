@@ -41,18 +41,23 @@ export class SocketGateway {
 
       const intervalId = setInterval(async () => {
         const data = await Promise.all(
-          clients.map(({ publicKey, server }) =>
-            this._wireguardService.getStatus(server.name, publicKey),
-          ),
+          clients.map(async ({ id, publicKey, server }) => ({
+            clientId: id,
+            status:
+              (await this._wireguardService.getStatus(
+                server.name,
+                publicKey,
+              )) ?? null,
+          })),
         );
 
-        const response = data.reduce<IWireguardPeerStatusDto[]>((acc, item) => {
+        const response = data.reduce<IWireguardPeerStatusDto>((acc, item) => {
           if (item) {
-            acc.push(item);
+            acc[item.clientId] = item.status;
           }
 
           return acc;
-        }, []);
+        }, {});
 
         clientSocket.emit("client", response);
       }, 1000);

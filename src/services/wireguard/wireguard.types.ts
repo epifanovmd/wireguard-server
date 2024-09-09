@@ -1,4 +1,4 @@
-export interface IWireguardPeerStatusDto {
+export interface IWireguardPeerStatus {
   publicKey: string;
   preSharedKey: string;
   endpoint: string;
@@ -8,3 +8,5 @@ export interface IWireguardPeerStatusDto {
   transferTx: number;
   persistentKeepalive: string;
 }
+export interface IWireguardPeerStatusDto
+  extends Record<string, IWireguardPeerStatus | null> {}
