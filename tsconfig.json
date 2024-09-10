@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "esnext",
     "target": "es6",
-    "types": ["reflect-metadata"],
+    "types": ["reflect-metadata", "jest"],
     "lib": ["es6"],
     "noImplicitAny": false,
     "sourceMap": true,

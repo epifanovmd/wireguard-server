@@ -6,7 +6,7 @@ import { ApiError } from "../../common";
 
 const { REDIS_HOST, REDIS_PORT, REDIS_PASS } = config;
 
-const rediscl = createClient({
+export const rediscl = createClient({
   password: REDIS_PASS,
   url: `redis://${REDIS_HOST}:${REDIS_PORT}`,
 });

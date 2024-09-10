@@ -43,6 +43,10 @@ export class SocketService {
     return this._socket;
   }
 
+  close() {
+    this._socket.close();
+  }
+
   onConnection = (
     listener: (_client: IProfileDto, _socket: Socket) => void,
   ) => {

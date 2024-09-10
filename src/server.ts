@@ -25,7 +25,7 @@ const bootstrap = () => {
   RegisterSwagger(router, "/api-docs");
   RegisterRoutes(router);
 
-  app
+  return app
     .use(errorHandler)
     .use(router.routes())
     .use(router.allowedMethods())
@@ -40,4 +40,4 @@ const bootstrap = () => {
     });
 };
 
-bootstrap();
+export const server = bootstrap();

@@ -23,17 +23,14 @@ import * as KoaRouter from '@koa/router';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "IWireguardPeerStatusDto": {
+    "IWireguardPeerStatus": {
         "dataType": "refObject",
         "properties": {
-            "publicKey": {"dataType":"string","required":true},
-            "preSharedKey": {"dataType":"string","required":true},
-            "endpoint": {"dataType":"string","required":true},
             "allowedIps": {"dataType":"string","required":true},
-            "latestHandshakeAt": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true},
+            "latestHandshakeAt": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"string"}]},
             "transferRx": {"dataType":"double","required":true},
             "transferTx": {"dataType":"double","required":true},
-            "persistentKeepalive": {"dataType":"string","required":true},
+            "persistentKeepalive": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },

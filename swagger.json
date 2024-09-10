@@ -6,24 +6,21 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"IWireguardPeerStatusDto": {
+			"IWireguardPeerStatus": {
 				"properties": {
-					"publicKey": {
-						"type": "string"
-					},
-					"preSharedKey": {
-						"type": "string"
-					},
-					"endpoint": {
-						"type": "string"
-					},
 					"allowedIps": {
 						"type": "string"
 					},
 					"latestHandshakeAt": {
-						"type": "string",
-						"format": "date-time",
-						"nullable": true
+						"anyOf": [
+							{
+								"type": "string",
+								"format": "date-time"
+							},
+							{
+								"type": "string"
+							}
+						]
 					},
 					"transferRx": {
 						"type": "number",
@@ -34,15 +31,12 @@
 						"format": "double"
 					},
 					"persistentKeepalive": {
-						"type": "string"
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
-					"publicKey",
-					"preSharedKey",
-					"endpoint",
 					"allowedIps",
-					"latestHandshakeAt",
 					"transferRx",
 					"transferTx",
 					"persistentKeepalive"
@@ -690,7 +684,12 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IWireguardPeerStatusDto"
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IWireguardPeerStatus"
+										}
+									],
+									"nullable": true
 								}
 							}
 						}
