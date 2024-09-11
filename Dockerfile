@@ -3,6 +3,7 @@ ARG NODE_VERSION=20.10.0
 FROM node:${NODE_VERSION} AS installer
 
 WORKDIR /app
+ENV NODE_ENV=production
 
 COPY package*.json .
 COPY yarn.lock .
@@ -17,6 +18,7 @@ RUN apt update && apt install  --yes  \
     wireguard-tools
 
 WORKDIR /app
+ENV NODE_ENV=production
 
 COPY --from=installer /app /app
 COPY . .
