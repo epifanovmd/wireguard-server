@@ -13,7 +13,7 @@ export const getClientConfig = ({
   privateKey,
   preSharedKey,
   address,
-  // server,
+  server,
   persistentKeepalive,
 }: WgClient) => `
 [Interface]
@@ -23,5 +23,8 @@ ${WG_DEFAULT_DNS ? `DNS = ${WG_DEFAULT_DNS}` : ""}
 ${WG_MTU ? `MTU = ${WG_MTU}` : ""}
 
 [Peer]
+PublicKey = ${server.publicKey} # Публичный ключ [Interface] сервера
+PresharedKey = ${preSharedKey}
+Endpoint = ${PUBLIC_HOST}:${server.port}
 AllowedIPs = ${WG_ALLOWED_IPS} #IP-адрес сервера и порт
 PersistentKeepalive = ${persistentKeepalive ?? WG_PERSISTENT_KEEPALIVE}`;
