@@ -1,4 +1,5 @@
 import {
+  CreationOptional,
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
@@ -6,7 +7,7 @@ import {
   NonAttribute,
 } from "sequelize";
 
-import { sequelize } from "../../db/sequelize";
+import { sequelize } from "../../db";
 import { ListResponse } from "../../dto/ListResponse";
 import { IPAddress } from "../ipaddress";
 import { IProfileDto, Profile } from "../profile";
@@ -14,7 +15,7 @@ import { IWgClientsDto, WgClient } from "../wgclient";
 
 export interface ICreateWgServerRequest
   extends Omit<
-    TWgServersCreateModel,
+    TWgServerCreateModel,
     "id" | "profileId" | "privateKey" | "publicKey" | "address" | "port"
   > {}
 
@@ -26,12 +27,12 @@ export interface IWgServersListDto extends ListResponse<IWgServerDto[]> {}
 
 export type WgServerModel = InferAttributes<WgServer>;
 
-export type TWgServersCreateModel = InferCreationAttributes<
+export type TWgServerCreateModel = InferCreationAttributes<
   WgServer,
   { omit: "createdAt" | "updatedAt" }
 >;
 
-export class WgServer extends Model<WgServerModel, TWgServersCreateModel> {
+export class WgServer extends Model<WgServerModel, TWgServerCreateModel> {
   declare id: string;
 
   declare profileId: string;
@@ -43,8 +44,8 @@ export class WgServer extends Model<WgServerModel, TWgServersCreateModel> {
   declare address: string;
 
   // timestamps!
-  declare readonly createdAt: Date;
-  declare readonly updatedAt: Date;
+  declare createdAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>;
 
   // associations
   declare clients: NonAttribute<WgClient[]>;
@@ -109,10 +110,10 @@ WgServer.sync({ force: false }).then(async () => {
   WgServer.hasOne(IPAddress);
 
   WgServer.beforeDestroy(async wgServer => {
-    await WgClient.findAll({ where: { serverId: wgServer.id } }).then(clients =>
-      // delete only instance for run beforeDestroy hook
-      clients.forEach(client => client.destroy()),
-    );
+    // await WgClient.findAll({ where: { serverId: wgServer.id } }).then(clients =>
+    //   // delete only instance for run beforeDestroy hook
+    //   clients.forEach(client => client.destroy()),
+    // );
 
     await IPAddress.destroy({ where: { serverId: wgServer.id } });
   });

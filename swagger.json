@@ -6,56 +6,10 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"IWireguardPeerStatus": {
-				"properties": {
-					"allowedIps": {
-						"type": "string"
-					},
-					"latestHandshakeAt": {
-						"anyOf": [
-							{
-								"type": "string",
-								"format": "date-time"
-							},
-							{
-								"type": "string"
-							}
-						]
-					},
-					"transferRx": {
-						"type": "number",
-						"format": "double"
-					},
-					"transferTx": {
-						"type": "number",
-						"format": "double"
-					},
-					"persistentKeepalive": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": [
-					"allowedIps",
-					"transferRx",
-					"transferTx",
-					"persistentKeepalive"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"Pick_ProfileModel.Exclude_keyofProfileModel.passwordHash__": {
 				"properties": {
 					"id": {
 						"type": "string"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
 					},
 					"username": {
 						"type": "string"
@@ -71,6 +25,14 @@
 					},
 					"phone": {
 						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
 					}
 				},
 				"type": "object",
@@ -81,14 +43,6 @@
 					"id": {
 						"type": "string"
 					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
 					"username": {
 						"type": "string"
 					},
@@ -103,113 +57,6 @@
 					},
 					"phone": {
 						"type": "string"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IWgClientsDto": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"serverId": {
-						"type": "string"
-					},
-					"profileId": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"address": {
-						"type": "string"
-					},
-					"allowedIPs": {
-						"type": "string"
-					},
-					"publicKey": {
-						"type": "string"
-					},
-					"privateKey": {
-						"type": "string"
-					},
-					"preSharedKey": {
-						"type": "string"
-					},
-					"transferRx": {
-						"type": "number",
-						"format": "double"
-					},
-					"transferTx": {
-						"type": "number",
-						"format": "double"
-					},
-					"latestHandshakeAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"persistentKeepalive": {
-						"type": "number",
-						"format": "double"
-					},
-					"enabled": {
-						"type": "boolean"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"profile": {
-						"$ref": "#/components/schemas/IProfileDto"
-					},
-					"server": {
-						"$ref": "#/components/schemas/IWgServerDto"
-					}
-				},
-				"required": [
-					"profile",
-					"server"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"InferAttributes_WgServer_": {
-				"properties": {
-					"clients": {
-						"items": {
-							"$ref": "#/components/schemas/IWgClientsDto"
-						},
-						"type": "array"
-					},
-					"profile": {
-						"$ref": "#/components/schemas/IProfileDto"
-					},
-					"id": {
-						"type": "string"
-					},
-					"profileId": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"port": {
-						"type": "number",
-						"format": "double"
-					},
-					"privateKey": {
-						"type": "string"
-					},
-					"publicKey": {
-						"type": "string"
-					},
-					"address": {
-						"type": "string"
 					},
 					"createdAt": {
 						"type": "string",
@@ -220,206 +67,6 @@
 						"format": "date-time"
 					}
 				},
-				"type": "object",
-				"description": "Utility type to extract Attributes of a given Model class.\n\nIt returns all instance properties defined in the Model, except:\n- those inherited from Model (intermediate inheritance works),\n- the ones whose type is a function,\n- the ones manually excluded using the second parameter.\n- the ones branded using {@link NonAttribute}\n\nIt cannot detect whether something is a getter or not, you should use the `Excluded`\nparameter to exclude getter & setters from the attribute list."
-			},
-			"IWgServerDto": {
-				"properties": {
-					"clients": {
-						"items": {
-							"$ref": "#/components/schemas/IWgClientsDto"
-						},
-						"type": "array"
-					},
-					"profile": {
-						"$ref": "#/components/schemas/IProfileDto"
-					},
-					"id": {
-						"type": "string"
-					},
-					"profileId": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"port": {
-						"type": "number",
-						"format": "double"
-					},
-					"privateKey": {
-						"type": "string"
-					},
-					"publicKey": {
-						"type": "string"
-					},
-					"address": {
-						"type": "string"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"InferAttributes_WgClient_": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"serverId": {
-						"type": "string"
-					},
-					"profileId": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"address": {
-						"type": "string"
-					},
-					"allowedIPs": {
-						"type": "string"
-					},
-					"publicKey": {
-						"type": "string"
-					},
-					"privateKey": {
-						"type": "string"
-					},
-					"preSharedKey": {
-						"type": "string"
-					},
-					"transferRx": {
-						"type": "number",
-						"format": "double"
-					},
-					"transferTx": {
-						"type": "number",
-						"format": "double"
-					},
-					"latestHandshakeAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"persistentKeepalive": {
-						"type": "number",
-						"format": "double"
-					},
-					"enabled": {
-						"type": "boolean"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"type": "object",
-				"description": "Utility type to extract Attributes of a given Model class.\n\nIt returns all instance properties defined in the Model, except:\n- those inherited from Model (intermediate inheritance works),\n- the ones whose type is a function,\n- the ones manually excluded using the second parameter.\n- the ones branded using {@link NonAttribute}\n\nIt cannot detect whether something is a getter or not, you should use the `Excluded`\nparameter to exclude getter & setters from the attribute list."
-			},
-			"IWgClientListDto": {
-				"properties": {
-					"count": {
-						"type": "number",
-						"format": "double"
-					},
-					"offset": {
-						"type": "number",
-						"format": "double"
-					},
-					"limit": {
-						"type": "number",
-						"format": "double"
-					},
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/IWgClientsDto"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IWgClientCreateRequest": {
-				"properties": {
-					"serverId": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"allowedIPs": {
-						"type": "string"
-					},
-					"persistentKeepalive": {
-						"type": "number",
-						"format": "double"
-					},
-					"enabled": {
-						"type": "boolean"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IWgClientUpdateRequest": {
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"allowedIPs": {
-						"type": "string"
-					},
-					"persistentKeepalive": {
-						"type": "number",
-						"format": "double"
-					},
-					"enabled": {
-						"type": "boolean"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IWgServersListDto": {
-				"properties": {
-					"count": {
-						"type": "number",
-						"format": "double"
-					},
-					"offset": {
-						"type": "number",
-						"format": "double"
-					},
-					"limit": {
-						"type": "number",
-						"format": "double"
-					},
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/IWgServerDto"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"data"
-				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -513,14 +160,6 @@
 					"id": {
 						"type": "string"
 					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
 					"username": {
 						"type": "string"
 					},
@@ -535,6 +174,14 @@
 					},
 					"phone": {
 						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
 					},
 					"tokens": {
 						"$ref": "#/components/schemas/ITokensDto"
@@ -588,6 +235,414 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"IWireguardPeerStatus": {
+				"properties": {
+					"allowedIps": {
+						"type": "string"
+					},
+					"latestHandshakeAt": {
+						"anyOf": [
+							{
+								"type": "string",
+								"format": "date-time"
+							},
+							{
+								"type": "string"
+							}
+						]
+					},
+					"transferRx": {
+						"type": "number",
+						"format": "double"
+					},
+					"transferTx": {
+						"type": "number",
+						"format": "double"
+					},
+					"persistentKeepalive": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"allowedIps",
+					"transferRx",
+					"transferTx",
+					"persistentKeepalive"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IWgServerDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"profileId": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"port": {
+						"type": "number",
+						"format": "double"
+					},
+					"privateKey": {
+						"type": "string"
+					},
+					"publicKey": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"createdAt": {
+						"allOf": [
+							{
+								"type": "string",
+								"format": "date-time"
+							},
+							{
+								"properties": {
+									"undefined": {
+										"type": "boolean",
+										"enum": [
+											true
+										],
+										"nullable": false
+									}
+								},
+								"type": "object"
+							}
+						]
+					},
+					"updatedAt": {
+						"allOf": [
+							{
+								"type": "string",
+								"format": "date-time"
+							},
+							{
+								"properties": {
+									"undefined": {
+										"type": "boolean",
+										"enum": [
+											true
+										],
+										"nullable": false
+									}
+								},
+								"type": "object"
+							}
+						]
+					},
+					"clients": {
+						"items": {
+							"$ref": "#/components/schemas/IWgClientsDto"
+						},
+						"type": "array"
+					},
+					"profile": {
+						"$ref": "#/components/schemas/IProfileDto"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InferAttributes_WgClient_": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"serverId": {
+						"type": "string"
+					},
+					"profileId": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"allowedIPs": {
+						"type": "string"
+					},
+					"publicKey": {
+						"type": "string"
+					},
+					"privateKey": {
+						"type": "string"
+					},
+					"preSharedKey": {
+						"type": "string"
+					},
+					"transferRx": {
+						"type": "number",
+						"format": "double"
+					},
+					"transferTx": {
+						"type": "number",
+						"format": "double"
+					},
+					"latestHandshakeAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"persistentKeepalive": {
+						"type": "number",
+						"format": "double"
+					},
+					"enabled": {
+						"type": "boolean"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"type": "object",
+				"description": "Utility type to extract Attributes of a given Model class.\n\nIt returns all instance properties defined in the Model, except:\n- those inherited from Model (intermediate inheritance works),\n- the ones whose type is a function,\n- the ones manually excluded using the second parameter.\n- the ones branded using {@link NonAttribute}\n\nIt cannot detect whether something is a getter or not, you should use the `Excluded`\nparameter to exclude getter & setters from the attribute list."
+			},
+			"IWgClientsDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"serverId": {
+						"type": "string"
+					},
+					"profileId": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"allowedIPs": {
+						"type": "string"
+					},
+					"publicKey": {
+						"type": "string"
+					},
+					"privateKey": {
+						"type": "string"
+					},
+					"preSharedKey": {
+						"type": "string"
+					},
+					"transferRx": {
+						"type": "number",
+						"format": "double"
+					},
+					"transferTx": {
+						"type": "number",
+						"format": "double"
+					},
+					"latestHandshakeAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"persistentKeepalive": {
+						"type": "number",
+						"format": "double"
+					},
+					"enabled": {
+						"type": "boolean"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"profile": {
+						"$ref": "#/components/schemas/IProfileDto"
+					},
+					"server": {
+						"$ref": "#/components/schemas/IWgServerDto"
+					}
+				},
+				"required": [
+					"profile",
+					"server"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InferAttributes_WgServer_": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"profileId": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"port": {
+						"type": "number",
+						"format": "double"
+					},
+					"privateKey": {
+						"type": "string"
+					},
+					"publicKey": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"createdAt": {
+						"allOf": [
+							{
+								"type": "string",
+								"format": "date-time"
+							},
+							{
+								"properties": {
+									"undefined": {
+										"type": "boolean",
+										"enum": [
+											true
+										],
+										"nullable": false
+									}
+								},
+								"type": "object"
+							}
+						]
+					},
+					"updatedAt": {
+						"allOf": [
+							{
+								"type": "string",
+								"format": "date-time"
+							},
+							{
+								"properties": {
+									"undefined": {
+										"type": "boolean",
+										"enum": [
+											true
+										],
+										"nullable": false
+									}
+								},
+								"type": "object"
+							}
+						]
+					}
+				},
+				"type": "object",
+				"description": "Utility type to extract Attributes of a given Model class.\n\nIt returns all instance properties defined in the Model, except:\n- those inherited from Model (intermediate inheritance works),\n- the ones whose type is a function,\n- the ones manually excluded using the second parameter.\n- the ones branded using {@link NonAttribute}\n\nIt cannot detect whether something is a getter or not, you should use the `Excluded`\nparameter to exclude getter & setters from the attribute list."
+			},
+			"IWgServersListDto": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IWgServerDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IWgClientListDto": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IWgClientsDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IWgClientCreateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"serverId": {
+						"type": "string"
+					},
+					"allowedIPs": {
+						"type": "string"
+					},
+					"persistentKeepalive": {
+						"type": "number",
+						"format": "double"
+					},
+					"enabled": {
+						"type": "boolean"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IWgClientUpdateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"allowedIPs": {
+						"type": "string"
+					},
+					"persistentKeepalive": {
+						"type": "number",
+						"format": "double"
+					},
+					"enabled": {
+						"type": "boolean"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -612,607 +667,6 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/api/wireguard/start/{interfaceName}": {
-			"get": {
-				"operationId": "StartVpn",
-				"responses": {
-					"204": {
-						"description": "No content"
-					}
-				},
-				"tags": [
-					"Wireguard"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "interfaceName",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/wireguard/stop/{interfaceName}": {
-			"get": {
-				"operationId": "StopVpn",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "boolean"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Wireguard"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "interfaceName",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/wireguard/status/{interfaceName}": {
-			"get": {
-				"operationId": "CheckStatus",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"allOf": [
-										{
-											"$ref": "#/components/schemas/IWireguardPeerStatus"
-										}
-									],
-									"nullable": true
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Wireguard"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "interfaceName",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "query",
-						"name": "publicKey",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/wgclients/server/{serverId}": {
-			"get": {
-				"operationId": "GetWgClients",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWgClientListDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"WgClient"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "serverId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "query",
-						"name": "offset",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					},
-					{
-						"in": "query",
-						"name": "limit",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
-			}
-		},
-		"/api/wgclients/client/{id}": {
-			"get": {
-				"operationId": "GetWgClient",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWgClientsDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"WgClient"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/wgclients/client/{id}/configuration": {
-			"get": {
-				"operationId": "GetWgClientConfiguration",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"WgClient"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/wgclients/create": {
-			"post": {
-				"operationId": "CreateWgClient",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWgClientsDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"WgClient"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IWgClientCreateRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/wgclients/update/{id}": {
-			"patch": {
-				"operationId": "UpdateWgClient",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWgClientsDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"WgClient"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IWgClientUpdateRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/wgclients/delete/{id}": {
-			"delete": {
-				"operationId": "DeleteWgClient",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"WgClient"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/wgserver/server/{id}/start": {
-			"get": {
-				"operationId": "StartServer",
-				"responses": {
-					"204": {
-						"description": "No content"
-					}
-				},
-				"tags": [
-					"WgServer"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/wgserver/server/{id}/stop": {
-			"get": {
-				"operationId": "StopServer",
-				"responses": {
-					"204": {
-						"description": "No content"
-					}
-				},
-				"tags": [
-					"WgServer"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/wgserver/server/{id}/status": {
-			"get": {
-				"operationId": "GetServerStatus",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string",
-									"nullable": true
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"WgServer"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/wgserver": {
-			"get": {
-				"operationId": "GetWgServers",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWgServersListDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"WgServer"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "offset",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					},
-					{
-						"in": "query",
-						"name": "limit",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
-			}
-		},
-		"/api/wgserver/server/{id}": {
-			"get": {
-				"operationId": "GetWgServer",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWgServerDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"WgServer"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/wgserver/create": {
-			"post": {
-				"operationId": "CreateWgServer",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IWgServerDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"WgServer"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"properties": {
-									"name": {
-										"type": "string"
-									}
-								},
-								"required": [
-									"name"
-								],
-								"type": "object"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/wgserver/delete/{id}": {
-			"delete": {
-				"operationId": "DeleteWgServer",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"WgServer"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
 		"/api/profile/my": {
 			"get": {
 				"operationId": "GetMyProfile",
@@ -1567,6 +1021,607 @@
 						}
 					}
 				}
+			}
+		},
+		"/api/wireguard/start/{interfaceName}": {
+			"get": {
+				"operationId": "StartVpn",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Wireguard"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "interfaceName",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wireguard/stop/{interfaceName}": {
+			"get": {
+				"operationId": "StopVpn",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wireguard"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "interfaceName",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wireguard/status/{interfaceName}": {
+			"get": {
+				"operationId": "CheckStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IWireguardPeerStatus"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Wireguard"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "interfaceName",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "publicKey",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wgserver/server/{id}/start": {
+			"get": {
+				"operationId": "StartServer",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"WgServer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wgserver/server/{id}/stop": {
+			"get": {
+				"operationId": "StopServer",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"WgServer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wgserver/server/{id}/status": {
+			"get": {
+				"operationId": "GetServerStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string",
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgServer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wgserver": {
+			"get": {
+				"operationId": "GetWgServers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWgServersListDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgServer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/wgserver/server/{id}": {
+			"get": {
+				"operationId": "GetWgServer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWgServerDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgServer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wgserver/create": {
+			"post": {
+				"operationId": "CreateWgServer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWgServerDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgServer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"name": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"name"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/wgserver/delete/{id}": {
+			"delete": {
+				"operationId": "DeleteWgServer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgServer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wgclients/server/{serverId}": {
+			"get": {
+				"operationId": "GetWgClients",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWgClientListDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgClient"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "serverId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/wgclients/client/{id}": {
+			"get": {
+				"operationId": "GetWgClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWgClientsDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgClient"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wgclients/client/{id}/configuration": {
+			"get": {
+				"operationId": "GetWgClientConfiguration",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgClient"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wgclients/create": {
+			"post": {
+				"operationId": "CreateWgClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWgClientsDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgClient"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IWgClientCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/wgclients/update/{id}": {
+			"patch": {
+				"operationId": "UpdateWgClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IWgClientsDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgClient"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IWgClientUpdateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/wgclients/delete/{id}": {
+			"delete": {
+				"operationId": "DeleteWgClient",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"WgClient"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},

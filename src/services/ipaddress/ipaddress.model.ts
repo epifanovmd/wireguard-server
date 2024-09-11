@@ -3,10 +3,9 @@ import {
   InferAttributes,
   InferCreationAttributes,
   Model,
-  NonAttribute,
 } from "sequelize";
 
-import { sequelize } from "../../db/sequelize";
+import { sequelize } from "../../db";
 
 export interface IIPAddressDto extends TIPAddressModel {}
 

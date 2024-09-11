@@ -7,7 +7,6 @@ import {
 
 import { sequelize } from "../../db";
 import { ListResponse } from "../../dto/ListResponse";
-import { WgServer } from "../wgserver";
 
 export interface IProfileUpdateRequest
   extends Omit<TProfileCreateModel, "id" | "passwordHash"> {}
@@ -91,6 +90,4 @@ Profile.init(
   },
 );
 
-Profile.sync({ force: false }).then(() => {
-  Profile.hasMany(WgServer);
-});
+Profile.sync({ force: false }).then();

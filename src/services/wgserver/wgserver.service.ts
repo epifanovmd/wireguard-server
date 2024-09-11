@@ -6,7 +6,7 @@ import { config } from "../../../config";
 import { ApiError } from "../../common";
 import { IPAddressService } from "../ipaddress";
 import { Profile, ProfileService } from "../profile";
-import { WgClient } from "../wgclient";
+import { WgClient } from "../wgclient/wgclient.model";
 import { WireguardService } from "../wireguard";
 import {
   ICreateWgServerRequest,
