@@ -6,7 +6,7 @@ import {
   NonAttribute,
 } from "sequelize";
 
-import { sequelize } from "../../db/db";
+import { sequelize } from "../../db/sequelize";
 import { ListResponse } from "../../dto/ListResponse";
 import { IPAddress } from "../ipaddress";
 import { IProfileDto, Profile } from "../profile";

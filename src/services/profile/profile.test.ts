@@ -1,9 +1,8 @@
 import request from "supertest";
 
-import { sequelize } from "../../db/db";
+import { redisClient } from "../../db";
 import { iocContainer } from "../../modules";
 import { server } from "../../server";
-import { rediscl } from "../redis";
 import { SocketService } from "../socket";
 
 let accessToken = "";
@@ -18,14 +17,19 @@ describe("Profile", () => {
     it("it should GET all the users", done => {
       request(server)
         .post("/api/auth/signIn")
-        .send({ username: "test_user", password: "test_password" })
+        .send({
+          username: "test_user",
+          password: "test_password",
+        })
         .expect("Content-Type", /json/)
         .expect(200)
         .expect(res => res.body.tokens.accessToken !== undefined)
         .end((err, res) => {
           accessToken = res.body.tokens.accessToken;
           console.log("err", err);
-          if (err) throw err;
+          if (err) {
+            throw err;
+          }
 
           done();
         });
@@ -54,7 +58,7 @@ describe("Profile", () => {
   afterAll(done => {
     const socketService = iocContainer.get(SocketService);
 
-    rediscl.disconnect();
+    redisClient.disconnect();
     socketService.close();
 
     done();

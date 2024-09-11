@@ -23,5 +23,5 @@
     "**/node_modules": true,
     "**/*.js": true,
     "**/*.js.map": true
-  }
+  },
 }

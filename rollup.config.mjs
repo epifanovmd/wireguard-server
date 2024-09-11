@@ -1,12 +1,11 @@
 import commonjs from "@rollup/plugin-commonjs";
+import json from "@rollup/plugin-json";
 import resolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
-import typescript from 'rollup-plugin-typescript2';
-import json from '@rollup/plugin-json';
-
 import { defineConfig } from "rollup";
 // @ts-ignore
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
+import typescript from "rollup-plugin-typescript2";
 
 const config = defineConfig({
   input: "src/server.ts",

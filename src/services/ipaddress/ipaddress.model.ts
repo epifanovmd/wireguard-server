@@ -6,7 +6,7 @@ import {
   NonAttribute,
 } from "sequelize";
 
-import { sequelize } from "../../db/db";
+import { sequelize } from "../../db/sequelize";
 
 export interface IIPAddressDto extends TIPAddressModel {}
 
