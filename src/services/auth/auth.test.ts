@@ -16,7 +16,7 @@ describe("Profile", () => {
   describe("/GET profiles", () => {
     it("it should GET all the users", done => {
       request(server)
-        .post("/api/auth/signIn")
+        .post("/api/auth/signUp")
         .send({
           username: "test_user",
           password: "test_password",
@@ -25,11 +25,12 @@ describe("Profile", () => {
         .expect(200)
         .expect(res => res.body.tokens.accessToken !== undefined)
         .end((err, res) => {
-          accessToken = res.body.tokens.accessToken;
           console.log("err", err);
           if (err) {
             throw err;
           }
+
+          accessToken = res.body.tokens.accessToken;
 
           done();
         });
