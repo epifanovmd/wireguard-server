@@ -2,7 +2,7 @@ import { inject, injectable } from "inversify";
 import { Includeable, WhereOptions } from "sequelize";
 import { v4 } from "uuid";
 
-import { ApiError } from "../../common";
+import { ForbiddenException, NotFoundException } from "../../common";
 import { IPAddressService } from "../ipaddress";
 import { Profile, ProfileService } from "../profile";
 import { WgServer } from "../wgserver";
@@ -49,7 +49,9 @@ export class WgClientService {
       include: WgClientService.include,
     }).then(result => {
       if (result === null) {
-        return Promise.reject(new ApiError("Клиент wireguard не найден", 404));
+        return Promise.reject(
+          new NotFoundException("Клиент wireguard не найден"),
+        );
       }
 
       return result;
@@ -61,7 +63,9 @@ export class WgClientService {
       include: WgClientService.include,
     }).then(result => {
       if (result === null) {
-        return Promise.reject(new ApiError("Клиент wireguard не найден", 404));
+        return Promise.reject(
+          new NotFoundException("Клиент wireguard не найден"),
+        );
       }
 
       return result;
@@ -126,7 +130,7 @@ export class WgClientService {
         return client;
       });
     } else {
-      throw new ApiError("Клиент wireguard не найден", 404);
+      throw new NotFoundException("Сервер wireguard не найден");
     }
   };
 
@@ -138,7 +142,7 @@ export class WgClientService {
     const client = await this.getWgClient(id);
 
     if (client.profileId !== profileId) {
-      throw new ApiError("Невозможно обновить клиента", 403);
+      throw new ForbiddenException("Невозможно обновить клиента");
     }
 
     return client.update(body).then(async () => {
@@ -156,7 +160,7 @@ export class WgClientService {
     const client = await this.getWgClient(id);
 
     if (client.profileId !== profileId) {
-      throw new ApiError("Невозможно удалить клиента", 403);
+      throw new ForbiddenException("Невозможно удалить клиента");
     }
 
     return client.destroy().then(async value => {

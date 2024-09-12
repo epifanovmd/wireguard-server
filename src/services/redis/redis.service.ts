@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 
-import { ApiError } from "../../common";
+import { InternalServerErrorException } from "../../common";
 import { redisClient } from "../../db";
 
 @injectable()
@@ -14,7 +14,7 @@ export class RedisService {
       return data;
     }
 
-    throw new ApiError("Ошибка записи в базу данных", 500);
+    throw new InternalServerErrorException("Ошибка записи в Redis");
   }
 
   async get<Data>(key: string) {
@@ -31,12 +31,3 @@ export class RedisService {
     return redisClient.del(key);
   }
 }
-
-// src/services/profile/index.ts ->
-// src/services/profile/profile.controller.ts ->
-// src/services/profile/profile.service.ts ->
-// src/services/profile/profile.model.ts ->
-// src/services/wgserver/index.ts ->
-// src/services/wgserver/wgserver.controller.ts ->
-// src/services/wgserver/wgserver.service.ts ->
-// src/services/profile/index.ts

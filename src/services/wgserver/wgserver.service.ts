@@ -3,7 +3,7 @@ import { Includeable, WhereOptions } from "sequelize";
 import { v4 } from "uuid";
 
 import { config } from "../../../config";
-import { ApiError } from "../../common";
+import { ForbiddenException, NotFoundException } from "../../common";
 import { IPAddressService } from "../ipaddress";
 import { Profile, ProfileService } from "../profile";
 import { WgClient } from "../wgclient/wgclient.model";
@@ -64,7 +64,9 @@ export class WgServerService {
       include: WgServerService.include,
     }).then(result => {
       if (result === null) {
-        return Promise.reject(new ApiError("Сервер wireguard не найден", 404));
+        return Promise.reject(
+          new NotFoundException("Сервер wireguard не найден"),
+        );
       }
 
       return result;
@@ -76,7 +78,9 @@ export class WgServerService {
       include: WgServerService.include,
     }).then(result => {
       if (result === null) {
-        return Promise.reject(new ApiError("Сервер wireguard не найден", 404));
+        return Promise.reject(
+          new NotFoundException("Сервер wireguard не найден"),
+        );
       }
 
       return result;
@@ -128,7 +132,7 @@ export class WgServerService {
     await this._wireguardService.stop(wgServer.name);
 
     if (wgServer.profileId !== profileId) {
-      throw new ApiError("Невозможно удалить сервер", 403);
+      throw new ForbiddenException("Невозможно удалить сервер");
     }
 
     await this._wireguardService.deleteConfig(wgServer.name);

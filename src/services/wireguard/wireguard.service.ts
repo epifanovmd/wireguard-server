@@ -3,7 +3,7 @@ import { inject, injectable } from "inversify";
 import path from "path";
 
 import { config } from "../../../config";
-import { ApiError } from "../../common";
+import { InternalServerErrorException } from "../../common";
 import { UtilsService } from "../utils";
 import { IWgServerDto } from "../wgserver";
 import {
@@ -25,13 +25,12 @@ export class WireguardService {
         err.message &&
         err.message.includes(`Cannot find device "${interfaceName}"`)
       ) {
-        throw new ApiError(
+        throw new InternalServerErrorException(
           `WireGuard exited with the error: Cannot find device "${interfaceName}" This usually means that your host's kernel does not support WireGuard!`,
-          500,
         );
       }
 
-      throw new ApiError(err.message, 500);
+      throw new InternalServerErrorException(err.message, { cause: err });
     });
   };
 

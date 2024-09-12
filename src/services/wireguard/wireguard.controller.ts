@@ -1,7 +1,7 @@
 import { inject as Inject, injectable as Injectable } from "inversify";
 import { Controller, Get, Query, Route, Security, Tags } from "tsoa";
 
-import { ApiError } from "../../common";
+import { InternalServerErrorException } from "../../common";
 import { WireguardService } from "./wireguard.service";
 import { IWireguardPeerStatus } from "./wireguard.types";
 
@@ -21,7 +21,11 @@ export class WireguardController extends Controller {
     try {
       return this._wireguardService.start(interfaceName);
     } catch (e) {
-      return Promise.reject(new ApiError(e.message, 500));
+      return Promise.reject(
+        new InternalServerErrorException("Не удалось запустить wireguard", {
+          cause: e,
+        }),
+      );
     }
   }
 
@@ -31,7 +35,11 @@ export class WireguardController extends Controller {
     try {
       return this._wireguardService.stop(interfaceName);
     } catch (e) {
-      return Promise.reject(new ApiError(e.message, 500));
+      return Promise.reject(
+        new InternalServerErrorException("Не удалось остановить wireguard", {
+          cause: e,
+        }),
+      );
     }
   }
 
@@ -44,7 +52,14 @@ export class WireguardController extends Controller {
     try {
       return this._wireguardService.getStatus(interfaceName, publicKey);
     } catch (e) {
-      return Promise.reject(new ApiError(e.message, 500));
+      return Promise.reject(
+        new InternalServerErrorException(
+          "Не удалось получить статус wireguard",
+          {
+            cause: e,
+          },
+        ),
+      );
     }
   }
 }

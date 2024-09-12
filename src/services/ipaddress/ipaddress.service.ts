@@ -3,7 +3,7 @@ import { Includeable, Op, WhereOptions } from "sequelize";
 import { v4 } from "uuid";
 
 import { config } from "../../../config";
-import { ApiError } from "../../common";
+import { InternalServerErrorException, NotFoundException } from "../../common";
 import { IPAddress, TIPAddressModel } from "./ipaddress.model";
 
 const { WG_DEFAULT_ADDRESS } = config;
@@ -25,7 +25,7 @@ export class IPAddressService {
       include: IPAddressService.include,
     }).then(result => {
       if (result === null) {
-        return Promise.reject(new ApiError("Сервер wireguard не найден", 404));
+        return Promise.reject(new NotFoundException());
       }
 
       return result;
@@ -37,7 +37,7 @@ export class IPAddressService {
       include: IPAddressService.include,
     }).then(result => {
       if (result === null) {
-        return Promise.reject(new ApiError("Сервер wireguard не найден", 404));
+        return Promise.reject(new NotFoundException());
       }
 
       return result;
@@ -146,7 +146,9 @@ export class IPAddressService {
       };
     }
 
-    throw new ApiError("Максимальное число клиентов не больше 254", 500);
+    throw new InternalServerErrorException(
+      "Максимальное число клиентов не больше 254",
+    );
   };
 
   private _getFreeIPAddressForServer = async () => {
@@ -189,7 +191,9 @@ export class IPAddressService {
         };
       }
 
-      throw new ApiError("Максимальное число клиентов не больше 254", 500);
+      throw new InternalServerErrorException(
+        "Максимальное число клиентов не больше 254",
+      );
     }
 
     return {
