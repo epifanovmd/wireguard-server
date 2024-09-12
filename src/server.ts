@@ -2,6 +2,7 @@ import logger from "koa-logger";
 
 import { config } from "../config";
 import { app, router } from "./app";
+import { sequelize } from "./db";
 import {
   notFoundMiddleware,
   RegisterAppMiddlewares,
@@ -20,6 +21,9 @@ const socketGateway = iocContainer.get(SocketGateway);
 const isDevelopment = process.env.NODE_ENV;
 
 const bootstrap = () => {
+  sequelize.afterSync(() => {
+    wgServerService.init().then();
+  });
   socketGateway.start();
 
   router.get("/ping", context => {
@@ -42,8 +46,6 @@ const bootstrap = () => {
     .use(router.allowedMethods())
     .use(notFoundMiddleware)
     .listen(SERVER_PORT, SERVER_HOST, async () => {
-      await wgServerService.init();
-
       const url = `http://${SERVER_HOST}:${SERVER_PORT}`;
 
       console.info(`REST API Server running on: ${url}`);
