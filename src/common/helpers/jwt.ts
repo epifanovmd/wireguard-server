@@ -38,7 +38,7 @@ export const verifyToken = (
 
 export const createToken = (profile: IProfileDto, opts?: SignOptions) =>
   new Promise<string>(resolve => {
-    resolve(sign(profile, JWT_SECRET_KEY, opts));
+    resolve(sign(profile, JWT_SECRET_KEY));
   });
 
 export const createTokenAsync = (
