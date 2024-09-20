@@ -1,8 +1,8 @@
 # Makefile
 
-.PHONY: remove_wireguard up prune stop all
+.PHONY: remove up prune stop all
 
-remove_wireguard:
+remove:
 	@if [ "$$(docker ps -f name=wireguard -q -a)" != "" ]; then \
 		docker rm --force $$(docker ps -f name=wireguard -q -a); \
 	fi
@@ -16,4 +16,4 @@ prune:
 stop:
 	docker compose --env-file .env.production down
 
-all: remove_wireguard up prune
+all: remove up prune
