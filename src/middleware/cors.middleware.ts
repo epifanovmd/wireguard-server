@@ -6,13 +6,6 @@ const { CORS_ALLOW_IPS } = config;
 
 export const corsMiddleware = cors({
   origin(ctx) {
-    console.log("CORS_ALLOW_IPS", CORS_ALLOW_IPS);
-    console.log("ctx.request.header.origin", ctx.request.header.origin);
-    console.log(
-      "CORS_ALLOW_IPS.includes(ctx.request.header.origin)",
-      ctx.request.header.origin &&
-        CORS_ALLOW_IPS.includes(ctx.request.header.origin),
-    );
     if (
       ctx.request.header.origin &&
       CORS_ALLOW_IPS.includes(ctx.request.header.origin)
