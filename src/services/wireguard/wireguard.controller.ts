@@ -1,7 +1,7 @@
+import { InternalServerErrorException } from "@force-dev/utils";
 import { inject as Inject, injectable as Injectable } from "inversify";
 import { Controller, Get, Query, Route, Security, Tags } from "tsoa";
 
-import { InternalServerErrorException } from "../../common";
 import { WireguardService } from "./wireguard.service";
 import { IWireguardPeerStatus } from "./wireguard.types";
 

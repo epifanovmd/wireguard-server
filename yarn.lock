@@ -801,10 +801,10 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.0.tgz#a5417ae8427873f1dd08b70b3574b453e67b5f7f"
   integrity sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==
 
-"@force-dev/utils@^1.1.80":
-  version "1.1.80"
-  resolved "https://registry.yarnpkg.com/@force-dev/utils/-/utils-1.1.80.tgz#e9e0b0d6b49d428b6048aa16f5997310a1da3f54"
-  integrity sha512-I2TfSAxs4vkRoslwQySOXt2dxhhXsEtCUdxBqUiNA5HsEc/ZBNwtoxd9ZfJvIn/e6FreO4aA2zK9frfneQWROQ==
+"@force-dev/utils@^1.1.86":
+  version "1.1.86"
+  resolved "https://registry.yarnpkg.com/@force-dev/utils/-/utils-1.1.86.tgz#5b9641ffe74a57b197225927c2559a396938abd4"
+  integrity sha512-cYeaX66Ct7iasibCtxT0b2F2yQ1/GG6zEsI8HlEJ+woaHYDKWfUqYpEU09OvImTuw7tEaXv6RET3y4zZA12SMw==
   dependencies:
     "@types/shortid" "^0.0.32"
     axios "^1.7.2"

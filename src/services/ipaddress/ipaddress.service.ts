@@ -1,9 +1,12 @@
+import {
+  InternalServerErrorException,
+  NotFoundException,
+} from "@force-dev/utils";
 import { injectable } from "inversify";
 import { Includeable, Op, WhereOptions } from "sequelize";
 import { v4 } from "uuid";
 
 import { config } from "../../../config";
-import { InternalServerErrorException, NotFoundException } from "../../common";
 import { IPAddress, TIPAddressModel } from "./ipaddress.model";
 
 const { WG_DEFAULT_ADDRESS } = config;

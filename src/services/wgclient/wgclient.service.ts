@@ -1,8 +1,8 @@
+import { ForbiddenException, NotFoundException } from "@force-dev/utils";
 import { inject, injectable } from "inversify";
 import { Includeable, WhereOptions } from "sequelize";
 import { v4 } from "uuid";
 
-import { ForbiddenException, NotFoundException } from "../../common";
 import { IPAddressService } from "../ipaddress";
 import { Profile, ProfileService } from "../profile";
 import { WgServer } from "../wgserver";

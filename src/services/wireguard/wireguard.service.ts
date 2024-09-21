@@ -1,9 +1,9 @@
+import { InternalServerErrorException } from "@force-dev/utils";
 import fs from "fs/promises";
 import { inject, injectable } from "inversify";
 import path from "path";
 
 import { config } from "../../../config";
-import { InternalServerErrorException } from "../../common";
 import { UtilsService } from "../utils";
 import { IWgServerDto } from "../wgserver";
 import {
