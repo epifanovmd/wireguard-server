@@ -1,19 +1,72 @@
-# Makefile
+# Параметры для подключения по SSH
+SSH_USER=root
+SSH_HOST=147.45.245.104
+PROJECT_DIR=development/wireguard-server
 
-.PHONY: remove up prune stop all
+# Параметры репозитория
+BRANCH=main
 
-remove:
-	@if [ "$$(docker ps -f name=wireguard -q -a)" != "" ]; then \
-		docker rm --force $$(docker ps -f name=wireguard -q -a); \
-	fi
+# Локальная директория проекта
+LOCAL_PROJECT_DIR=.
 
-up:
-	docker compose --env-file .env.production up -d --no-deps --build --force-recreate
+# Имя контейнера (или сервиса в docker-compose.yml)
+CONTAINER_NAME=wireguard
 
-prune:
-	docker image prune -a --force
+# Получение URL репозитория
+REPO_URL=$(shell git config --get remote.origin.url)
 
-stop:
-	docker compose --env-file .env.production down
+# Цель по умолчанию
+all: deploy
 
-all: remove up prune
+# Переменная для использования SSH
+USE_SSH=$(filter ssh,$(MAKECMDGOALS))
+
+# Префикс для команд (локально или по SSH)
+CMD_PREFIX=$(if $(USE_SSH),ssh $(SSH_USER)@$(SSH_HOST),)
+
+# Правило для клонирования репозитория
+clone:
+	$(CMD_PREFIX) git clone -b $(BRANCH) $(REPO_URL) $(PROJECT_DIR) || (cd $(PROJECT_DIR) && git pull origin $(BRANCH))
+
+# Правило для копирования проекта из текущей папки
+copy:
+	rsync -avz --delete --exclude-from='.gitignore' $(LOCAL_PROJECT_DIR)/ $(SSH_USER)@$(SSH_HOST):$(PROJECT_DIR)
+
+# Правило для остановки и удаления запущенного контейнера
+remove-container:
+	$(CMD_PREFIX) if [ $$(docker ps -q -f name=$(CONTAINER_NAME)) ]; then docker rm -f $(CONTAINER_NAME); fi
+
+# Правило для запуска Docker Compose
+docker-compose-up:
+	$(CMD_PREFIX) cd $(PROJECT_DIR) && docker compose up --no-deps --build --force-recreate
+
+# Комплексное правило для деплоя
+deploy: copy remove-container docker-compose-up
+
+# Очистка проекта на удаленном сервере
+clean:
+	$(CMD_PREFIX) rm -rf $(PROJECT_DIR)
+
+# Проверка состояния контейнеров
+status:
+	$(CMD_PREFIX) docker ps -a
+
+# Просмотр логов контейнера
+logs:
+	$(CMD_PREFIX) docker logs $(CONTAINER_NAME)
+
+# Перезапуск контейнера
+restart-container:
+	$(CMD_PREFIX) docker restart $(CONTAINER_NAME)
+
+# Обновление всех образов Docker
+update-images:
+	$(CMD_PREFIX) docker pull $(REPO_URL)
+
+# Создание резервной копии проекта
+backup:
+	$(CMD_PREFIX) tar czf $(PROJECT_DIR)_backup_$(shell date +%Y%m%d%H%M%S).tar.gz -C $(PROJECT_DIR) .
+
+# Убрать --ssh из целей make
+%:
+	@:
