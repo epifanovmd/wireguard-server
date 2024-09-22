@@ -129,13 +129,16 @@ export class WgServerService {
   deleteWgServer = async (profileId: string, id: string) => {
     const wgServer = await this.getWgServer(id);
 
-    await this._wireguardService.stop(wgServer.name);
-
     if (wgServer.profileId !== profileId) {
       throw new ForbiddenException("Невозможно удалить сервер");
     }
 
-    await this._wireguardService.deleteConfig(wgServer.name);
+    try {
+      await this._wireguardService.deleteConfig(wgServer.name);
+      await this._wireguardService.stop(wgServer.name);
+    } catch {
+      /* empty */
+    }
 
     // delete only instance for run beforeDestroy hook
     return wgServer.destroy().then(async () => id);

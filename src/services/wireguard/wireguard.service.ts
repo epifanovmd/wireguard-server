@@ -139,7 +139,7 @@ export class WireguardService {
   };
 
   deleteConfig = (interfaceName: string) => {
-    return fs.rm(path.join(WG_PATH, `${interfaceName}.conf`)).catch(() => {});
+    return fs.rm(path.join(WG_PATH, `${interfaceName}.conf`));
   };
 
   private _saveInterface = async (
