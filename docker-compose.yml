@@ -35,7 +35,7 @@ services:
     build: .
     container_name: wireguard
     volumes:
-      - ./wg-config:/etc/wireguard
+      - ./wg-config:${WG_PATH:-/etc/wireguard}
     ports:
       - "8181:8181"
       - "3232:3232"
