@@ -24,7 +24,7 @@ export const config = {
   WG_DEFAULT_INTERFACE_PORT: Number(
     process.env.WG_DEFAULT_INTERFACE_PORT || 51820,
   ),
-  WG_MTU: process.env.WG_MTU || null,
+  WG_MTU: process.env.WG_MTU ? Number(process.env.WG_MTU) : undefined,
   WG_PERSISTENT_KEEPALIVE: process.env.WG_PERSISTENT_KEEPALIVE || 0,
   WG_DEFAULT_ADDRESS: process.env.WG_DEFAULT_ADDRESS || "10.x.x.x",
   WG_DEFAULT_DNS: process.env.WG_DEFAULT_DNS || "1.1.1.1",

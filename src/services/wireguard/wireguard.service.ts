@@ -77,7 +77,7 @@ export class WireguardService {
           latestHandshakeAt:
             latestHandshakeAt === "0"
               ? undefined
-              : new Date(Number(`${latestHandshakeAt}000`)),
+              : new Date(Number(latestHandshakeAt) * 1000),
           transferRx: Number(transferRx),
           transferTx: Number(transferTx),
           persistentKeepalive:
@@ -115,7 +115,7 @@ export class WireguardService {
         latestHandshakeAt:
           latestHandshakeAt === "0"
             ? undefined
-            : new Date(Number(`${latestHandshakeAt}000`)),
+            : new Date(Number(latestHandshakeAt) * 1000),
         transferRx: Number(transferRx),
         transferTx: Number(transferTx),
         persistentKeepalive:
