@@ -2,16 +2,16 @@ import logger from "koa-logger";
 
 import { config } from "../config";
 import { app, router } from "./app";
+import { iocContainer } from "./app.module";
 import { sequelize } from "./db";
 import {
   notFoundMiddleware,
   RegisterAppMiddlewares,
   RegisterSwagger,
 } from "./middleware";
-import { iocContainer } from "./modules";
+import { SocketGateway } from "./modules/socket/socket.gateway";
+import { WgServerService } from "./modules/wgserver";
 import { RegisterRoutes } from "./routes";
-import { SocketGateway } from "./services/socket/socket.gateway";
-import { WgServerService } from "./services/wgserver";
 
 const { SERVER_HOST, SERVER_PORT } = config;
 
@@ -53,4 +53,4 @@ const bootstrap = () => {
     });
 };
 
-export const server = bootstrap();
+export const appServer = bootstrap();

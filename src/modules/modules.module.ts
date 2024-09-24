@@ -1,6 +1,6 @@
 import { Container } from "inversify";
 
-import { Module } from "../modules";
+import { Module } from "../app.module";
 import { AuthModule } from "./auth";
 import { IPAddressModule } from "./ipaddress";
 import { ProfileModule } from "./profile";
@@ -11,7 +11,7 @@ import { WgClientModule } from "./wgclient";
 import { WgServerModule } from "./wgserver";
 import { WireguardModule } from "./wireguard";
 
-export class ServicesModule implements Module {
+export class ModulesModule implements Module {
   Configure(ioc: Container) {
     new AuthModule().Configure(ioc);
     new IPAddressModule().Configure(ioc);

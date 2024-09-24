@@ -4,4 +4,4 @@ export {
   WgClientController,
   WgServerController,
   WireguardController,
-} from "./services";
+} from "./modules";

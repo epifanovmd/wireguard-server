@@ -1,8 +1,8 @@
 import request from "supertest";
 
+import { iocContainer } from "../../app.module";
+import { appServer } from "../../app.server";
 import { redisClient, sequelize } from "../../db";
-import { iocContainer } from "../../modules";
-import { server } from "../../server";
 import { SocketService } from "../socket";
 
 let accessToken = "";
@@ -16,7 +16,7 @@ describe("Profile", () => {
 
   describe("/POST api/auth/signUp", () => {
     it("it should POST signUp", done => {
-      request(server)
+      request(appServer)
         .post("/api/auth/signUp")
         .send({
           username: "test_user",
@@ -39,7 +39,7 @@ describe("Profile", () => {
 
   describe("/POST api/auth/signIn", () => {
     it("it should POST signIn", done => {
-      request(server)
+      request(appServer)
         .post("/api/auth/signIn")
         .send({
           username: "test_user",

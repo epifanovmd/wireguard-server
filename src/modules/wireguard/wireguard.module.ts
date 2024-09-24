@@ -1,6 +1,6 @@
 import { Container } from "inversify";
 
-import { Module } from "../../modules";
+import { Module } from "../../app.module";
 import { WireguardController } from "./wireguard.controller";
 import { WireguardService } from "./wireguard.service";
 

@@ -1,6 +1,6 @@
 import { Container } from "inversify";
 
-import { Module } from "../../modules";
+import { Module } from "../../app.module";
 import { WgServerController } from "./wgserver.controller";
 import { WgServerService } from "./wgserver.service";
 
