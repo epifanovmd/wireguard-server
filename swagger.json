@@ -1627,7 +1627,7 @@
 	},
 	"servers": [
 		{
-			"url": "http://147.45.245.104:8181",
+			"url": "http://wireguard.force-dev.ru",
 			"description": "Prod"
 		},
 		{
