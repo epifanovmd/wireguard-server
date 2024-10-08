@@ -46,8 +46,8 @@ const bootstrap = () => {
     .use(router.allowedMethods())
     .use(notFoundMiddleware)
     .listen(SERVER_PORT, SERVER_HOST, async () => {
-      await sequelize.drop({ cascade: true });
-      await sequelize.sync({ force: true });
+      // await sequelize.drop({ cascade: true });
+      await sequelize.sync({ force: false });
 
       wgServerService.init().then();
 
