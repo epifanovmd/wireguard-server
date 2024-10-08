@@ -13,7 +13,7 @@ import {
   Tags,
 } from "tsoa";
 
-import { getContextProfile } from "../../common/helpers";
+import { getContextProfile } from "../../common";
 import { KoaRequest } from "../../types/koa";
 import {
   IWgClientCreateRequest,
@@ -75,7 +75,7 @@ export class WgClientController extends Controller {
     return this._wgClientService.getWgClientConfiguration(profileId, id);
   }
 
-  @Security("jwt")
+  @Security("jwt", ["role:admin", "role:user", "permission:write"])
   @Post("create")
   createWgClient(
     @Request() req: KoaRequest,
@@ -86,7 +86,7 @@ export class WgClientController extends Controller {
     return this._wgClientService.createWgClient(profileId, body);
   }
 
-  @Security("jwt")
+  @Security("jwt", ["role:admin", "role:user", "permission:write"])
   @Patch("update/{id}")
   updateWgClient(
     @Request() req: KoaRequest,
@@ -98,7 +98,7 @@ export class WgClientController extends Controller {
     return this._wgClientService.updateWgClient(profileId, id, body);
   }
 
-  @Security("jwt")
+  @Security("jwt", ["role:admin", "role:user", "permission:delete"])
   @Delete("delete/{id}")
   deleteWgClient(@Request() req: KoaRequest, id: string): Promise<string> {
     const profileId = getContextProfile(req);

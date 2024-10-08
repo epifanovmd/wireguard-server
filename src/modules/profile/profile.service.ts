@@ -5,6 +5,7 @@ import { Includeable, WhereOptions } from "sequelize";
 import { EPermissions, Permission } from "../permission";
 import { ERole, Role } from "../role";
 import {
+  IProfilePrivilegesRequest,
   IProfileUpdateRequest,
   Profile,
   ProfileModel,
@@ -52,7 +53,7 @@ export class ProfileService {
 
   createProfile = (body: TProfileCreateModel) => {
     return Profile.create(body).then(result => {
-      return this.setPrivilegesToUser(result.id, ERole.USER, [
+      return this.setPrivileges(result.id, ERole.USER, [
         EPermissions.READ,
         EPermissions.WRITE,
       ]);
@@ -62,10 +63,10 @@ export class ProfileService {
   updateProfile = (id: string, body: IProfileUpdateRequest) =>
     Profile.update(body, { where: { id } }).then(() => this.getProfile(id));
 
-  setPrivilegesToUser = async (
+  setPrivileges = async (
     profileId: string,
-    roleName: ERole,
-    permissions: EPermissions[],
+    roleName: IProfilePrivilegesRequest["roleName"],
+    permissions: IProfilePrivilegesRequest["permissions"],
   ) => {
     const profile = await Profile.findByPk(profileId);
 

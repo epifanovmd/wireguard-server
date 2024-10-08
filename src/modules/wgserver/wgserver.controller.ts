@@ -27,7 +27,7 @@ export class WgServerController extends Controller {
     super();
   }
 
-  @Security("jwt")
+  @Security("jwt", ["role:admin"])
   @Get("server/{id}/start")
   startServer(@Request() req: KoaRequest, id: string): Promise<void> {
     const profileId = getContextProfile(req);
@@ -35,7 +35,7 @@ export class WgServerController extends Controller {
     return this._wgServerService.startServer(profileId, id);
   }
 
-  @Security("jwt")
+  @Security("jwt", ["role:admin"])
   @Get("server/{id}/stop")
   stopServer(@Request() req: KoaRequest, id: string): Promise<void> {
     const profileId = getContextProfile(req);
@@ -80,7 +80,7 @@ export class WgServerController extends Controller {
     });
   }
 
-  @Security("jwt")
+  @Security("jwt", ["role:admin"])
   @Post("create")
   createWgServer(
     @Request() req: KoaRequest,
@@ -91,7 +91,7 @@ export class WgServerController extends Controller {
     return this._wgServerService.createWgServer(profileId, body);
   }
 
-  @Security("jwt")
+  @Security("jwt", ["role:admin"])
   @Delete("/delete/{id}")
   deleteWgServer(@Request() req: KoaRequest, id: string): Promise<string> {
     const profileId = getContextProfile(req);

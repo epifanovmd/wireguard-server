@@ -10,13 +10,21 @@ import {
 
 import { sequelize } from "../../db";
 import { ListResponse } from "../../dto/ListResponse";
-import { IRoleDto, Role } from "../role";
+import { EPermissions } from "../permission";
+import { ERole, IRoleDto, Role } from "../role";
 
 export interface IProfileUpdateRequest
   extends Omit<TProfileCreateModel, "id" | "passwordHash"> {}
+
+export interface IProfilePrivilegesRequest {
+  roleName: ERole;
+  permissions: EPermissions[];
+}
+
 export interface IProfileDto extends Omit<ProfileModel, "passwordHash"> {
   role: IRoleDto;
 }
+
 export interface IProfileListDto extends ListResponse<IProfileDto[]> {}
 
 export type ProfileModel = InferAttributes<Profile>;

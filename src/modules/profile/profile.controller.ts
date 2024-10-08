@@ -12,11 +12,12 @@ import {
   Tags,
 } from "tsoa";
 
-import { getContextProfile } from "../../common/helpers";
+import { getContextProfile } from "../../common";
 import { KoaRequest } from "../../types/koa";
 import {
   IProfileDto,
   IProfileListDto,
+  IProfilePrivilegesRequest,
   IProfileUpdateRequest,
 } from "./profile.model";
 import { ProfileService } from "./profile.service";
@@ -76,7 +77,20 @@ export class ProfileController extends Controller {
     return this._profileService.getProfile(id);
   }
 
-  @Security("jwt")
+  @Security("jwt", ["role:admin"])
+  @Patch("setPrivileges/{id}")
+  setPrivileges(
+    id: string,
+    @Body() body: IProfilePrivilegesRequest,
+  ): Promise<IProfileDto> {
+    return this._profileService.setPrivileges(
+      id,
+      body.roleName,
+      body.permissions,
+    );
+  }
+
+  @Security("jwt", ["role:admin"])
   @Patch("update/{id}")
   updateProfile(
     id: string,
@@ -85,7 +99,7 @@ export class ProfileController extends Controller {
     return this._profileService.updateProfile(id, body);
   }
 
-  @Security("jwt")
+  @Security("jwt", ["role:admin"])
   @Delete("delete/{id}")
   deleteProfile(id: string): Promise<string> {
     return this._profileService.deleteProfile(id);
