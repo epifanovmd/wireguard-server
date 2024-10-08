@@ -16,3 +16,7 @@ redisClient.on("connect", () => {
 redisClient.connect().catch(err => {
   console.log("ERROR CONNECT REDIS", err);
 });
+
+redisClient.on("error", err => {
+  console.log("REDIS ERROR", err);
+});
