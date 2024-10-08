@@ -32,19 +32,28 @@ export class WgServerService {
   }
 
   async startServer(profileId: string, serverId: string) {
-    const server = await this.getWgServerByAttr({ profileId, serverId });
+    const server = await this.getWgServerByAttr({
+      profileId,
+      serverId,
+    });
 
     await this._wireguardService.start(server.name);
   }
 
   async stopServer(profileId: string, serverId: string) {
-    const server = await this.getWgServerByAttr({ profileId, serverId });
+    const server = await this.getWgServerByAttr({
+      profileId,
+      serverId,
+    });
 
     await this._wireguardService.stop(server.name);
   }
 
   async getServerStatus(profileId: string, serverId: string) {
-    const server = await this.getWgServerByAttr({ profileId, serverId });
+    const server = await this.getWgServerByAttr({
+      profileId,
+      serverId,
+    });
 
     return this._wireguardService.getInterfaceStatus(server.name);
   }
@@ -92,32 +101,34 @@ export class WgServerService {
     if (server) {
       return server;
     }
+
     const id = v4();
-    const ipaddress = await this._ipAddressService.createServerIPAddress(id);
     const privateKey = await this._wireguardService.getPrivateKey();
     const publicKey = await this._wireguardService.getPublicKey(privateKey);
 
     const maxPort = await WgServer.max<number | null, WgServer>("port");
 
-    return WgServer.create({
+    const wgServer = await WgServer.create({
       id,
       profileId,
       privateKey,
       publicKey,
       port: maxPort ? maxPort + 1 : config.WG_DEFAULT_INTERFACE_PORT,
       ...body,
-      address: this._ipAddressService.formatIp(
-        ipaddress.a,
-        ipaddress.b,
-        ipaddress.c,
-        ipaddress.d,
-      ),
-    }).then(async result => {
-      await this._wireguardService.saveInterfaceConfig(result, result.clients);
-      await this._wireguardService.start(result.name);
-
-      return this.getWgServer(result.id);
+      address: "",
     });
+
+    const ipaddress = await this._ipAddressService.createServerIPAddress(id);
+
+    await wgServer.set("address", ipaddress.address).save();
+
+    await this._wireguardService.saveInterfaceConfig(
+      wgServer,
+      wgServer.clients,
+    );
+    await this._wireguardService.start(wgServer.name);
+
+    return this.getWgServer(wgServer.id);
   };
 
   updateWireguardConfig = async (serverId: string) => {

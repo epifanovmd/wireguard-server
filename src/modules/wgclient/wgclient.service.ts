@@ -5,7 +5,7 @@ import { v4 } from "uuid";
 
 import { IPAddressService } from "../ipaddress";
 import { Profile, ProfileService } from "../profile";
-import { WgServer } from "../wgserver";
+import { WgServer } from "../wgserver/wgserver.model";
 import { WireguardService } from "../wireguard";
 import { getClientConfig } from "./wgclient.constants";
 import {
@@ -93,42 +93,43 @@ export class WgClientService {
     const server = await WgServer.findByPk(body.serverId);
 
     if (server) {
-      const ipaddress = await this._ipAddressService.createClientIPAddress(
-        id,
-        server.address,
-      );
-
       const privateKey = await this._wireguardService.getPrivateKey();
       const publicKey = await this._wireguardService.getPublicKey(privateKey);
       const preSharedKey = await this._wireguardService.getPreSharedKey();
 
-      return WgClient.create({
+      const wgClient = await WgClient.create({
         id,
         profileId,
         ...body,
         privateKey,
         publicKey,
         preSharedKey,
-        address: this._ipAddressService.formatIp(
-          ipaddress.a,
-          ipaddress.b,
-          ipaddress.c,
-          ipaddress.d,
-        ),
-      }).then(async result => {
-        const client = await this.getWgClient(result.id);
-
-        const serverId = client.server.id;
-
-        const clients = await WgClient.findAll({ where: { serverId } });
-
-        await this._wireguardService.saveInterfaceConfig(
-          client.server,
-          clients,
-        );
-
-        return client;
+        address: "",
       });
+
+      const ipaddress = await this._ipAddressService.createClientIPAddress(
+        id,
+        server.address,
+      );
+
+      const address = this._ipAddressService.formatIp(
+        ipaddress.a,
+        ipaddress.b,
+        ipaddress.c,
+        ipaddress.d,
+      );
+
+      await wgClient.set("address", address).save();
+
+      const client = await this.getWgClient(wgClient.id);
+
+      const serverId = client.server.id;
+
+      const clients = await WgClient.findAll({ where: { serverId } });
+
+      await this._wireguardService.saveInterfaceConfig(client.server, clients);
+
+      return wgClient;
     } else {
       throw new NotFoundException("Сервер wireguard не найден");
     }

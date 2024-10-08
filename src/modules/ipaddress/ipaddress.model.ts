@@ -13,7 +13,7 @@ export type TIPAddressModel = InferAttributes<IPAddress>;
 
 export type TIPAddressCreateModel = InferCreationAttributes<
   IPAddress,
-  { omit: "createdAt" | "updatedAt" }
+  { omit: "createdAt" | "updatedAt" | "address" }
 >;
 
 export class IPAddress extends Model<TIPAddressModel, TIPAddressCreateModel> {
@@ -23,6 +23,10 @@ export class IPAddress extends Model<TIPAddressModel, TIPAddressCreateModel> {
   declare b: number;
   declare c: number;
   declare d: number;
+
+  get address(): string {
+    return `${this.a}.${this.b}.${this.c}.${this.d}`;
+  }
 
   declare clientId?: string;
   declare serverId?: string;
@@ -67,6 +71,14 @@ IPAddress.init(
       type: DataTypes.INTEGER(),
       allowNull: false,
     },
+
+    address: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return `${this.a}.${this.b}.${this.c}.${this.d}`;
+      },
+    },
+
     free: {
       type: DataTypes.BOOLEAN(),
     },
@@ -83,5 +95,3 @@ IPAddress.init(
     },
   },
 );
-
-IPAddress.sync({ force: false }).then(() => {});

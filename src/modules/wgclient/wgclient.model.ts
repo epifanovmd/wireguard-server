@@ -135,12 +135,3 @@ WgClient.init(
     ],
   },
 );
-
-WgClient.sync({ force: false }).then(() => {
-  WgClient.belongsTo(WgServer);
-  WgClient.belongsTo(Profile);
-
-  WgClient.beforeDestroy(async client => {
-    await IPAddress.destroy({ where: { clientId: client.id } });
-  });
-});

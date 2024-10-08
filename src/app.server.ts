@@ -21,10 +21,10 @@ const socketGateway = iocContainer.get(SocketGateway);
 const isDevelopment = process.env.NODE_ENV;
 
 const bootstrap = () => {
-  sequelize.afterSync(() => {
-    wgServerService.init().then();
-  });
-  socketGateway.start();
+  // sequelize.afterSync(() => {
+  //   wgServerService.init().then();
+  // });
+  // socketGateway.start();
 
   router.get("/ping", context => {
     context.status = 200;
@@ -46,6 +46,11 @@ const bootstrap = () => {
     .use(router.allowedMethods())
     .use(notFoundMiddleware)
     .listen(SERVER_PORT, SERVER_HOST, async () => {
+      await sequelize.drop({ cascade: true });
+      await sequelize.sync({ force: true });
+
+      wgServerService.init().then();
+
       const url = `http://${SERVER_HOST}:${SERVER_PORT}`;
 
       console.info(`REST API Server running on: ${url}`);

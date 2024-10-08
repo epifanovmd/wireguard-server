@@ -103,18 +103,3 @@ WgServer.init(
     ],
   },
 );
-
-WgServer.sync({ force: false }).then(async () => {
-  WgServer.hasMany(WgClient);
-  WgServer.belongsTo(Profile);
-  WgServer.hasOne(IPAddress);
-
-  WgServer.beforeDestroy(async wgServer => {
-    await WgClient.findAll({ where: { serverId: wgServer.id } }).then(clients =>
-      // delete only instance for run beforeDestroy hook
-      clients.forEach(client => client.destroy()),
-    );
-
-    await IPAddress.destroy({ where: { serverId: wgServer.id } });
-  });
-});
