@@ -36,7 +36,6 @@ export class AuthService {
     } else {
       return this._profileService
         .createProfile({
-          id: v4(),
           ...rest,
           username,
           passwordHash: sha256(password),

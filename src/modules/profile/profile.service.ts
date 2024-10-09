@@ -23,7 +23,7 @@ export class ProfileService {
       include: ProfileService.include,
     });
 
-  getProfileByAttr = (where: WhereOptions) =>
+  getProfileByAttr = (where: WhereOptions<Profile>) =>
     Profile.findOne({
       where,
       include: ProfileService.include,
@@ -60,6 +60,20 @@ export class ProfileService {
     });
   };
 
+  createAdmin = (body: TProfileCreateModel) => {
+    const profile = this.getProfileByAttr({ username: body.username }).catch(
+      () => Profile.create(body),
+    );
+
+    return profile.then(result => {
+      return this.setPrivileges(result.id, ERole.ADMIN, [
+        EPermissions.READ,
+        EPermissions.WRITE,
+        EPermissions.DELETE,
+      ]);
+    });
+  };
+
   updateProfile = (id: string, body: IProfileUpdateRequest) =>
     Profile.update(body, { where: { id } }).then(() => this.getProfile(id));
 
@@ -76,11 +90,11 @@ export class ProfileService {
       );
     }
 
-    const [role, success] = await Role.findOrCreate({
+    const [role] = await Role.findOrCreate({
       where: { name: roleName },
     });
 
-    if (success && role) {
+    if (role) {
       await profile.setRole(role);
 
       const permissionInstances = await Promise.all(

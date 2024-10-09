@@ -30,17 +30,17 @@ export interface IProfileListDto extends ListResponse<IProfileDto[]> {}
 export type ProfileModel = InferAttributes<Profile>;
 export type TProfileCreateModel = InferCreationAttributes<
   Profile,
-  { omit: "createdAt" | "updatedAt" }
+  { omit: "createdAt" | "updatedAt" | "id" }
 >;
 
 export class Profile extends Model<ProfileModel, TProfileCreateModel> {
   declare id: string;
 
   declare username: string;
-  declare firstName: string;
-  declare lastName: string;
-  declare email: string;
-  declare phone: string;
+  declare firstName?: string;
+  declare lastName?: string;
+  declare email?: string;
+  declare phone?: string;
 
   declare passwordHash: string;
 
@@ -51,7 +51,7 @@ export class Profile extends Model<ProfileModel, TProfileCreateModel> {
   declare readonly updatedAt: Date;
 
   // mixins
-  declare setRole: BelongsToSetAssociationMixin<Role, number>;
+  declare setRole: BelongsToSetAssociationMixin<Role, string>;
   declare getRole: BelongsToGetAssociationMixin<Role>;
 
   // associations
@@ -62,6 +62,7 @@ Profile.init(
   {
     id: {
       type: DataTypes.UUID(),
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false,
     },
