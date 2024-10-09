@@ -2,13 +2,13 @@ import { Socket as SocketIO } from "socket.io";
 
 import { IWireguardPeerStatusDto } from "../wireguard";
 
-export interface SocketEvents {
+export interface ISocketEvents {
   subscribeToClient: (...args: [clientId: string[]]) => void;
   unsubscribeFromClient: () => void;
 }
 
-export interface SocketEmitEvents {
+export interface ISocketEmitEvents {
   client: (...args: [data: IWireguardPeerStatusDto]) => void;
 }
 
-export type Socket = SocketIO<SocketEvents, SocketEmitEvents>;
+export type TSocket = SocketIO<ISocketEvents, ISocketEmitEvents>;

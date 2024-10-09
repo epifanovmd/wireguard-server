@@ -1,20 +1,20 @@
 import { parse } from "cookie";
 import { createServer } from "http";
-import { injectable as Injectable } from "inversify";
+import { injectable } from "inversify";
 import { Server } from "socket.io";
 
 import { config } from "../../../config";
 import { app } from "../../app";
-import { verifyToken } from "../../common/helpers";
+import { verifyToken } from "../../common";
 import { IProfileDto } from "../profile";
-import { Socket, SocketEmitEvents, SocketEvents } from "./socket.types";
+import { ISocketEmitEvents, ISocketEvents, TSocket } from "./socket.types";
 
 const { SOCKET_PORT, CORS_ALLOW_IPS } = config;
 
-@Injectable()
+@injectable()
 export class SocketService {
-  public clients = new Map<string, { clientSocket: Socket }>();
-  private _socket: Server<SocketEvents, SocketEmitEvents, SocketEmitEvents>;
+  public clients = new Map<string, { clientSocket: TSocket }>();
+  private _socket: Server<ISocketEvents, ISocketEmitEvents, ISocketEmitEvents>;
 
   constructor() {
     const server = createServer(app.callback());
@@ -47,9 +47,7 @@ export class SocketService {
     this._socket.close();
   }
 
-  onConnection = (
-    listener: (_client: IProfileDto, _socket: Socket) => void,
-  ) => {
+  onConnection = (listener: (client: IProfileDto, socket: TSocket) => void) => {
     this.socket?.on("connection", clientSocket => {
       const { headers } = clientSocket.request;
       const cookie = parse(headers.cookie || "");
@@ -58,11 +56,11 @@ export class SocketService {
 
       if (token) {
         verifyToken(token)
-          .then(decoded => {
-            listener?.(decoded, clientSocket);
+          .then(profile => {
+            listener?.(profile, clientSocket);
 
             clientSocket.on("disconnect", () => {
-              const id = decoded.id;
+              const id = profile.id;
 
               if (this.clients.has(id)) {
                 this.clients.delete(id);

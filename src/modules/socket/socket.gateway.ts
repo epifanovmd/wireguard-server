@@ -3,7 +3,7 @@ import { inject, injectable as Injectable } from "inversify";
 import { WgClientService } from "../wgclient";
 import { IWireguardPeerStatusDto, WireguardService } from "../wireguard";
 import { SocketService } from "./socket.service";
-import { Socket } from "./socket.types";
+import { TSocket } from "./socket.types";
 
 @Injectable()
 export class SocketGateway {
@@ -29,7 +29,7 @@ export class SocketGateway {
     }
   };
 
-  private _onSubscribeToClient = (clientSocket: Socket) => {
+  private _onSubscribeToClient = (clientSocket: TSocket) => {
     clientSocket.on("subscribeToClient", async clientId => {
       const subscribeId = `${clientSocket.id}-${clientId.join(",")}`;
 
