@@ -22,9 +22,11 @@ export class WgServerService {
   ) {}
 
   async init() {
-    const servers = await WgServer.findAll({ attributes: ["name"] });
+    const servers = await WgServer.findAll({ attributes: ["id", "name"] });
 
     servers.map(async server => {
+      await this.updateWireguardConfig(server.id);
+
       if (!(await this._wireguardService.getInterfaceStatus(server.name))) {
         await this._wireguardService.start(server.name).catch(() => null);
       }
