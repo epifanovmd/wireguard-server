@@ -74,8 +74,8 @@ export class WgServerController extends Controller {
     const profileId = getContextProfile(req);
 
     return this._wgServerService.getWgServerByAttr({
-      profileId,
       id,
+      profileId,
     });
   }
 

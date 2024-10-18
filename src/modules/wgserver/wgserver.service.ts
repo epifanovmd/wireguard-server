@@ -31,19 +31,19 @@ export class WgServerService {
     });
   }
 
-  async startServer(profileId: string, serverId: string) {
+  async startServer(profileId: string, id: string) {
     const server = await this.getWgServerByAttr({
+      id,
       profileId,
-      serverId,
     });
 
     await this._wireguardService.start(server.name);
   }
 
-  async stopServer(profileId: string, serverId: string) {
+  async stopServer(profileId: string, id: string) {
     const server = await this.getWgServerByAttr({
+      id,
       profileId,
-      serverId,
     });
 
     await this._wireguardService.stop(server.name);
