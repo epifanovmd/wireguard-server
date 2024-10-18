@@ -49,10 +49,10 @@ export class WgServerService {
     await this._wireguardService.stop(server.name);
   }
 
-  async getServerStatus(profileId: string, serverId: string) {
+  async getServerStatus(profileId: string, id: string) {
     const server = await this.getWgServerByAttr({
+      id,
       profileId,
-      serverId,
     });
 
     return this._wireguardService.getInterfaceStatus(server.name);
@@ -70,6 +70,7 @@ export class WgServerService {
   getWgServerByAttr = (where: WhereOptions) =>
     WgServer.findOne({
       where,
+      attributes: WgServerService.wgServerAttributes,
       include: WgServerService.include,
     }).then(result => {
       if (result === null) {
