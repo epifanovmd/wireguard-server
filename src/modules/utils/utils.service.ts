@@ -40,7 +40,7 @@ export class UtilsService {
           if (error) {
             reject(`Error: ${stderr}`);
           } else {
-            resolve(stdout);
+            resolve(String(stdout).trim());
           }
         },
       );
