@@ -4,7 +4,9 @@ import { injectable } from "inversify";
 @injectable()
 export class UtilsService {
   isValidIPv4(str: string): boolean {
-    if (!str) return false;
+    if (!str) {
+      return false;
+    }
 
     const blocks = str.split(".");
 
@@ -29,13 +31,19 @@ export class UtilsService {
     }
 
     return new Promise((resolve, reject) => {
-      child_process.exec(command, (error, stdout, stderr) => {
-        if (error) {
-          reject(`Error: ${stderr}`);
-        } else {
-          resolve(stdout);
-        }
-      });
+      child_process.exec(
+        command,
+        {
+          shell: "bash",
+        },
+        (error, stdout, stderr) => {
+          if (error) {
+            reject(`Error: ${stderr}`);
+          } else {
+            resolve(stdout);
+          }
+        },
+      );
     });
   }
 }
