@@ -2,7 +2,7 @@ import request from "supertest";
 
 import { iocContainer } from "../../app.module";
 import { appServer } from "../../app.server";
-import { redisClient, sequelize } from "../../db";
+import { sequelize } from "../../db";
 import { SocketService } from "../socket";
 
 let accessToken = "";
@@ -65,7 +65,6 @@ describe("Profile", () => {
   afterAll(done => {
     const socketService = iocContainer.get(SocketService);
 
-    redisClient.disconnect();
     socketService.close();
 
     sequelize.truncate().then(done);

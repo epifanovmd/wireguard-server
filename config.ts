@@ -34,11 +34,6 @@ export const config = {
   WG_POST_UP: process.env.WG_POST_UP || "",
   WG_POST_DOWN: process.env.WG_POST_DOWN || "",
 
-  REDIS_PASS: process.env.REDIS_PASS || "redisPass",
-
-  REDIS_HOST: process.env.REDIS_HOST || "localhost",
-  REDIS_PORT: process.env.REDIS_PORT || 6379,
-
   POSTGRES_HOST: process.env.POSTGRES_HOST || "localhost",
   POSTGRES_PORT: Number(process.env.POSTGRES_PORT || 5432),
   POSTGRES_DATABASE: process.env.POSTGRES_DATABASE || "postgres",

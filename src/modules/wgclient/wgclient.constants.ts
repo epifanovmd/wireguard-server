@@ -25,6 +25,6 @@ ${WG_MTU ? `MTU = ${WG_MTU}` : ""}
 [Peer]
 PublicKey = ${server.publicKey} # Публичный ключ [Interface] сервера
 PresharedKey = ${preSharedKey}
-Endpoint = ${PUBLIC_HOST}:${server.port}
-AllowedIPs = ${WG_ALLOWED_IPS} #IP-адрес сервера и порт
+Endpoint = ${PUBLIC_HOST}:${server.port} #IP-адрес сервера и порт
+AllowedIPs = ${WG_ALLOWED_IPS}
 PersistentKeepalive = ${persistentKeepalive ?? WG_PERSISTENT_KEEPALIVE}`;
