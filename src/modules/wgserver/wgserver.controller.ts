@@ -57,7 +57,6 @@ export class WgServerController extends Controller {
   @Security("jwt")
   @Get()
   getWgServers(
-    @Request() req: KoaRequest,
     @Query("offset") offset?: number,
     @Query("limit") limit?: number,
   ): Promise<IWgServersListDto> {

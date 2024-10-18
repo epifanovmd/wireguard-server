@@ -5,6 +5,7 @@ import { v4 } from "uuid";
 
 import { IPAddressService } from "../ipaddress";
 import { Profile, ProfileService } from "../profile";
+import { ERole } from "../role";
 import { WgServer } from "../wgserver/wgserver.model";
 import { WireguardService } from "../wireguard";
 import { getClientConfig } from "./wgclient.constants";
@@ -22,20 +23,25 @@ export class WgClientService {
     @inject(WireguardService) private _wireguardService: WireguardService,
   ) {}
 
-  getWgClients = (
+  getWgClients = async (
     profileId: string,
     serverId: string,
     offset?: number,
     limit?: number,
-  ) =>
-    WgClient.findAll({
+  ) => {
+    const profile = await Profile.findByPk(profileId);
+    const role = await profile?.getRole();
+    const isAdmin = role?.name === ERole.ADMIN;
+
+    return WgClient.findAll({
       limit,
       offset,
-      where: { profileId, serverId },
+      where: isAdmin ? { serverId } : { profileId, serverId },
       attributes: WgClientService.wgClientAttributes,
       order: [["createdAt", "DESC"]],
       include: WgClientService.include,
     });
+  };
 
   getWgClientsByAttr = (where: WhereOptions) =>
     WgClient.findAll({
