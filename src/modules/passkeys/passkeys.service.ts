@@ -1,0 +1,185 @@
+import {
+  generateAuthenticationOptions,
+  generateRegistrationOptions,
+  verifyAuthenticationResponse,
+  verifyRegistrationResponse,
+} from "@simplewebauthn/server";
+import type {
+  AuthenticationResponseJSON,
+  RegistrationResponseJSON,
+} from "@simplewebauthn/server/esm/deps";
+import { inject, injectable } from "inversify";
+
+import { AuthService } from "../auth";
+import { ProfileService } from "../profile";
+import { Passkeys } from "./passkeys.model";
+
+const rpName = "wireguard"; // Замените на название вашего приложения
+// const rpID = "wireguard.force-dev.ru"; // Замените на ваш домен
+const rpID = "localhost"; // Замените на ваш домен
+const origin = `http://${rpID}:3000`;
+
+@injectable()
+export class PasskeysService {
+  constructor(
+    @inject(ProfileService) private _profileService: ProfileService,
+    @inject(AuthService) private _authService: AuthService,
+  ) {}
+
+  async generateRegistrationOptions(profileId: string) {
+    // Проверьте, существует ли профиль с данным ID
+    const profile = await this._profileService.getProfile(profileId);
+    // Настройте параметры для генерации
+    const userDisplayName = profile.username;
+    const userName = profile.username;
+    const userIdBuffer = Buffer.from(profile.id, "utf-8");
+    const passkeys = await profile.getPasskeys();
+
+    const options = await generateRegistrationOptions({
+      rpName,
+      rpID,
+      userID: userIdBuffer,
+      userName,
+      userDisplayName,
+      attestationType: "none", // или 'indirect', 'direct' в зависимости от ваших требований
+      excludeCredentials: passkeys.map(passkey => ({
+        id: passkey.id,
+        // Optional
+        transports: passkey.transports,
+      })),
+      authenticatorSelection: {
+        authenticatorAttachment: "platform", // или 'cross-platform'
+        requireResidentKey: false,
+        residentKey: "discouraged",
+      },
+      timeout: 60000, // Таймаут в миллисекундах
+    });
+
+    profile.challenge = options.challenge;
+    await profile.save();
+
+    // Генерация опций для регистрации
+    return options;
+  }
+
+  verifyRegistration = async (
+    profileId: string,
+    data: RegistrationResponseJSON,
+  ) => {
+    try {
+      const profile = await this._profileService.getProfile(profileId);
+
+      if (profile.challenge) {
+        // Проверьте данные с помощью verifyRegistrationResponse
+        const verification = await verifyRegistrationResponse({
+          response: data,
+          expectedChallenge: profile.challenge, // Укажите ожидаемый challenge
+          expectedOrigin: origin, // Укажите ваш origin
+          expectedRPID: rpID, // Укажите ваш RPID
+        });
+
+        console.log(
+          "verification.registrationInfo.credential.publicKey",
+          verification.registrationInfo?.credential.publicKey,
+        );
+
+        if (verification.verified && verification.registrationInfo) {
+          // Сохраните данные в модель Passkeys
+          await Passkeys.create({
+            id: verification.registrationInfo.credential.id,
+            publicKey: Buffer.from(
+              verification.registrationInfo.credential.publicKey,
+            ),
+            profileId: profileId,
+            counter: verification.registrationInfo.credential.counter,
+            deviceType: verification.registrationInfo.credentialDeviceType,
+            transports: verification.registrationInfo.credential.transports,
+          });
+
+          return {
+            success: true,
+          };
+        }
+      }
+
+      return {
+        success: false,
+        message: "Verification failed",
+      };
+    } catch (error) {
+      console.error("Error verifying registration:", error);
+
+      return {
+        success: false,
+        message: "An error occurred during registration verification",
+      };
+    }
+  };
+
+  async generateAuthenticationOptions(profileId: string) {
+    const profile = await this._profileService.getProfile(profileId);
+    const passkeys = await profile.getPasskeys();
+
+    const options = await generateAuthenticationOptions({
+      rpID,
+      // Require users to use a previously-registered authenticator
+      allowCredentials: passkeys.map(passkey => ({
+        id: passkey.id,
+        transports: passkey.transports,
+      })),
+    });
+
+    profile.challenge = options.challenge;
+    await profile.save();
+
+    return options;
+  }
+
+  async verifyAuthentication(
+    profileId: string,
+    data: AuthenticationResponseJSON,
+  ) {
+    // Логика верификации аутентификации
+    const profile = await this._profileService.getProfile(profileId);
+
+    const passkey = await Passkeys.findOne({
+      where: {
+        profileId,
+        id: data.id,
+      },
+    });
+
+    if (!profile.challenge) {
+      throw new Error(`Could not find challenge for user ${profileId}`);
+    }
+
+    if (!passkey) {
+      throw new Error(
+        `Could not find passkey ${data.id} for user ${profileId}`,
+      );
+    }
+
+    const verifyData = await verifyAuthenticationResponse({
+      response: data,
+      expectedChallenge: profile.challenge,
+      expectedOrigin: origin,
+      expectedRPID: rpID,
+      credential: {
+        id: passkey.id,
+        publicKey: new Uint8Array(passkey.publicKey),
+        counter: passkey.counter,
+        transports: passkey.transports,
+      },
+    });
+
+    if (verifyData.verified) {
+      passkey.counter = verifyData.authenticationInfo.newCounter;
+      await passkey.save();
+    }
+
+    return {
+      ...verifyData,
+      tokens: await this._authService.getTokens(profileId),
+    };
+  }
+}

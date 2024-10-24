@@ -1,4 +1,5 @@
 import { IPAddress } from "./ipaddress";
+import { Passkeys } from "./passkeys";
 import { Permission } from "./permission";
 import { Profile } from "./profile";
 import { Role } from "./role";
@@ -6,6 +7,8 @@ import { WgClient } from "./wgclient";
 import { WgServer } from "./wgserver";
 
 Profile.belongsTo(Role, { foreignKey: "roleId" });
+Profile.hasMany(Passkeys, { onDelete: "CASCADE" });
+Passkeys.belongsTo(Profile);
 
 Role.hasMany(Profile, { onDelete: "CASCADE" });
 Role.belongsToMany(Permission, {

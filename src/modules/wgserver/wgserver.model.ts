@@ -63,6 +63,10 @@ WgServer.init(
     profileId: {
       type: DataTypes.UUID(),
       allowNull: false,
+      references: {
+        model: Profile,
+        key: "id",
+      },
     },
     name: {
       type: DataTypes.STRING(16),

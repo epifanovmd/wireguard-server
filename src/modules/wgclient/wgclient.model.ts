@@ -8,7 +8,6 @@ import {
 
 import { sequelize } from "../../db";
 import { ListResponse } from "../../dto/ListResponse";
-import { IPAddress } from "../ipaddress";
 import { IProfileDto, Profile } from "../profile";
 import { IWgServerDto, WgServer } from "../wgserver";
 
@@ -73,10 +72,18 @@ WgClient.init(
     serverId: {
       type: DataTypes.UUID(),
       allowNull: false,
+      references: {
+        model: WgServer,
+        key: "id",
+      },
     },
     profileId: {
       type: DataTypes.UUID(),
       allowNull: false,
+      references: {
+        model: Profile,
+        key: "id",
+      },
     },
     name: {
       type: DataTypes.STRING(100),

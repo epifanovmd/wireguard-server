@@ -1,5 +1,6 @@
 export {
   AuthController,
+  PasskeysController,
   ProfileController,
   WgClientController,
   WgServerController,

@@ -123,6 +123,7 @@ export class ProfileService {
       "firstName",
       "lastName",
       "username",
+      "challenge",
       "createdAt",
       "updatedAt",
     ];

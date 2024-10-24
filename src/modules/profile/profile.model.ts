@@ -2,6 +2,7 @@ import {
   BelongsToGetAssociationMixin,
   BelongsToSetAssociationMixin,
   DataTypes,
+  HasManyGetAssociationsMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
@@ -10,6 +11,7 @@ import {
 
 import { sequelize } from "../../db";
 import { ListResponse } from "../../dto/ListResponse";
+import { Passkeys } from "../passkeys";
 import { EPermissions } from "../permission";
 import { ERole, IRoleDto, Role } from "../role";
 
@@ -45,6 +47,7 @@ export class Profile extends Model<ProfileModel, TProfileCreateModel> {
   declare passwordHash: string;
 
   declare roleId?: string;
+  declare challenge?: string;
 
   // timestamps!
   declare readonly createdAt: Date;
@@ -53,6 +56,9 @@ export class Profile extends Model<ProfileModel, TProfileCreateModel> {
   // mixins
   declare setRole: BelongsToSetAssociationMixin<Role, string>;
   declare getRole: BelongsToGetAssociationMixin<Role>;
+
+  // mixins
+  declare getPasskeys: HasManyGetAssociationsMixin<Passkeys>;
 
   // associations
   declare role: NonAttribute<Role>;
@@ -91,6 +97,11 @@ Profile.init(
     },
     passwordHash: {
       type: DataTypes.STRING(100),
+    },
+
+    challenge: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
 
     roleId: {

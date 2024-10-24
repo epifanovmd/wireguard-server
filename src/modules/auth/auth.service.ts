@@ -1,7 +1,6 @@
 import { BadRequestException, UnauthorizedException } from "@force-dev/utils";
 import { inject, injectable } from "inversify";
 import sha256 from "sha256";
-import { v4 } from "uuid";
 
 import { createTokenAsync, verifyToken } from "../../common";
 import { ProfileService } from "../profile";
