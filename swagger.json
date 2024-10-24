@@ -302,6 +302,119 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ITokensDto": {
+				"properties": {
+					"accessToken": {
+						"type": "string"
+					},
+					"refreshToken": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"accessToken",
+					"refreshToken"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProfileWithTokensDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"username": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"roleId": {
+						"type": "string"
+					},
+					"challenge": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"role": {
+						"$ref": "#/components/schemas/IRoleDto"
+					},
+					"tokens": {
+						"$ref": "#/components/schemas/ITokensDto"
+					}
+				},
+				"required": [
+					"role",
+					"tokens"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISignUpRequest": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"roleId": {
+						"type": "string"
+					},
+					"challenge": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISignInRequest": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"username",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Base64URLString": {
 				"type": "string",
 				"description": "An attempt to communicate that this isn't just any string, but a Base64URL-encoded string"
@@ -1061,119 +1174,6 @@
 				},
 				"type": "object",
 				"additionalProperties": false
-			},
-			"ITokensDto": {
-				"properties": {
-					"accessToken": {
-						"type": "string"
-					},
-					"refreshToken": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"accessToken",
-					"refreshToken"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IProfileWithTokensDto": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"username": {
-						"type": "string"
-					},
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"email": {
-						"type": "string"
-					},
-					"phone": {
-						"type": "string"
-					},
-					"roleId": {
-						"type": "string"
-					},
-					"challenge": {
-						"type": "string"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"role": {
-						"$ref": "#/components/schemas/IRoleDto"
-					},
-					"tokens": {
-						"$ref": "#/components/schemas/ITokensDto"
-					}
-				},
-				"required": [
-					"role",
-					"tokens"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ISignUpRequest": {
-				"properties": {
-					"username": {
-						"type": "string"
-					},
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"email": {
-						"type": "string"
-					},
-					"phone": {
-						"type": "string"
-					},
-					"roleId": {
-						"type": "string"
-					},
-					"challenge": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"password"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ISignInRequest": {
-				"properties": {
-					"username": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"username",
-					"password"
-				],
-				"type": "object",
-				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -1495,6 +1495,114 @@
 						}
 					}
 				]
+			}
+		},
+		"/api/auth/signUp": {
+			"post": {
+				"operationId": "SignUp",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileWithTokensDto"
+								}
+							}
+						}
+					}
+				},
+				"description": "Endpoint description",
+				"summary": "Endpoint summary.",
+				"tags": [
+					"Authorization"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"description": "Body param",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ISignUpRequest",
+								"description": "Body param"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/auth/signIn": {
+			"post": {
+				"operationId": "SignIn",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileWithTokensDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authorization"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ISignInRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/auth/refresh": {
+			"post": {
+				"operationId": "Refresh",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ITokensDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authorization"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"refreshToken": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"refreshToken"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/api/passkeys/generate-registration-options": {
@@ -2271,114 +2379,6 @@
 						}
 					}
 				]
-			}
-		},
-		"/api/auth/signUp": {
-			"post": {
-				"operationId": "SignUp",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProfileWithTokensDto"
-								}
-							}
-						}
-					}
-				},
-				"description": "Endpoint description",
-				"summary": "Endpoint summary.",
-				"tags": [
-					"Authorization"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"description": "Body param",
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ISignUpRequest",
-								"description": "Body param"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/auth/signIn": {
-			"post": {
-				"operationId": "SignIn",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProfileWithTokensDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Authorization"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ISignInRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/auth/refresh": {
-			"post": {
-				"operationId": "Refresh",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ITokensDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Authorization"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"properties": {
-									"refreshToken": {
-										"type": "string"
-									}
-								},
-								"required": [
-									"refreshToken"
-								],
-								"type": "object"
-							}
-						}
-					}
-				}
 			}
 		}
 	},
