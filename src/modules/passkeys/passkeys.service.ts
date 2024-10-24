@@ -1,3 +1,4 @@
+import { InternalServerErrorException } from "@force-dev/utils";
 import {
   generateAuthenticationOptions,
   generateRegistrationOptions,
@@ -78,11 +79,6 @@ export class PasskeysService {
           expectedRPID: rpID, // Укажите ваш RPID
         });
 
-        console.log(
-          "verification.registrationInfo.credential.publicKey",
-          verification.registrationInfo?.credential.publicKey,
-        );
-
         if (verification.verified && verification.registrationInfo) {
           // Сохраните данные в модель Passkeys
           await Passkeys.create({
@@ -95,24 +91,18 @@ export class PasskeysService {
             deviceType: verification.registrationInfo.credentialDeviceType,
             transports: verification.registrationInfo.credential.transports,
           });
-
-          return {
-            success: true,
-          };
         }
+
+        return {
+          verified: verification.verified,
+        };
       }
 
-      return {
-        success: false,
-        message: "Verification failed",
-      };
+      return Promise.reject(
+        new InternalServerErrorException("Challenge not found"),
+      );
     } catch (error) {
-      console.error("Error verifying registration:", error);
-
-      return {
-        success: false,
-        message: "An error occurred during registration verification",
-      };
+      throw new InternalServerErrorException("Ошибка верификации", error);
     }
   };
 

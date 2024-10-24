@@ -29,8 +29,7 @@ export class PasskeysController extends Controller {
   async verifyRegistration(
     @Body() { profileId, data }: IVerifyRegistrationRequest,
   ): Promise<{
-    message?: string;
-    success: boolean;
+    verified: boolean;
   }> {
     return await this._authService.verifyRegistration(profileId, data);
   }
