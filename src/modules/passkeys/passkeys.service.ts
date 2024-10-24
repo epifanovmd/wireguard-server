@@ -13,11 +13,15 @@ import { inject, injectable } from "inversify";
 
 import { AuthService } from "../auth";
 import { ProfileService } from "../profile";
-import { Passkeys } from "./passkeys.model";
+import {
+  IVerifyAuthenticationResponse,
+  IVerifyRegistrationResponse,
+  Passkeys,
+} from "./passkeys.model";
 
 const rpName = "wireguard"; // Замените на название вашего приложения
 const rpID = "wireguard.force-dev.ru"; // Замените на ваш домен
-// const rpID = "192.168.1.151"; // Замените на ваш домен
+// const rpID = "localhost"; // Замените на ваш домен
 const origin = `http://${rpID}`;
 
 @injectable()
@@ -66,7 +70,7 @@ export class PasskeysService {
   verifyRegistration = async (
     profileId: string,
     data: RegistrationResponseJSON,
-  ) => {
+  ): Promise<IVerifyRegistrationResponse> => {
     try {
       const profile = await this._profileService.getProfile(profileId);
 
@@ -128,7 +132,7 @@ export class PasskeysService {
   async verifyAuthentication(
     profileId: string,
     data: AuthenticationResponseJSON,
-  ) {
+  ): Promise<IVerifyAuthenticationResponse> {
     // Логика верификации аутентификации
     const profile = await this._profileService.getProfile(profileId);
 
@@ -140,11 +144,13 @@ export class PasskeysService {
     });
 
     if (!profile.challenge) {
-      throw new Error(`Could not find challenge for user ${profileId}`);
+      throw new InternalServerErrorException(
+        `Could not find challenge for user ${profileId}`,
+      );
     }
 
     if (!passkey) {
-      throw new Error(
+      throw new InternalServerErrorException(
         `Could not find passkey ${data.id} for user ${profileId}`,
       );
     }
@@ -168,7 +174,7 @@ export class PasskeysService {
     }
 
     return {
-      ...verifyData,
+      verified: verifyData.verified,
       tokens: await this._authService.getTokens(profileId),
     };
   }

@@ -15,6 +15,7 @@ import {
 } from "sequelize";
 
 import { sequelize } from "../../db";
+import { ITokensDto } from "../auth";
 import { Profile } from "../profile";
 
 export interface IVerifyRegistrationRequest {
@@ -25,6 +26,15 @@ export interface IVerifyRegistrationRequest {
 export interface IVerifyAuthenticationRequest {
   profileId: string;
   data: AuthenticationResponseJSON;
+}
+
+export interface IVerifyAuthenticationResponse {
+  verified: boolean;
+  tokens?: ITokensDto;
+}
+
+export interface IVerifyRegistrationResponse {
+  verified: boolean;
 }
 
 export type PasskeysModel = InferAttributes<Passkeys>;

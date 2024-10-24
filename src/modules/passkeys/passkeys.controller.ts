@@ -5,8 +5,8 @@ import { Body, Controller, Post, Route, Tags } from "tsoa";
 
 import {
   IVerifyAuthenticationRequest,
+  IVerifyAuthenticationResponse,
   IVerifyRegistrationRequest,
-  Passkeys,
 } from "./passkeys.model";
 import { PasskeysService } from "./passkeys.service";
 
@@ -44,7 +44,7 @@ export class PasskeysController extends Controller {
   @Post("/verify-authentication")
   async verifyAuthentication(
     @Body() { profileId, data }: IVerifyAuthenticationRequest,
-  ): Promise<VerifiedAuthenticationResponse> {
+  ): Promise<IVerifyAuthenticationResponse> {
     return await this._authService.verifyAuthentication(profileId, data);
   }
 }
