@@ -1,4 +1,7 @@
-import { InternalServerErrorException } from "@force-dev/utils";
+import {
+  ForbiddenException,
+  InternalServerErrorException,
+} from "@force-dev/utils";
 import {
   generateAuthenticationOptions,
   generateRegistrationOptions,
@@ -21,8 +24,8 @@ import {
 
 const rpName = "wireguard"; // Замените на название вашего приложения
 // const rpID = "wireguard.force-dev.ru"; // Замените на ваш домен
-const rpID = "localhost:3000"; // Замените на ваш домен
-const origin = `http://${rpID}`;
+const rpID = "localhost"; // Замените на ваш домен
+const origin = `http://${rpID}:3000`;
 
 @injectable()
 export class PasskeysService {
@@ -113,6 +116,10 @@ export class PasskeysService {
   async generateAuthenticationOptions(profileId: string) {
     const profile = await this._profileService.getProfile(profileId);
     const passkeys = await profile.getPasskeys();
+
+    if (!passkeys || passkeys.length === 0) {
+      throw new InternalServerErrorException("Credentials not found");
+    }
 
     const options = await generateAuthenticationOptions({
       rpID,

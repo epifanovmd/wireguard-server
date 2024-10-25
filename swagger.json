@@ -632,68 +632,20 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"CredentialDeviceType": {
-				"type": "string",
-				"enum": [
-					"singleDevice",
-					"multiDevice"
-				],
-				"description": "The two types of credentials as defined by bit 3 (\"Backup Eligibility\") in authenticator data:\n- `\"singleDevice\"` credentials will never be backed up\n- `\"multiDevice\"` credentials can be backed up"
-			},
-			"AuthenticationExtensionsAuthenticatorOutputs": {
-				"description": "Attempt to support authenticator extensions we might not know about in WebAuthn"
-			},
-			"VerifiedAuthenticationResponse": {
+			"IVerifyAuthenticationResponse": {
 				"properties": {
-					"authenticationInfo": {
-						"properties": {
-							"authenticatorExtensionResults": {
-								"$ref": "#/components/schemas/AuthenticationExtensionsAuthenticatorOutputs"
-							},
-							"rpID": {
-								"type": "string"
-							},
-							"origin": {
-								"type": "string"
-							},
-							"credentialBackedUp": {
-								"type": "boolean"
-							},
-							"credentialDeviceType": {
-								"$ref": "#/components/schemas/CredentialDeviceType"
-							},
-							"userVerified": {
-								"type": "boolean"
-							},
-							"newCounter": {
-								"type": "number",
-								"format": "double"
-							},
-							"credentialID": {
-								"$ref": "#/components/schemas/Base64URLString"
-							}
-						},
-						"required": [
-							"rpID",
-							"origin",
-							"credentialBackedUp",
-							"credentialDeviceType",
-							"userVerified",
-							"newCounter",
-							"credentialID"
-						],
-						"type": "object"
-					},
 					"verified": {
 						"type": "boolean"
+					},
+					"tokens": {
+						"$ref": "#/components/schemas/ITokensDto"
 					}
 				},
 				"required": [
-					"authenticationInfo",
 					"verified"
 				],
 				"type": "object",
-				"description": "Result of authentication verification"
+				"additionalProperties": false
 			},
 			"AuthenticatorAssertionResponseJSON": {
 				"description": "A slightly-modified AuthenticatorAssertionResponse to simplify working with ArrayBuffers that\nare Base64URL-encoded in the browser so that they can be sent as JSON to the server.\n\nhttps://w3c.github.io/webauthn/#dictdef-authenticatorassertionresponsejson",
@@ -1655,15 +1607,12 @@
 							"application/json": {
 								"schema": {
 									"properties": {
-										"success": {
+										"verified": {
 											"type": "boolean"
-										},
-										"message": {
-											"type": "string"
 										}
 									},
 									"required": [
-										"success"
+										"verified"
 									],
 									"type": "object"
 								}
@@ -1737,7 +1686,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/VerifiedAuthenticationResponse"
+									"$ref": "#/components/schemas/IVerifyAuthenticationResponse"
 								}
 							}
 						}

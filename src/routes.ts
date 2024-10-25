@@ -298,19 +298,13 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "CredentialDeviceType": {
-        "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["singleDevice"]},{"dataType":"enum","enums":["multiDevice"]}],"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "AuthenticationExtensionsAuthenticatorOutputs": {
-        "dataType": "refAlias",
-        "type": {"dataType":"any","validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "VerifiedAuthenticationResponse": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"authenticationInfo":{"dataType":"nestedObjectLiteral","nestedProperties":{"authenticatorExtensionResults":{"ref":"AuthenticationExtensionsAuthenticatorOutputs"},"rpID":{"dataType":"string","required":true},"origin":{"dataType":"string","required":true},"credentialBackedUp":{"dataType":"boolean","required":true},"credentialDeviceType":{"ref":"CredentialDeviceType","required":true},"userVerified":{"dataType":"boolean","required":true},"newCounter":{"dataType":"double","required":true},"credentialID":{"ref":"Base64URLString","required":true}},"required":true},"verified":{"dataType":"boolean","required":true}},"validators":{}},
+    "IVerifyAuthenticationResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "verified": {"dataType":"boolean","required":true},
+            "tokens": {"ref":"ITokensDto"},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "AuthenticatorAssertionResponseJSON": {
