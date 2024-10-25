@@ -21,7 +21,7 @@ import {
 
 const rpName = "wireguard"; // Замените на название вашего приложения
 // const rpID = "wireguard.force-dev.ru"; // Замените на ваш домен
-const rpID = "localhost"; // Замените на ваш домен
+const rpID = "localhost:3000"; // Замените на ваш домен
 const origin = `http://${rpID}`;
 
 @injectable()
