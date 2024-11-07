@@ -14,6 +14,7 @@ import { UtilsModule } from "./utils";
 import { WgClientModule } from "./wgclient";
 import { WgServerModule } from "./wgserver";
 import { WireguardModule } from "./wireguard";
+// IMPORT MODULE HERE
 
 export class ModulesModule implements Module {
   Configure(ioc: Container) {
@@ -28,5 +29,6 @@ export class ModulesModule implements Module {
     new WgServerModule().Configure(ioc);
     new WgClientModule().Configure(ioc);
     new WireguardModule().Configure(ioc);
+    // CONFIGURE MODULE HERE
   }
 }

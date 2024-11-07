@@ -7,3 +7,4 @@ export { ProfileController } from "./profile";
 export { WgClientController } from "./wgclient";
 export { WgServerController } from "./wgserver";
 export { WireguardController } from "./wireguard";
+// EXPORT CONTROLLER HERE
