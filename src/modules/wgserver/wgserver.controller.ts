@@ -12,7 +12,7 @@ import {
   Tags,
 } from "tsoa";
 
-import { getContextProfile } from "../../common/helpers";
+import { getContextProfile } from "../../common";
 import { KoaRequest } from "../../types/koa";
 import { IWgServerDto, IWgServersListDto } from "./wgserver.model";
 import { WgServerService } from "./wgserver.service";
