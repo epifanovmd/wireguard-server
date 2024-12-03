@@ -1129,7 +1129,6 @@ export function RegisterRoutes(router: KoaRouter) {
 
             async function WgServerController_getWgServer(context: any, next: any) {
             const args = {
-                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
                     id: {"in":"path","name":"id","required":true,"dataType":"string"},
             };
 

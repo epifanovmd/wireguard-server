@@ -49,9 +49,7 @@ export class WgServerController extends Controller {
     @Request() req: KoaRequest,
     id: string,
   ): Promise<string | null> {
-    const profileId = getContextProfile(req);
-
-    return this._wgServerService.getServerStatus(profileId, id);
+    return this._wgServerService.getServerStatus(id);
   }
 
   @Security("jwt")

@@ -51,10 +51,9 @@ export class WgServerService {
     await this._wireguardService.stop(server.name);
   }
 
-  async getServerStatus(profileId: string, id: string) {
+  async getServerStatus(id: string) {
     const server = await this.getWgServerByAttr({
       id,
-      profileId,
     });
 
     return this._wireguardService.getInterfaceStatus(server.name);
@@ -76,6 +75,8 @@ export class WgServerService {
       include: WgServerService.include,
     }).then(result => {
       if (result === null) {
+        console.log("where", where);
+
         return Promise.reject(
           new NotFoundException("Сервер wireguard не найден"),
         );
