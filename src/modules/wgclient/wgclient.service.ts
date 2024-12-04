@@ -77,12 +77,17 @@ export class WgClientService {
     });
 
   getWgClientConfiguration = async (profile: IProfileDto, id: string) => {
-    return getClientConfig(
-      await this.getWgClientByAttr({
-        ...(profile.role.name === ERole.ADMIN ? {} : { profileId: profile.id }),
-        id,
-      }),
-    );
+    const client = await this.getWgClientByAttr({
+      id,
+    });
+
+    if (profile.role.name !== ERole.ADMIN && client.profileId !== profile.id) {
+      throw new ForbiddenException(
+        "Невозможно получить конфигурацию данного клиента",
+      );
+    }
+
+    return getClientConfig(client);
   };
 
   createWgClient = async (profileId: string, body: IWgClientCreateRequest) => {

@@ -35,19 +35,19 @@ export class WgServerService {
     });
   }
 
-  async startServer(profileId: string, id: string) {
+  async startServer(profile: IProfileDto, id: string) {
     const server = await this.getWgServerByAttr({
       id,
-      profileId,
+      ...(profile.role.name === ERole.ADMIN ? {} : { profileId: profile.id }),
     });
 
     await this._wireguardService.start(server.name);
   }
 
-  async stopServer(profileId: string, id: string) {
+  async stopServer(profile: IProfileDto, id: string) {
     const server = await this.getWgServerByAttr({
       id,
-      profileId,
+      ...(profile.role.name === ERole.ADMIN ? {} : { profileId: profile.id }),
     });
 
     await this._wireguardService.stop(server.name);

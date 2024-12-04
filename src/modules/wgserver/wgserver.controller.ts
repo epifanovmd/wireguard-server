@@ -32,7 +32,7 @@ export class WgServerController extends Controller {
   startServer(@Request() req: KoaRequest, id: string): Promise<void> {
     const profile = getContextProfile(req);
 
-    return this._wgServerService.startServer(profile.id, id);
+    return this._wgServerService.startServer(profile, id);
   }
 
   @Security("jwt", ["role:admin"])
@@ -40,7 +40,7 @@ export class WgServerController extends Controller {
   stopServer(@Request() req: KoaRequest, id: string): Promise<void> {
     const profile = getContextProfile(req);
 
-    return this._wgServerService.stopServer(profile.id, id);
+    return this._wgServerService.stopServer(profile, id);
   }
 
   @Security("jwt")
