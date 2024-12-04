@@ -15,6 +15,7 @@ import {
 
 import { getContextProfile } from "../../common";
 import { KoaRequest } from "../../types/koa";
+import { ERole } from "../role";
 import {
   IWgClientCreateRequest,
   IWgClientListDto,
@@ -59,7 +60,7 @@ export class WgClientController extends Controller {
     const profile = getContextProfile(req);
 
     return this._wgClientService.getWgClientByAttr({
-      profileId: profile.id,
+      ...(profile.role.name === ERole.ADMIN ? {} : { profileId: profile.id }),
       id,
     });
   }
@@ -72,7 +73,7 @@ export class WgClientController extends Controller {
   ): Promise<string> {
     const profile = getContextProfile(req);
 
-    return this._wgClientService.getWgClientConfiguration(profile.id, id);
+    return this._wgClientService.getWgClientConfiguration(profile, id);
   }
 
   @Security("jwt", ["role:admin", "role:user", "permission:write"])

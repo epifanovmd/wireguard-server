@@ -76,10 +76,10 @@ export class WgClientService {
       return result;
     });
 
-  getWgClientConfiguration = async (profileId: string, id: string) => {
+  getWgClientConfiguration = async (profile: IProfileDto, id: string) => {
     return getClientConfig(
       await this.getWgClientByAttr({
-        profileId,
+        ...(profile.role.name === ERole.ADMIN ? {} : { profileId: profile.id }),
         id,
       }),
     );
