@@ -41,10 +41,10 @@ export class WgClientController extends Controller {
     @Query("offset") offset?: number,
     @Query("limit") limit?: number,
   ): Promise<IWgClientListDto> {
-    const profileId = getContextProfile(req);
+    const profile = getContextProfile(req);
 
     return this._wgClientService
-      .getWgClients(profileId, serverId, offset, limit)
+      .getWgClients(profile, serverId, offset, limit)
       .then(result => ({
         offset,
         limit,
@@ -56,10 +56,10 @@ export class WgClientController extends Controller {
   @Security("jwt")
   @Get("client/{id}")
   getWgClient(@Request() req: KoaRequest, id: string): Promise<IWgClientsDto> {
-    const profileId = getContextProfile(req);
+    const profile = getContextProfile(req);
 
     return this._wgClientService.getWgClientByAttr({
-      profileId,
+      profileId: profile.id,
       id,
     });
   }
@@ -70,9 +70,9 @@ export class WgClientController extends Controller {
     @Request() req: KoaRequest,
     id: string,
   ): Promise<string> {
-    const profileId = getContextProfile(req);
+    const profile = getContextProfile(req);
 
-    return this._wgClientService.getWgClientConfiguration(profileId, id);
+    return this._wgClientService.getWgClientConfiguration(profile.id, id);
   }
 
   @Security("jwt", ["role:admin", "role:user", "permission:write"])
@@ -81,9 +81,9 @@ export class WgClientController extends Controller {
     @Request() req: KoaRequest,
     @Body() body: IWgClientCreateRequest,
   ): Promise<IWgClientsDto> {
-    const profileId = getContextProfile(req);
+    const profile = getContextProfile(req);
 
-    return this._wgClientService.createWgClient(profileId, body);
+    return this._wgClientService.createWgClient(profile.id, body);
   }
 
   @Security("jwt", ["role:admin", "role:user", "permission:write"])
@@ -93,16 +93,16 @@ export class WgClientController extends Controller {
     @Body() body: IWgClientUpdateRequest,
     id: string,
   ): Promise<IWgClientsDto> {
-    const profileId = getContextProfile(req);
+    const profile = getContextProfile(req);
 
-    return this._wgClientService.updateWgClient(profileId, id, body);
+    return this._wgClientService.updateWgClient(profile, id, body);
   }
 
   @Security("jwt", ["role:admin", "role:user", "permission:delete"])
   @Delete("delete/{id}")
   deleteWgClient(@Request() req: KoaRequest, id: string): Promise<string> {
-    const profileId = getContextProfile(req);
+    const profile = getContextProfile(req);
 
-    return this._wgClientService.deleteWgClient(profileId, id);
+    return this._wgClientService.deleteWgClient(profile, id);
   }
 }

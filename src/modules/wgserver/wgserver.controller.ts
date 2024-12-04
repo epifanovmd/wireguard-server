@@ -30,17 +30,17 @@ export class WgServerController extends Controller {
   @Security("jwt", ["role:admin"])
   @Get("server/{id}/start")
   startServer(@Request() req: KoaRequest, id: string): Promise<void> {
-    const profileId = getContextProfile(req);
+    const profile = getContextProfile(req);
 
-    return this._wgServerService.startServer(profileId, id);
+    return this._wgServerService.startServer(profile.id, id);
   }
 
   @Security("jwt", ["role:admin"])
   @Get("server/{id}/stop")
   stopServer(@Request() req: KoaRequest, id: string): Promise<void> {
-    const profileId = getContextProfile(req);
+    const profile = getContextProfile(req);
 
-    return this._wgServerService.stopServer(profileId, id);
+    return this._wgServerService.stopServer(profile.id, id);
   }
 
   @Security("jwt")
@@ -80,16 +80,16 @@ export class WgServerController extends Controller {
     @Request() req: KoaRequest,
     @Body() body: { name: string },
   ): Promise<IWgServerDto> {
-    const profileId = getContextProfile(req);
+    const profile = getContextProfile(req);
 
-    return this._wgServerService.createWgServer(profileId, body);
+    return this._wgServerService.createWgServer(profile.id, body);
   }
 
   @Security("jwt", ["role:admin"])
   @Delete("/delete/{id}")
   deleteWgServer(@Request() req: KoaRequest, id: string): Promise<string> {
-    const profileId = getContextProfile(req);
+    const profile = getContextProfile(req);
 
-    return this._wgServerService.deleteWgServer(profileId, id);
+    return this._wgServerService.deleteWgServer(profile, id);
   }
 }

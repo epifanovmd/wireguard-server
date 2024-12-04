@@ -4,8 +4,9 @@ import { Includeable, WhereOptions } from "sequelize";
 import { v4 } from "uuid";
 
 import { IPAddressService } from "../ipaddress";
-import { Profile, ProfileService } from "../profile";
+import { IProfileDto, Profile, ProfileService } from "../profile";
 import { ERole } from "../role";
+// не менять импорт, иначе не запустится сервер из-за циклической зависимости
 import { WgServer } from "../wgserver/wgserver.model";
 import { WireguardService } from "../wireguard";
 import { getClientConfig } from "./wgclient.constants";
@@ -24,19 +25,17 @@ export class WgClientService {
   ) {}
 
   getWgClients = async (
-    profileId: string,
+    profile: IProfileDto,
     serverId: string,
     offset?: number,
     limit?: number,
   ) => {
-    const profile = await Profile.findByPk(profileId);
-    const role = await profile?.getRole();
-    const isAdmin = role?.name === ERole.ADMIN;
+    const isAdmin = profile.role.name === ERole.ADMIN;
 
     return WgClient.findAll({
       limit,
       offset,
-      where: isAdmin ? { serverId } : { profileId, serverId },
+      where: isAdmin ? { serverId } : { profileId: profile.id, serverId },
       attributes: WgClientService.wgClientAttributes,
       order: [["createdAt", "DESC"]],
       include: WgClientService.include,
@@ -129,9 +128,9 @@ export class WgClientService {
 
       const client = await this.getWgClient(wgClient.id);
 
-      const serverId = client.server.id;
-
-      const clients = await WgClient.findAll({ where: { serverId } });
+      const clients = await this.getWgClientsByAttr({
+        serverId: client.server.id,
+      });
 
       await this._wireguardService.saveInterfaceConfig(client.server, clients);
 
@@ -142,13 +141,13 @@ export class WgClientService {
   };
 
   updateWgClient = async (
-    profileId: string,
+    profile: IProfileDto,
     id: string,
     body: IWgClientUpdateRequest,
   ) => {
     const client = await this.getWgClient(id);
 
-    if (client.profileId !== profileId) {
+    if (profile.role.name !== ERole.ADMIN && client.profileId !== profile.id) {
       throw new ForbiddenException("Невозможно обновить клиента");
     }
 
@@ -163,18 +162,19 @@ export class WgClientService {
     });
   };
 
-  deleteWgClient = async (profileId: string, id: string) => {
+  deleteWgClient = async (profile: IProfileDto, id: string) => {
     const client = await this.getWgClient(id);
 
-    if (client.profileId !== profileId) {
+    if (profile.role.name !== ERole.ADMIN && client.profileId !== profile.id) {
       throw new ForbiddenException("Невозможно удалить клиента");
     }
 
-    return client.destroy().then(async value => {
-      await this._wireguardService.saveInterfaceConfig(
-        client.server,
-        client.server.clients,
-      );
+    return client.destroy().then(async () => {
+      const clients = await this.getWgClientsByAttr({
+        serverId: client.server.id,
+      });
+
+      await this._wireguardService.saveInterfaceConfig(client.server, clients);
 
       return client.id;
     });

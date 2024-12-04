@@ -33,9 +33,9 @@ export class ProfileController extends Controller {
   @Security("jwt")
   @Get("my")
   getMyProfile(@Request() req: KoaRequest): Promise<IProfileDto> {
-    const profileId = getContextProfile(req);
+    const profile = getContextProfile(req);
 
-    return this._profileService.getProfile(profileId);
+    return this._profileService.getProfile(profile.id);
   }
 
   @Security("jwt")
@@ -44,17 +44,17 @@ export class ProfileController extends Controller {
     @Request() req: KoaRequest,
     @Body() body: IProfileUpdateRequest,
   ): Promise<IProfileDto> {
-    const profileId = getContextProfile(req);
+    const profile = getContextProfile(req);
 
-    return this._profileService.updateProfile(profileId, body);
+    return this._profileService.updateProfile(profile.id, body);
   }
 
   @Security("jwt")
   @Delete("my/delete")
   deleteMyProfile(@Request() req: KoaRequest): Promise<string> {
-    const profileId = getContextProfile(req);
+    const profile = getContextProfile(req);
 
-    return this._profileService.deleteProfile(profileId);
+    return this._profileService.deleteProfile(profile.id);
   }
 
   @Security("jwt")

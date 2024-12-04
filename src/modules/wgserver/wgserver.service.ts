@@ -5,7 +5,9 @@ import { v4 } from "uuid";
 
 import { config } from "../../../config";
 import { IPAddressService } from "../ipaddress";
-import { Profile, ProfileService } from "../profile";
+import { IProfileDto, Profile, ProfileService } from "../profile";
+import { ERole } from "../role";
+// не менять импорт, иначе не запустится сервер из-за циклической зависимости
 import { WgClient } from "../wgclient/wgclient.model";
 import { WireguardService } from "../wireguard";
 import {
@@ -75,8 +77,6 @@ export class WgServerService {
       include: WgServerService.include,
     }).then(result => {
       if (result === null) {
-        console.log("where", where);
-
         return Promise.reject(
           new NotFoundException("Сервер wireguard не найден"),
         );
@@ -141,10 +141,13 @@ export class WgServerService {
     await this._wireguardService.saveInterfaceConfig(server, server.clients);
   };
 
-  deleteWgServer = async (profileId: string, id: string) => {
+  deleteWgServer = async (profile: IProfileDto, id: string) => {
     const wgServer = await this.getWgServer(id);
 
-    if (wgServer.profileId !== profileId) {
+    if (
+      profile.role.name !== ERole.ADMIN &&
+      wgServer.profileId !== profile.id
+    ) {
       throw new ForbiddenException("Невозможно удалить сервер");
     }
 
