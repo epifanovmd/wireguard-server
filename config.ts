@@ -43,4 +43,7 @@ export const config = {
 
   ADMIN_USERNAME: process.env.ADMIN_USERNAME || "admin",
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || "admin",
+
+  SMTP_USER: process.env.SMTP_USER || "",
+  SMTP_PASS: process.env.SMTP_PASS || "",
 };

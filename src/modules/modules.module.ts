@@ -5,6 +5,7 @@ import { Container } from "inversify";
 import { Module } from "../app.module";
 import { AuthModule } from "./auth";
 import { IPAddressModule } from "./ipaddress";
+import { MailerModule } from "./mailer";
 import { PasskeysModule } from "./passkeys";
 import { PermissionModule } from "./permission";
 import { ProfileModule } from "./profile";
@@ -29,6 +30,7 @@ export class ModulesModule implements Module {
     new WgServerModule().Configure(ioc);
     new WgClientModule().Configure(ioc);
     new WireguardModule().Configure(ioc);
+    new MailerModule().Configure(ioc);
     // CONFIGURE MODULE HERE
   }
 }
