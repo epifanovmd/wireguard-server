@@ -56,6 +56,7 @@ export class ProfileService {
       return this.setPrivileges(result.id, ERole.USER, [
         EPermissions.READ,
         EPermissions.WRITE,
+        EPermissions.DELETE,
       ]);
     });
   };
