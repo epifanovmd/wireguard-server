@@ -2,7 +2,7 @@ import { config } from "../../../config";
 import { WgClient } from "./wgclient.model";
 
 const {
-  PUBLIC_HOST,
+  WG_HOST,
   WG_MTU,
   WG_DEFAULT_DNS,
   WG_PERSISTENT_KEEPALIVE,
@@ -25,6 +25,6 @@ ${WG_MTU ? `MTU = ${WG_MTU}` : ""}
 [Peer]
 PublicKey = ${server.publicKey} # Публичный ключ [Interface] сервера
 PresharedKey = ${preSharedKey}
-Endpoint = ${PUBLIC_HOST}:${server.port} #IP-адрес сервера и порт
+Endpoint = ${WG_HOST}:${server.port} #IP-адрес сервера и порт
 AllowedIPs = ${WG_ALLOWED_IPS}
 PersistentKeepalive = ${persistentKeepalive ?? WG_PERSISTENT_KEEPALIVE}`;
