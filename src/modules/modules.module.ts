@@ -6,6 +6,7 @@ import { Module } from "../app.module";
 import { AuthModule } from "./auth";
 import { IPAddressModule } from "./ipaddress";
 import { MailerModule } from "./mailer";
+import { OtpModule } from "./otp";
 import { PasskeysModule } from "./passkeys";
 import { PermissionModule } from "./permission";
 import { ProfileModule } from "./profile";
@@ -31,6 +32,7 @@ export class ModulesModule implements Module {
     new WgClientModule().Configure(ioc);
     new WireguardModule().Configure(ioc);
     new MailerModule().Configure(ioc);
+    new OtpModule().Configure(ioc);
     // CONFIGURE MODULE HERE
   }
 }

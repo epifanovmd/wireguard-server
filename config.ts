@@ -41,7 +41,7 @@ export const config = {
   POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD || "pg_password",
   POSTGRES_DATA: process.env.POSTGRES_DATA || "/data/postgres",
 
-  ADMIN_USERNAME: process.env.ADMIN_USERNAME || "admin",
+  ADMIN_EMAIL: process.env.ADMIN_EMAIL || "admin@admin.com",
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || "admin",
 
   SMTP_USER: process.env.SMTP_USER || "",

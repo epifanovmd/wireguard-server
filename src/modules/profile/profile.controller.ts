@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Patch,
+  Post,
   Query,
   Request,
   Route,
@@ -13,6 +14,7 @@ import {
 } from "tsoa";
 
 import { getContextProfile } from "../../common";
+import { ApiResponse } from "../../dto/ApiResponse";
 import { KoaRequest } from "../../types/koa";
 import {
   IProfileDto,
@@ -88,6 +90,22 @@ export class ProfileController extends Controller {
       body.roleName,
       body.permissions,
     );
+  }
+
+  @Security("jwt")
+  @Post("requestVerifyEmail")
+  requestVerifyEmail(@Request() req: KoaRequest): Promise<void> {
+    const profile = getContextProfile(req);
+
+    return this._profileService.requestVerifyEmail(profile.id, profile.email);
+  }
+
+  @Security("jwt")
+  @Get("verifyEmail/{code}")
+  verifyEmail(code: string, @Request() req: KoaRequest): Promise<ApiResponse> {
+    const profile = getContextProfile(req);
+
+    return this._profileService.verifyEmail(profile.id, code);
   }
 
   @Security("jwt", ["role:admin"])

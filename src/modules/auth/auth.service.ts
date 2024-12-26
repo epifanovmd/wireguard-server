@@ -1,8 +1,18 @@
-import { BadRequestException, UnauthorizedException } from "@force-dev/utils";
+import {
+  BadRequestException,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from "@force-dev/utils";
 import { inject, injectable } from "inversify";
+import { Op } from "sequelize";
 import sha256 from "sha256";
 
-import { createTokenAsync, verifyToken } from "../../common";
+import {
+  createTokenAsync,
+  validateEmail,
+  validatePhone,
+  verifyToken,
+} from "../../common";
 import { ProfileService } from "../profile";
 import {
   IProfileWithTokensDto,
@@ -18,30 +28,45 @@ export class AuthService {
   ) {}
 
   async signUp({
-    username,
+    email,
+    phone,
     password,
     ...rest
   }: ISignUpRequest): Promise<IProfileWithTokensDto> {
+    const login = email || phone;
+
+    if (!login) {
+      throw new BadRequestException(
+        "Необходимо указать либо email, либо телефон, а также пароль.",
+      );
+    }
+
+    if (email) {
+      validateEmail(email);
+    }
+    if (phone) {
+      validatePhone(phone);
+    }
+
     const client = await this._profileService
       .getProfileByAttr({
-        username,
+        [Op.or]: [{ email }, { phone }],
       })
       .catch(() => null);
 
     if (client) {
-      throw new BadRequestException(
-        `Клиент с логином - ${username}, уже зарегистрирован`,
-      );
+      throw new BadRequestException(`Клиент - ${login}, уже зарегистрирован`);
     } else {
       return this._profileService
         .createProfile({
           ...rest,
-          username,
+          phone,
+          email,
           passwordHash: sha256(password),
         })
         .then(() =>
           this.signIn({
-            username,
+            login,
             password,
           }),
         );
@@ -49,11 +74,11 @@ export class AuthService {
   }
 
   async signIn(body: ISignInRequest): Promise<IProfileWithTokensDto> {
-    const { username, password } = body;
+    const { login, password } = body;
 
     try {
       const { id, passwordHash } = await this._profileService.getProfileByAttr({
-        username,
+        [Op.or]: [{ email: login }, { phone: login }],
       });
 
       if (passwordHash === sha256(password)) {

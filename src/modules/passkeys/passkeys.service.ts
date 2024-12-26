@@ -39,10 +39,16 @@ export class PasskeysService {
     // Проверьте, существует ли профиль с данным ID
     const profile = await this._profileService.getProfile(profileId);
     // Настройте параметры для генерации
-    const userDisplayName = profile.username;
-    const userName = profile.username;
+    const userDisplayName = profile.email || profile.phone;
+    const userName = profile.email || profile.phone;
     const userIdBuffer = Buffer.from(profile.id, "utf-8");
     const passkeys = await profile.getPasskeys();
+
+    if (!userName) {
+      throw new InternalServerErrorException(
+        "У пользователя отсутсвует и email и телефон",
+      );
+    }
 
     const options = await generateRegistrationOptions({
       rpName,

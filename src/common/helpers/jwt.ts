@@ -2,6 +2,7 @@ import { ForbiddenException, UnauthorizedException } from "@force-dev/utils";
 import jwt, { sign, SignOptions, VerifyErrors } from "jsonwebtoken";
 
 import { config } from "../../../config";
+import { iocContainer } from "../../app.module";
 import { EPermissions } from "../../modules/permission";
 import { IProfileDto } from "../../modules/profile";
 // импортируем прямяком из файла что бы не было циклической зависимости
@@ -41,7 +42,8 @@ export const verifyToken = async (
           }
 
           try {
-            const profile = await new ProfileService()
+            const profile = await iocContainer
+              .get(ProfileService)
               .getProfile(decoded.profileId)
               .catch(() => null);
 

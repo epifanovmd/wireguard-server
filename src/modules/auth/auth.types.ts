@@ -14,10 +14,11 @@ export interface IProfileWithTokensDto extends IProfileDto {
 }
 
 export interface ISignInRequest {
-  username: string;
+  /** Может быть телефоном, email-ом и username-ом  */
+  login: string;
   password: string;
 }
 
 export interface ISignUpRequest
-  extends Omit<TProfileCreateModel, "id" | "passwordHash">,
+  extends Omit<TProfileCreateModel, "passwordHash" | "roleId" | "challenge">,
     IProfilePassword {}

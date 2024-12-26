@@ -6,6 +6,22 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"ITokensDto": {
+				"properties": {
+					"accessToken": {
+						"type": "string"
+					},
+					"refreshToken": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"accessToken",
+					"refreshToken"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"EPermissions": {
 				"enum": [
 					"read",
@@ -125,9 +141,6 @@
 					"id": {
 						"type": "string"
 					},
-					"username": {
-						"type": "string"
-					},
 					"firstName": {
 						"type": "string"
 					},
@@ -136,6 +149,9 @@
 					},
 					"email": {
 						"type": "string"
+					},
+					"emailVerified": {
+						"type": "boolean"
 					},
 					"phone": {
 						"type": "string"
@@ -157,175 +173,12 @@
 				},
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"IProfileDto": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"username": {
-						"type": "string"
-					},
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"email": {
-						"type": "string"
-					},
-					"phone": {
-						"type": "string"
-					},
-					"roleId": {
-						"type": "string"
-					},
-					"challenge": {
-						"type": "string"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"role": {
-						"$ref": "#/components/schemas/IRoleDto"
-					}
-				},
-				"required": [
-					"role"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Pick_TProfileCreateModel.Exclude_keyofTProfileCreateModel.id-or-passwordHash__": {
-				"properties": {
-					"username": {
-						"type": "string"
-					},
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"email": {
-						"type": "string"
-					},
-					"phone": {
-						"type": "string"
-					},
-					"roleId": {
-						"type": "string"
-					},
-					"challenge": {
-						"type": "string"
-					}
-				},
-				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"IProfileUpdateRequest": {
-				"properties": {
-					"username": {
-						"type": "string"
-					},
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"email": {
-						"type": "string"
-					},
-					"phone": {
-						"type": "string"
-					},
-					"roleId": {
-						"type": "string"
-					},
-					"challenge": {
-						"type": "string"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IProfileListDto": {
-				"properties": {
-					"count": {
-						"type": "number",
-						"format": "double"
-					},
-					"offset": {
-						"type": "number",
-						"format": "double"
-					},
-					"limit": {
-						"type": "number",
-						"format": "double"
-					},
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/IProfileDto"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IProfilePrivilegesRequest": {
-				"properties": {
-					"roleName": {
-						"$ref": "#/components/schemas/ERole"
-					},
-					"permissions": {
-						"items": {
-							"$ref": "#/components/schemas/EPermissions"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"roleName",
-					"permissions"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ITokensDto": {
-				"properties": {
-					"accessToken": {
-						"type": "string"
-					},
-					"refreshToken": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"accessToken",
-					"refreshToken"
-				],
-				"type": "object",
-				"additionalProperties": false
 			},
 			"IProfileWithTokensDto": {
 				"properties": {
 					"id": {
 						"type": "string"
 					},
-					"username": {
-						"type": "string"
-					},
 					"firstName": {
 						"type": "string"
 					},
@@ -334,6 +187,9 @@
 					},
 					"email": {
 						"type": "string"
+					},
+					"emailVerified": {
+						"type": "boolean"
 					},
 					"phone": {
 						"type": "string"
@@ -366,11 +222,8 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ISignUpRequest": {
+			"Pick_TProfileCreateModel.Exclude_keyofTProfileCreateModel.passwordHash-or-roleId-or-challenge__": {
 				"properties": {
-					"username": {
-						"type": "string"
-					},
 					"firstName": {
 						"type": "string"
 					},
@@ -382,11 +235,23 @@
 					},
 					"phone": {
 						"type": "string"
-					},
-					"roleId": {
+					}
+				},
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ISignUpRequest": {
+				"properties": {
+					"firstName": {
 						"type": "string"
 					},
-					"challenge": {
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
 						"type": "string"
 					},
 					"password": {
@@ -401,15 +266,16 @@
 			},
 			"ISignInRequest": {
 				"properties": {
-					"username": {
-						"type": "string"
+					"login": {
+						"type": "string",
+						"description": "Может быть телефоном, email-ом и username-ом"
 					},
 					"password": {
 						"type": "string"
 					}
 				},
 				"required": [
-					"username",
+					"login",
 					"password"
 				],
 				"type": "object",
@@ -716,6 +582,154 @@
 					"profileId",
 					"data"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProfileDto": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"emailVerified": {
+						"type": "boolean"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"roleId": {
+						"type": "string"
+					},
+					"challenge": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"role": {
+						"$ref": "#/components/schemas/IRoleDto"
+					}
+				},
+				"required": [
+					"role"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_TProfileCreateModel.Exclude_keyofTProfileCreateModel.id-or-passwordHash__": {
+				"properties": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"roleId": {
+						"type": "string"
+					},
+					"challenge": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"IProfileUpdateRequest": {
+				"properties": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"roleId": {
+						"type": "string"
+					},
+					"challenge": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProfileListDto": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IProfileDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProfilePrivilegesRequest": {
+				"properties": {
+					"roleName": {
+						"$ref": "#/components/schemas/ERole"
+					},
+					"permissions": {
+						"items": {
+							"$ref": "#/components/schemas/EPermissions"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"roleName",
+					"permissions"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"data": {}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -1150,305 +1164,6 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/api/profile/my": {
-			"get": {
-				"operationId": "GetMyProfile",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProfileDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/api/profile/my/update": {
-			"patch": {
-				"operationId": "UpdateMyProfile",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProfileDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IProfileUpdateRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/profile/my/delete": {
-			"delete": {
-				"operationId": "DeleteMyProfile",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/api/profile/all": {
-			"get": {
-				"operationId": "GetAllProfiles",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProfileListDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "offset",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					},
-					{
-						"in": "query",
-						"name": "limit",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
-			}
-		},
-		"/api/profile/{id}": {
-			"get": {
-				"operationId": "GetProfileById",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProfileDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/api/profile/setPrivileges/{id}": {
-			"patch": {
-				"operationId": "SetPrivileges",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProfileDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": [
-							"role:admin"
-						]
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IProfilePrivilegesRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/profile/update/{id}": {
-			"patch": {
-				"operationId": "UpdateProfile",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IProfileDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": [
-							"role:admin"
-						]
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IProfileUpdateRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/api/profile/delete/{id}": {
-			"delete": {
-				"operationId": "DeleteProfile",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": [
-							"role:admin"
-						]
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
 		"/api/auth/signUp": {
 			"post": {
 				"operationId": "SignUp",
@@ -1707,6 +1422,359 @@
 						}
 					}
 				}
+			}
+		},
+		"/api/profile/my": {
+			"get": {
+				"operationId": "GetMyProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/profile/my/update": {
+			"patch": {
+				"operationId": "UpdateMyProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IProfileUpdateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/profile/my/delete": {
+			"delete": {
+				"operationId": "DeleteMyProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/profile/all": {
+			"get": {
+				"operationId": "GetAllProfiles",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileListDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/profile/{id}": {
+			"get": {
+				"operationId": "GetProfileById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/profile/setPrivileges/{id}": {
+			"patch": {
+				"operationId": "SetPrivileges",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IProfilePrivilegesRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/profile/requestVerifyEmail": {
+			"post": {
+				"operationId": "RequestVerifyEmail",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/profile/verifyEmail/{code}": {
+			"get": {
+				"operationId": "VerifyEmail",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "code",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/profile/update/{id}": {
+			"patch": {
+				"operationId": "UpdateProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProfileDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IProfileUpdateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/profile/delete/{id}": {
+			"delete": {
+				"operationId": "DeleteProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": [
+							"role:admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/api/wireguard/start/{interfaceName}": {

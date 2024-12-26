@@ -16,7 +16,7 @@ import { SocketGateway } from "./modules/socket/socket.gateway";
 import { WgServerService } from "./modules/wgserver";
 import { RegisterRoutes } from "./routes";
 
-const { SERVER_HOST, SERVER_PORT, ADMIN_USERNAME, ADMIN_PASSWORD } = config;
+const { SERVER_HOST, SERVER_PORT, ADMIN_EMAIL, ADMIN_PASSWORD } = config;
 
 const profileService = iocContainer.get(ProfileService);
 const wgServerService = iocContainer.get(WgServerService);
@@ -28,10 +28,10 @@ const bootstrap = () => {
   sequelize.sync({ force: false }).then();
 
   sequelize.afterBulkSync(async () => {
-    await profileService.createAdmin({
-      username: ADMIN_USERNAME,
-      passwordHash: sha256(ADMIN_PASSWORD),
-    });
+    // await profileService.createAdmin({
+    //   email: ADMIN_EMAIL,
+    //   passwordHash: sha256(ADMIN_PASSWORD),
+    // });
 
     await wgServerService.init();
   });

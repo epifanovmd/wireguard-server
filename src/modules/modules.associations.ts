@@ -1,4 +1,5 @@
 import { IPAddress } from "./ipaddress";
+import { Otp } from "./otp";
 import { Passkeys } from "./passkeys";
 import { Permission } from "./permission";
 import { Profile } from "./profile";
@@ -9,6 +10,8 @@ import { WgServer } from "./wgserver";
 Profile.belongsTo(Role, { foreignKey: "roleId" });
 Profile.hasMany(Passkeys, { onDelete: "CASCADE" });
 Passkeys.belongsTo(Profile);
+Profile.hasMany(Otp, { onDelete: "CASCADE" });
+Otp.belongsTo(Profile);
 
 Role.hasMany(Profile, { onDelete: "CASCADE" });
 Role.belongsToMany(Permission, {
