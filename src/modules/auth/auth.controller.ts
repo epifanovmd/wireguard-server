@@ -1,8 +1,11 @@
 import { inject, injectable } from "inversify";
 import { Body, Controller, Post, Route, Tags } from "tsoa";
 
+import { ApiResponse } from "../../dto/ApiResponse";
 import { AuthService } from "./auth.service";
 import {
+  IProfileLogin,
+  IProfileResetPasswordRequest,
   IProfileWithTokensDto,
   ISignInRequest,
   ISignUpRequest,
@@ -33,6 +36,18 @@ export class AuthController extends Controller {
   @Post("/signIn")
   signIn(@Body() body: ISignInRequest): Promise<IProfileWithTokensDto> {
     return this._authService.signIn(body);
+  }
+
+  @Post("requestResetPassword")
+  requestResetPassword(@Body() { login }: IProfileLogin): Promise<ApiResponse> {
+    return this._authService.requestResetPassword(login);
+  }
+
+  @Post("resetPassword")
+  resetPassword(
+    @Body() body: IProfileResetPasswordRequest,
+  ): Promise<ApiResponse> {
+    return this._authService.resetPassword(body.token, body.password);
   }
 
   @Post("/refresh")

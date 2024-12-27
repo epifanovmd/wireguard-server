@@ -46,4 +46,8 @@ export const config = {
 
   SMTP_USER: process.env.SMTP_USER || "",
   SMTP_PASS: process.env.SMTP_PASS || "",
+  OTP_EXPIRE_MINUTES: Number(process.env.OTP_EXPIRE_MINUTES || 10),
+  RESET_PASS_TOKEN_EXPIRE_MINUTES: Number(
+    process.env.RESET_PASS_TOKEN_EXPIRE_MINUTES || 60,
+  ),
 };

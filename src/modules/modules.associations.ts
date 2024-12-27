@@ -3,6 +3,7 @@ import { Otp } from "./otp";
 import { Passkeys } from "./passkeys";
 import { Permission } from "./permission";
 import { Profile } from "./profile";
+import { ResetPasswordTokens } from "./reset-password-tokens";
 import { Role } from "./role";
 import { WgClient } from "./wgclient";
 import { WgServer } from "./wgserver";
@@ -12,6 +13,8 @@ Profile.hasMany(Passkeys, { onDelete: "CASCADE" });
 Passkeys.belongsTo(Profile);
 Profile.hasMany(Otp, { onDelete: "CASCADE" });
 Otp.belongsTo(Profile);
+Profile.hasMany(ResetPasswordTokens, { onDelete: "CASCADE" });
+ResetPasswordTokens.belongsTo(Profile);
 
 Role.hasMany(Profile, { onDelete: "CASCADE" });
 Role.belongsToMany(Permission, {

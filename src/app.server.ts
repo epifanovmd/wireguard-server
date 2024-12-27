@@ -28,10 +28,10 @@ const bootstrap = () => {
   sequelize.sync({ force: false }).then();
 
   sequelize.afterBulkSync(async () => {
-    // await profileService.createAdmin({
-    //   email: ADMIN_EMAIL,
-    //   passwordHash: sha256(ADMIN_PASSWORD),
-    // });
+    await profileService.createAdmin({
+      email: ADMIN_EMAIL,
+      passwordHash: sha256(ADMIN_PASSWORD),
+    });
 
     await wgServerService.init();
   });

@@ -1,7 +1,7 @@
 import { UnauthorizedException } from "@force-dev/utils";
 import { Request } from "koa";
 
-import { SecurityScopes, verifyToken } from "../common";
+import { SecurityScopes, verifyAuthToken } from "../common";
 import { IProfileDto } from "../modules/profile";
 
 export const koaAuthentication = (
@@ -16,7 +16,7 @@ export const koaAuthentication = (
       if (!token) {
         reject(new UnauthorizedException());
       } else {
-        resolve(verifyToken(token, scopes as SecurityScopes));
+        resolve(verifyAuthToken(token, scopes as SecurityScopes));
       }
     });
   }

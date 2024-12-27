@@ -25,7 +25,23 @@ export const createTokenAsync = (
   data: { profileId: string; opts?: SignOptions }[],
 ) => Promise.all(data.map(value => createToken(value.profileId, value.opts)));
 
-export const verifyToken = async (
+export const verifyToken = (token: string) => {
+  return new Promise<JWTDecoded>((resolve, reject) => {
+    jwt.verify(
+      token,
+      JWT_SECRET_KEY,
+      async (err: VerifyErrors, decoded: JWTDecoded) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(decoded);
+        }
+      },
+    );
+  });
+};
+
+export const verifyAuthToken = async (
   token?: string,
   scopes?: SecurityScopes,
 ): Promise<IProfileDto> =>

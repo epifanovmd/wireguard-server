@@ -3,6 +3,7 @@ import json from "@rollup/plugin-json";
 import resolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
 import { defineConfig } from "rollup";
+import copy from "rollup-plugin-copy";
 import typescript from "rollup-plugin-typescript2";
 
 const config = defineConfig(() => {
@@ -32,6 +33,12 @@ const config = defineConfig(() => {
       typescript({
         useTsconfigDeclarationDir: true,
         tsconfig: "./tsconfig.production.json",
+      }),
+      copy({
+        targets: [
+          { src: "./public/*", dest: "./build" }, // копирование всех файлов из public в build
+          { src: "./src/modules/mailer/*.ejs", dest: "./build" },
+        ],
       }),
     ],
   };

@@ -1,7 +1,7 @@
-import { IProfileDto, TProfileCreateModel } from "../profile";
+import { IProfileDto, IProfilePassword, TProfileCreateModel } from "../profile";
 
-export interface IProfilePassword {
-  password: string;
+export interface IProfileResetPasswordRequest extends IProfilePassword {
+  token: string;
 }
 
 export interface ITokensDto {
@@ -13,9 +13,12 @@ export interface IProfileWithTokensDto extends IProfileDto {
   tokens: ITokensDto;
 }
 
-export interface ISignInRequest {
+export interface IProfileLogin {
   /** Может быть телефоном, email-ом и username-ом  */
   login: string;
+}
+
+export interface ISignInRequest extends IProfileLogin {
   password: string;
 }
 

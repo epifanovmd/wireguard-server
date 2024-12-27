@@ -23,6 +23,7 @@ import {
   IProfileUpdateRequest,
 } from "./profile.model";
 import { ProfileService } from "./profile.service";
+import { IProfilePassword } from "./profile.types";
 
 @injectable()
 @Tags("Profile")
@@ -115,6 +116,17 @@ export class ProfileController extends Controller {
     @Body() body: IProfileUpdateRequest,
   ): Promise<IProfileDto> {
     return this._profileService.updateProfile(id, body);
+  }
+
+  @Security("jwt")
+  @Post("changePassword")
+  changePassword(
+    @Request() req: KoaRequest,
+    @Body() body: IProfilePassword,
+  ): Promise<ApiResponse> {
+    const profile = getContextProfile(req);
+
+    return this._profileService.changePassword(profile.id, body.password);
   }
 
   @Security("jwt", ["role:admin"])

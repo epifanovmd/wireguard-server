@@ -10,6 +10,7 @@ import { OtpModule } from "./otp";
 import { PasskeysModule } from "./passkeys";
 import { PermissionModule } from "./permission";
 import { ProfileModule } from "./profile";
+import { ResetPasswordTokensModule } from "./reset-password-tokens";
 import { RoleModule } from "./role";
 import { SocketModule } from "./socket";
 import { UtilsModule } from "./utils";
@@ -33,6 +34,7 @@ export class ModulesModule implements Module {
     new WireguardModule().Configure(ioc);
     new MailerModule().Configure(ioc);
     new OtpModule().Configure(ioc);
+    new ResetPasswordTokensModule().Configure(ioc);
     // CONFIGURE MODULE HERE
   }
 }

@@ -281,6 +281,45 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ApiResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"data": {}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProfileLogin": {
+				"properties": {
+					"login": {
+						"type": "string",
+						"description": "Может быть телефоном, email-ом и username-ом"
+					}
+				},
+				"required": [
+					"login"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProfileResetPasswordRequest": {
+				"properties": {
+					"password": {
+						"type": "string"
+					},
+					"token": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"password",
+					"token"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Base64URLString": {
 				"type": "string",
 				"description": "An attempt to communicate that this isn't just any string, but a Base64URL-encoded string"
@@ -723,13 +762,15 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ApiResponse": {
+			"IProfilePassword": {
 				"properties": {
-					"message": {
+					"password": {
 						"type": "string"
-					},
-					"data": {}
+					}
 				},
+				"required": [
+					"password"
+				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -1226,6 +1267,70 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/ISignInRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/auth/requestResetPassword": {
+			"post": {
+				"operationId": "RequestResetPassword",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authorization"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IProfileLogin"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/auth/resetPassword": {
+			"post": {
+				"operationId": "ResetPassword",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authorization"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IProfileResetPasswordRequest"
 							}
 						}
 					}
@@ -1734,6 +1839,42 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/IProfileUpdateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/profile/changePassword": {
+			"post": {
+				"operationId": "ChangePassword",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IProfilePassword"
 							}
 						}
 					}

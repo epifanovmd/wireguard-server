@@ -1,16 +1,11 @@
-import {
-  BadRequestException,
-  ConflictException,
-  GoneException,
-  NotFoundException,
-} from "@force-dev/utils";
+import { ConflictException, NotFoundException } from "@force-dev/utils";
 import { inject, injectable } from "inversify";
 import { Includeable, Op, WhereOptions } from "sequelize";
+import sha256 from "sha256";
 
-import { generateOtp } from "../../common";
 import { ApiResponse } from "../../dto/ApiResponse";
 import { MailerService } from "../mailer";
-import { Otp } from "../otp";
+import { OtpService } from "../otp/otp.service";
 import { EPermissions, Permission } from "../permission";
 import { ERole, Role } from "../role";
 import {
@@ -23,7 +18,11 @@ import {
 
 @injectable()
 export class ProfileService {
-  constructor(@inject(MailerService) private _mailerService: MailerService) {}
+  constructor(
+    @inject(MailerService) private _mailerService: MailerService,
+    @inject(OtpService) private _otpService: OtpService,
+  ) {}
+
   getAllProfile = (offset?: number, limit?: number) =>
     Profile.findAll({
       limit,
@@ -73,7 +72,7 @@ export class ProfileService {
 
   createAdmin = (body: TProfileCreateModel) => {
     const profile = this.getProfileByAttr({
-      [Op.or]: [{ email: body.email }, { phone: body.phone }],
+      [Op.or]: [{ email: body.email ?? "" }, { phone: body.phone ?? "" }],
     }).catch(() => Profile.create(body));
 
     return profile.then(result => {
@@ -133,23 +132,11 @@ export class ProfileService {
       throw new NotFoundException("У пользователя отсутсвует email.");
     }
 
-    const code = generateOtp();
-    const findOtp = await Otp.findOne({ where: { profileId } });
+    const otp = await this._otpService.create(profileId);
 
-    if (findOtp) {
-      findOtp.code = code;
-      findOtp.expireAt = new Date(Date.now() + 10 * 60 * 1000);
+    await this._mailerService.sendCodeMail(email, otp.code);
 
-      await findOtp.save();
-    } else {
-      await Otp.create({
-        profileId,
-        code,
-        expireAt: new Date(Date.now() + 10 * 60 * 1000),
-      });
-    }
-
-    await this._mailerService.sendCodeMail(email, code);
+    return otp.code as any;
   };
 
   verifyEmail = async (profileId: string, code: string) => {
@@ -158,31 +145,26 @@ export class ProfileService {
     if (profile.emailVerified) {
       throw new ConflictException("Email уже подтвержден.");
     }
-    const otp = await Otp.findOne({ where: { profileId, code } });
 
-    console.log("otp", otp?.code);
-
-    if (!otp) {
-      throw new BadRequestException(
-        "Неверный код. Пожалуйста, повторите попытку.",
-      );
+    if (await this._otpService.check(profileId, code)) {
+      profile.emailVerified = true;
+      await profile.save();
     }
-
-    if (otp.expireAt < new Date()) {
-      throw new GoneException(
-        "Срок действия кода истек. Пожалуйста, запросите новый код.",
-      );
-    }
-
-    profile.emailVerified = true;
-
-    await otp.destroy();
-    await profile.save();
 
     return new ApiResponse({
       message: "Email успешно подтвержден.",
       data: {},
     });
+  };
+
+  changePassword = async (profileId: string, password: string) => {
+    const profile = await this.getProfile(profileId);
+
+    profile.passwordHash = sha256(password);
+
+    await profile.save();
+
+    return new ApiResponse({ message: "Пароль успешно изменен." });
   };
 
   deleteProfile = async (profileId: string) => {

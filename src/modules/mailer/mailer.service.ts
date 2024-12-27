@@ -30,6 +30,19 @@ export class MailerService {
     });
   };
 
+  public sendResetPasswordMail = async (email: string, token: string) => {
+    const path = `${__dirname}/html-reset-password-template.ejs`;
+    const codeTemplate = fs.readFileSync(path, "utf-8");
+
+    return this.sendMail({
+      to: email,
+      subject: "Ваша ссылка для востановления пароля",
+      html: render(codeTemplate, {
+        resetLink: `https://wireguard.force-dev.ru/reset-password?token=${token}`,
+      }),
+    });
+  };
+
   public sendMail = (options: Omit<SendMailOptions, "from">) => {
     return new Promise((resolve, reject) => {
       this.transport.sendMail(

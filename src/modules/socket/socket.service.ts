@@ -5,7 +5,7 @@ import { Server } from "socket.io";
 
 import { config } from "../../../config";
 import { app } from "../../app";
-import { verifyToken } from "../../common";
+import { verifyAuthToken } from "../../common";
 import { IProfileDto } from "../profile";
 import { ISocketEmitEvents, ISocketEvents, TSocket } from "./socket.types";
 
@@ -55,7 +55,7 @@ export class SocketService {
         cookie?.access_token ?? clientSocket.handshake.query.access_token;
 
       if (token) {
-        verifyToken(token)
+        verifyAuthToken(token)
           .then(profile => {
             listener?.(profile, clientSocket);
 
