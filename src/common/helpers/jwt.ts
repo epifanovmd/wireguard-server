@@ -2,11 +2,9 @@ import { ForbiddenException, UnauthorizedException } from "@force-dev/utils";
 import jwt, { sign, SignOptions, VerifyErrors } from "jsonwebtoken";
 
 import { config } from "../../../config";
-import { iocContainer } from "../../app.module";
 import { EPermissions } from "../../modules/permission";
-import { IProfileDto } from "../../modules/profile";
 // импортируем прямяком из файла что бы не было циклической зависимости
-import { ProfileService } from "../../modules/profile/profile.service";
+import { IProfileDto, Profile } from "../../modules/profile/profile.model";
 import { ERole, IRoleDto } from "../../modules/role";
 import { JWTDecoded } from "../../types/koa";
 
@@ -58,10 +56,9 @@ export const verifyAuthToken = async (
           }
 
           try {
-            const profile = await iocContainer
-              .get(ProfileService)
-              .getProfile(decoded.profileId)
-              .catch(() => null);
+            const profile = await Profile.findByPk(decoded.profileId).catch(
+              () => null,
+            );
 
             if (!profile) {
               return reject(new UnauthorizedException());
