@@ -5,6 +5,7 @@ dotenv.config({
 });
 
 export const config = {
+  PUBLIC_HOST: process.env.PUBLIC_HOST,
   SERVER_HOST: process.env.SERVER_HOST || "0.0.0.0",
   SERVER_PORT: Number(process.env.SERVER_PORT || 8181),
   SOCKET_PORT: process.env.SOCKET_PORT || 3232,
@@ -17,7 +18,7 @@ export const config = {
     process.env.CORS_ALLOW_IPS ||
     "http://localhost:3000,https://socket-test-client.netlify.app",
 
-  JWT_SECRET_KEY: process.env.SOCKET_PORT || "rest-api--auth-secret-key",
+  JWT_SECRET_KEY: process.env.JWT_SECRET_KEY || "rest-api--auth-secret-key",
 
   WG_HOST: process.env.WG_HOST,
   WG_PATH: process.env.WG_PATH || "/etc/wireguard/",

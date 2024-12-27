@@ -1,11 +1,9 @@
-import type {
-  AuthenticationResponseJSON,
-  RegistrationResponseJSON,
-} from "@simplewebauthn/server/esm/deps";
 import {
+  AuthenticationResponseJSON,
   AuthenticatorTransportFuture,
   Base64URLString,
   CredentialDeviceType,
+  RegistrationResponseJSON,
 } from "@simplewebauthn/types";
 import {
   DataTypes,
