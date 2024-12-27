@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from "@force-dev/utils";
@@ -13,12 +12,10 @@ import {
   validateEmail,
   validatePhone,
   verifyAuthToken,
-  verifyToken,
 } from "../../common";
 import { ApiResponse } from "../../dto/ApiResponse";
 import { MailerService } from "../mailer";
 import { ProfileService } from "../profile";
-import { ResetPasswordTokens } from "../reset-password-tokens";
 import { ResetPasswordTokensService } from "../reset-password-tokens/reset-password-token.service";
 import {
   IProfileWithTokensDto,

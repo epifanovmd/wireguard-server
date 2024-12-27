@@ -43,6 +43,13 @@ export const config = {
 
   ADMIN_EMAIL: process.env.ADMIN_EMAIL || "admin@admin.com",
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || "admin",
+  WEB_URL_RESET_PASSWORD:
+    process.env.WEB_URL_RESET_PASSWORD ||
+    "https://domain/reset-password?token={{token}}",
+
+  WEB_AUTHN_RP_NAME: process.env.WEB_AUTHN_RP_NAME || "wireguard",
+  WEB_AUTHN_RP_ID: process.env.WEB_AUTHN_RP_ID || "wireguard.force-dev.ru",
+  WEB_AUTHN_RP_SCHEMA: process.env.WEB_AUTHN_RP_SCHEMA || "https",
 
   SMTP_USER: process.env.SMTP_USER || "",
   SMTP_PASS: process.env.SMTP_PASS || "",

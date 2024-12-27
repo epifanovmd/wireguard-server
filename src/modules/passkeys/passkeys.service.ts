@@ -14,6 +14,7 @@ import type {
 } from "@simplewebauthn/server/esm/deps";
 import { inject, injectable } from "inversify";
 
+import { config } from "../../../config";
 import { AuthService } from "../auth";
 import { ProfileService } from "../profile";
 import {
@@ -22,11 +23,11 @@ import {
   Passkeys,
 } from "./passkeys.model";
 
-const rpName = "wireguard"; // Замените на название вашего приложения
-const rpID = "wireguard.force-dev.ru"; // Замените на ваш домен
-// const rpID = "localhost"; // Замените на ваш домен
-const origin = `https://${rpID}`;
-// const origin = `http://${rpID}:3000`;
+const { WEB_AUTHN_RP_NAME, WEB_AUTHN_RP_ID, WEB_AUTHN_RP_SCHEMA } = config;
+
+const rpName = WEB_AUTHN_RP_NAME;
+const rpID = WEB_AUTHN_RP_ID;
+const origin = `${WEB_AUTHN_RP_SCHEMA}://${rpID}`;
 
 @injectable()
 export class PasskeysService {

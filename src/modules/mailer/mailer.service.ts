@@ -38,7 +38,7 @@ export class MailerService {
       to: email,
       subject: "Ваша ссылка для востановления пароля",
       html: render(codeTemplate, {
-        resetLink: `https://wireguard.force-dev.ru/reset-password?token=${token}`,
+        resetLink: config.WEB_URL_RESET_PASSWORD.replace("{{token}}", token),
       }),
     });
   };

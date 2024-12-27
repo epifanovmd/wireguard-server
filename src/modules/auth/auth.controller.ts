@@ -12,9 +12,6 @@ import {
   ITokensDto,
 } from "./auth.types";
 
-const PHONE_REGEX = /^[\d+][\d() -]{4,14}\d$/;
-const EMAIL_REGEX = /^(\S+)@([a-z0-9-]+)(\.)([a-z]{2,4})(\.?)([a-z]{0,4})+$/;
-
 @injectable()
 @Tags("Authorization")
 @Route("api/auth")
