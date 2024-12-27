@@ -16,7 +16,7 @@ import {
 import { ApiResponse } from "../../dto/ApiResponse";
 import { MailerService } from "../mailer";
 import { ProfileService } from "../profile";
-import { ResetPasswordTokensService } from "../reset-password-tokens/reset-password-token.service";
+import { ResetPasswordTokensService } from "../reset-password-tokens";
 import {
   IProfileWithTokensDto,
   ISignInRequest,

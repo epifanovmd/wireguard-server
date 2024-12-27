@@ -1,7 +1,8 @@
 import { inject, injectable as Injectable } from "inversify";
 
 import { WgClientService } from "../wgclient";
-import { IWireguardPeerStatusDto, WireguardService } from "../wireguard";
+import { WireguardService } from "../wireguard";
+import { IWireguardPeerStatusDto } from "../wireguard/wireguard.types";
 import { SocketService } from "./socket.service";
 import { TSocket } from "./socket.types";
 

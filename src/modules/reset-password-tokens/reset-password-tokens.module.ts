@@ -1,7 +1,7 @@
 import { Container } from "inversify";
 
 import { Module } from "../../app.module";
-import { ResetPasswordTokensService } from "./reset-password-token.service";
+import { ResetPasswordTokensService } from "./reset-password-tokens.service";
 
 export class ResetPasswordTokensModule implements Module {
   Configure(ioc: Container) {

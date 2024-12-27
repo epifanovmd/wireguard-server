@@ -1,4 +1,5 @@
-import { IProfileDto, IProfilePassword, TProfileCreateModel } from "../profile";
+import { IProfileDto, TProfileCreateModel } from "../profile/profile.model";
+import { IProfilePassword } from "../profile/profile.types";
 
 export interface IProfileResetPasswordRequest extends IProfilePassword {
   token: string;

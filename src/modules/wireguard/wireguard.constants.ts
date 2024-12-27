@@ -1,6 +1,6 @@
 import { config } from "../../../config";
-import { IWgClientsDto } from "../wgclient";
-import { IWgServerDto } from "../wgserver";
+import { IWgClientsDto } from "../wgclient/wgclient.model";
+import { IWgServerDto } from "../wgserver/wgserver.model";
 
 const { WG_PRE_UP, WG_POST_UP, WG_PRE_DOWN, WG_POST_DOWN } = config;
 

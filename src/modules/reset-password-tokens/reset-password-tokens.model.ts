@@ -1,17 +1,13 @@
 import {
-  BelongsToManyAddAssociationsMixin,
-  BelongsToManySetAssociationsMixin,
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
   Model,
-  NonAttribute,
 } from "sequelize";
 
 import { sequelize } from "../../db";
 import { ListResponse } from "../../dto/ListResponse";
-import { IPermissionDto, Permission } from "../permission";
-import { Profile } from "../profile";
+import { Profile } from "../profile/profile.model";
 
 export interface IResetPasswordTokensUpdateRequest
   extends Omit<TResetPasswordTokensCreateModel, "profileId"> {}

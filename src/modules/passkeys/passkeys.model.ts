@@ -13,8 +13,8 @@ import {
 } from "sequelize";
 
 import { sequelize } from "../../db";
-import { ITokensDto } from "../auth";
-import { Profile } from "../profile";
+import { ITokensDto } from "../auth/auth.types";
+import { Profile } from "../profile/profile.model";
 
 export interface IVerifyRegistrationRequest {
   profileId: string;

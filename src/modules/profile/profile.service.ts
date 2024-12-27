@@ -5,9 +5,9 @@ import sha256 from "sha256";
 
 import { ApiResponse } from "../../dto/ApiResponse";
 import { MailerService } from "../mailer";
-import { OtpService } from "../otp/otp.service";
-import { EPermissions, Permission } from "../permission";
-import { ERole, Role } from "../role";
+import { OtpService } from "../otp";
+import { EPermissions, Permission } from "../permission/permission.model";
+import { ERole, Role } from "../role/role.model";
 import {
   IProfilePrivilegesRequest,
   IProfileUpdateRequest,

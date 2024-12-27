@@ -5,7 +5,7 @@ import path from "path";
 
 import { config } from "../../../config";
 import { UtilsService } from "../utils";
-import { IWgServerDto } from "../wgserver";
+import { IWgServerDto } from "../wgserver/wgserver.model";
 import {
   getWireguardPeersConfig,
   getWireguardSeverBlockConfig,

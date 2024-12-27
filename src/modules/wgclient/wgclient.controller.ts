@@ -15,7 +15,7 @@ import {
 
 import { getContextProfile } from "../../common";
 import { KoaRequest } from "../../types/koa";
-import { ERole } from "../role";
+import { ERole } from "../role/role.model";
 import {
   IWgClientCreateRequest,
   IWgClientListDto,

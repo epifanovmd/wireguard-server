@@ -2,7 +2,7 @@ import { UnauthorizedException } from "@force-dev/utils";
 import { Request } from "koa";
 
 import { SecurityScopes, verifyAuthToken } from "../common";
-import { IProfileDto } from "../modules/profile";
+import { IProfileDto } from "../modules/profile/profile.model";
 
 export const koaAuthentication = (
   request: Request,

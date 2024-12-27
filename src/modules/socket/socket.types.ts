@@ -1,6 +1,6 @@
 import { Socket as SocketIO } from "socket.io";
 
-import { IWireguardPeerStatusDto } from "../wireguard";
+import { IWireguardPeerStatusDto } from "../wireguard/wireguard.types";
 
 export interface ISocketEvents {
   subscribeToClient: (...args: [clientId: string[]]) => void;

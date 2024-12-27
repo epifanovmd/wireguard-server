@@ -11,9 +11,9 @@ import {
 
 import { sequelize } from "../../db";
 import { ListResponse } from "../../dto/ListResponse";
-import { Passkeys } from "../passkeys";
-import { EPermissions } from "../permission";
-import { ERole, IRoleDto, Role } from "../role";
+import { Passkeys } from "../passkeys/passkeys.model";
+import { EPermissions } from "../permission/permission.model";
+import { ERole, IRoleDto, Role } from "../role/role.model";
 
 export interface IProfileUpdateRequest
   extends Omit<TProfileCreateModel, "id" | "passwordHash"> {}

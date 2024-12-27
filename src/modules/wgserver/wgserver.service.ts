@@ -5,8 +5,9 @@ import { v4 } from "uuid";
 
 import { config } from "../../../config";
 import { IPAddressService } from "../ipaddress";
-import { IProfileDto, Profile, ProfileService } from "../profile";
-import { ERole } from "../role";
+import { ProfileService } from "../profile";
+import { IProfileDto, Profile } from "../profile/profile.model";
+import { ERole } from "../role/role.model";
 // не менять импорт, иначе не запустится сервер из-за циклической зависимости
 import { WgClient } from "../wgclient/wgclient.model";
 import { WireguardService } from "../wireguard";

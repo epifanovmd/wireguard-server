@@ -8,8 +8,8 @@ import {
 
 import { sequelize } from "../../db";
 import { ListResponse } from "../../dto/ListResponse";
-import { IProfileDto, Profile } from "../profile";
-import { IWgServerDto, WgServer } from "../wgserver";
+import { IProfileDto, Profile } from "../profile/profile.model";
+import { IWgServerDto, WgServer } from "../wgserver/wgserver.model";
 
 export interface IWgClientCreateRequest
   extends Pick<

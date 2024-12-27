@@ -1,12 +1,12 @@
-import { IPAddress } from "./ipaddress";
-import { Otp } from "./otp";
-import { Passkeys } from "./passkeys";
-import { Permission } from "./permission";
-import { Profile } from "./profile";
-import { ResetPasswordTokens } from "./reset-password-tokens";
-import { Role } from "./role";
-import { WgClient } from "./wgclient";
-import { WgServer } from "./wgserver";
+import { IPAddress } from "./ipaddress/ipaddress.model";
+import { Otp } from "./otp/otp.model";
+import { Passkeys } from "./passkeys/passkeys.model";
+import { Permission } from "./permission/permission.model";
+import { Profile } from "./profile/profile.model";
+import { ResetPasswordTokens } from "./reset-password-tokens/reset-password-tokens.model";
+import { Role } from "./role/role.model";
+import { WgClient } from "./wgclient/wgclient.model";
+import { WgServer } from "./wgserver/wgserver.model";
 
 Profile.belongsTo(Role, { foreignKey: "roleId" });
 Profile.hasMany(Passkeys, { onDelete: "CASCADE" });
