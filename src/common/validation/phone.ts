@@ -1,10 +1,6 @@
 import { BadRequestException } from "@force-dev/utils";
 
-export const isPhone = (phone: string) => {
-  const phoneRegex = /^\+?[1-9]\d{1,14}$/;
-
-  return phoneRegex.test(phone);
-};
+import { isPhone } from "../helpers";
 
 export const validatePhone = (phone: string) => {
   if (phone && !isPhone(phone)) {
