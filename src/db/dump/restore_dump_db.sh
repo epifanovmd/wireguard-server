@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SSH_HOST="138.124.99.61"
+SSH_HOST="194.87.44.216"
 BACKUP_DIR="."
 CONTAINER_NAME="postgres"
 PG_USER="epifanovmd"
