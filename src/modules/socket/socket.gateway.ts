@@ -19,6 +19,18 @@ export class SocketGateway {
   start = () => {
     this._socketService.onConnection((client, clientSocket) => {
       this._onSubscribeToClient(clientSocket);
+
+      clientSocket.on("offer", args => {
+        clientSocket.broadcast.emit("offer", args);
+      });
+
+      clientSocket.on("answer", args => {
+        clientSocket.broadcast.emit("answer", args);
+      });
+
+      clientSocket.on("ice-candidate", args => {
+        clientSocket.broadcast.emit("ice-candidate", args);
+      });
     });
   };
 
