@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 env:
-  REMOTE_HOST: 147.45.133.109
+  REMOTE_HOST: 147.45.132.92
 
 jobs:
   deploy:
